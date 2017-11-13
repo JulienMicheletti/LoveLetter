@@ -1,0 +1,36 @@
+@startuml
+Object carte {
+<b><u>id_carte
+<b>nom
+<b>effet
+<b>image
+}
+Object utilisateur {
+<b><u>pseudo
+<b>mot_de_passe
+<b>nb_win
+}
+Object defausse
+Object main
+Object partie {
+<b><u>id_partie
+<b>nb_joueur
+<b>nb_manche
+<b>gagnant
+}
+Object manche {
+<b><u>id_manche
+<b>gagnant
+}
+Object pioche
+
+utilisateur "1,1" -- "1,1" main
+utilisateur "2,4" -- "1,1" manche
+utilisateur -- "1,1" defausse
+defausse -- "0,n" carte
+defausse "1,1" -- manche
+carte "0,n" -- "1,1" pioche
+carte "1,2" -- main
+partie "1,1" -- "4,7" manche
+pioche "1,1" -- "1,1" utilisateur
+@enduml
