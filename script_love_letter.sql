@@ -1,13 +1,6 @@
 CREATE DATABASE love_letter;
 USE love_letter;
 
-CREATE TABLE utilisateur(
-pseudo VARCHAR(20) NOT NULL,
-mdp INT NOT NULL,
-nb_win INT NOT NULL,
-CONSTRAINT PK_UTILISATEUR PRIMARY KEY (pseudo)
-);
-
 CREATE TABLE carte(
 id_carte INT NOT NULL,
 nom VARCHAR(20) NOT NULL UNIQUE,
@@ -16,29 +9,61 @@ image VARCHAR(200) NOT NULL UNIQUE,
 CONSTRAINT PK_CARTE PRIMARY KEY (id_carte)
 );
 
+CREATE TABLE main(
+id_main INT NOT NULL,
+id_carte INT,
+pseudo VARCHAR(20) NOT NULL,
+CONSTRAINT PK_MAIN PRIMARY KEY (id_main),
+CONSTRAINT FK_MAIN_CARTE FOREIGN KEY (id_carte) REFERENCES carte(id_carte),
+CONSTRAINT FK_MAIN_UTILISATEUR FOREIGN KEY (id_carte) REFERENCES utilisateur(pseudo)
+);
+
+CREATE TABLE defausse(
+id_defausse INT NOT NULL,
+id_carte INT NOT NULL,
+CONSTRAINT PK_DEFAUSSE PRIMARY KEY (id_defausse),
+CONSTRAINT FK_DEFAUSSE_CARTE FOREIGN KEY (id_carte) REFERENCES carte(id_carte)
+);
+
+
+CREATE TABLE utilisateur(
+pseudo VARCHAR(20) NOT NULL,
+mdp INT NOT NULL,
+nb_win INT NOT NULL,
+id_main INT,
+id_defausse INT,
+CONSTRAINT PK_UTILISATEUR PRIMARY KEY (pseudo),
+CONSTRAINT FK_UTILISATEUR_MAIN FOREIGN KEY (id_main) REFERENCES main(id_main),
+CONSTRAINT FK_UTILISATEUR_DEFAUSSE FOREIGN KEY (id_defausse) REFERENCES defausse(id_defausse)
+);
+
 CREATE TABLE partie(
 id_partie INT NOT NULL,
 nb_joueur INT NOT NULL,
 nb_manche INT NOT NULL,
 gagnant VARCHAR(20),
 CONSTRAINT PK_PARTIE PRIMARY KEY (id_partie),
-CONSTRAINT FK_PARTIE_UTILISATEUR FOREIGN KEY (gagant) REFERENCES utilisateur(pseudo),
+CONSTRAINT FK_PARTIE_UTILISATEUR FOREIGN KEY (gagnant) REFERENCES utilisateur(pseudo),
 CONSTRAINT CK_NB_JOUEUR CHECK (nb_joueur >= 2 AND nb_joueur <= 4),
 CONSTRAINT CK_NB_MANCHE CHECK (nb_manche >= 4 AND nb_manche <= 7)
 );
 
+CREATE TABLE pioche(
+id_pioche INT NOT NULL,
+id_carte INT,
+CONSTRAINT PK_PIOCHE PRIMARY KEY (id_pioche),
+CONSTRAINT FK_PIOCHE_CARTE FOREIGN KEY (id_carte) REFERENCES carte(id_carte)
+);
+
 CREATE TABLE manche(
 id_manche INT NOT NULL,
-gagant VARCHAR(20)
+id_defausse INT NOT NULL,
+id_partie INT NOT NULL,
+id_pioche INT NOT NULL,
+gagnant VARCHAR(20),
 CONSTRAINT PK_MANCHE PRIMARY KEY (id_manche),
-CONSTRAINT FK_MANCHE_UTILISATEUR FOREIGN KEY (gagant) REFERENCES utilisateur(pseudo)
-);
-
-CREATE TABLE main(
-);
-
-CREATE TABLE pioche(
-);
-
-CREATE TABLE defausse(
+CONSTRAINT FK_MANCHE_UTILISATEUR FOREIGN KEY (gagnant) REFERENCES utilisateur(pseudo),
+CONSTRAINT FK_MANCHE_DEFAUSSE FOREIGN KEY (id_defausse) REFERENCES defausse(id_defausse),
+CONSTRAINT FK_MANCHE_PARTIE FOREIGN KEY (id_partie) REFERENCES partie(pseudo),
+CONSTRAINT FK_MANCHE_PIOCHE FOREIGN KEY (id_pioche) REFERENCES pioche(id_pioche)
 );
