@@ -1,0 +1,15 @@
+oc_platform_home:
+    path:      /platform/{page}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:index
+        page:        1
+    requirements:
+        page: \d*
+
+oc_platform_jouer:
+    path:      /platform/advert/jouer
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:jouer
+    requirements:
+        id: \d+
+
