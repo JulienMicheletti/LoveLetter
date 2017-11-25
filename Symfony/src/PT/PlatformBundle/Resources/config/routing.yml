@@ -1,0 +1,15 @@
+oc_platform_home:
+    path:      /platform/{page}
+    defaults:
+        _controller: PTPlatformBundle:Advert:index
+        page:        1
+    requirements:
+        page: \d*
+
+oc_platform_jouer:
+    path:      /platform/advert/jouer
+    defaults:
+        _controller: PTPlatformBundle:Advert:jouer
+    requirements:
+        id: \d+
+

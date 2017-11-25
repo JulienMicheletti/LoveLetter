@@ -1,0 +1,3 @@
+oc_platform:
+    resource: "@PTPlatformBundle/Resources/config/routing.yml"
+    prefix:   /

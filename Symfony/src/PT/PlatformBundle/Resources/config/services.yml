@@ -1,0 +1,4 @@
+services:
+#    pt_platform.example:
+#        class: PT\PlatformBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
