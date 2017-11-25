@@ -24,28 +24,28 @@ class partie
     /**
      * @var int
      *
-     * @ORM\Column(name="idPartie", type="integer", unique=true)
+     * @ORM\Column(name="id_partie", type="integer", unique=true)
      */
     private $idPartie;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="nbJoueurs", type="integer")
+     * @ORM\Column(name="nb_joueur", type="integer")
      */
-    private $nbJoueurs;
+    private $nbJoueur;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="nbManche", type="integer")
+     * @ORM\Column(name="nb_manche", type="integer")
      */
     private $nbManche;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="gagnant", type="string", length=255, nullable=true)
+     * @ORM\Column(name="gagnant", type="string", length=20)
      */
     private $gagnant;
 
@@ -85,27 +85,27 @@ class partie
     }
 
     /**
-     * Set nbJoueurs
+     * Set nbJoueur
      *
-     * @param integer $nbJoueurs
+     * @param integer $nbJoueur
      *
      * @return partie
      */
-    public function setNbJoueurs($nbJoueurs)
+    public function setNbJoueur($nbJoueur)
     {
-        $this->nbJoueurs = $nbJoueurs;
+        $this->nbJoueur = $nbJoueur;
 
         return $this;
     }
 
     /**
-     * Get nbJoueurs
+     * Get nbJoueur
      *
      * @return int
      */
-    public function getNbJoueurs()
+    public function getNbJoueur()
     {
-        return $this->nbJoueurs;
+        return $this->nbJoueur;
     }
 
     /**
