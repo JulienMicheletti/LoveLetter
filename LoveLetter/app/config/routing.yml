@@ -1,3 +1,7 @@
+web_love_letter:
+    resource: "@WEBLoveLetterBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
