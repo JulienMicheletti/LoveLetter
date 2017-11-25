@@ -7,6 +7,7 @@ namespace WEB\LoveLetterBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use WEB\LoveLetterBundle\Entity\carte;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
@@ -25,15 +26,30 @@ class AdvertController extends Controller
 
     public function jouerAction()
     {
-        $advert = array(
-            'title'   => 'Recherche développpeur Symfony2',
-            'author'  => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date'    => new \Datetime()
-        );
+        $doctrine = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
+        $advertRepository = $em->getRepository('WEBLoveLetterBundle:carte');
+        // Création de l'entité
+        $carte = new Carte();
+        $carte->setEffet('Effet2');
+        $carte->setIdCarte(1);
+        $carte->setImage("testImage2");
+        $carte->setNom("Kuribo");
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('advert' => $advert));
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // Étape 1 : On « persiste » l'entité
+        $em->persist($carte);
+
+        // Étape 2 : On « flush » tout ce qui a été persisté avant
+        $em->flush();
+
+        //return $this->redirect($this->generateUrl('oc_platform_jouer', array('nom' => $carte->getNom())));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('nom'  => $carte->getNom()));
+        // return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig');
     }
+
 
     public function menuAction($limit)
     {

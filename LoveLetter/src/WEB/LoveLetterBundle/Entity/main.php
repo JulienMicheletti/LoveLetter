@@ -15,15 +15,7 @@ class main
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="id_main", type="integer")
      */
     private $idMain;
@@ -31,6 +23,8 @@ class main
     /**
      * @var int
      *
+     * @ORM\ManyToOne(targetEntity="carte", inversedBy="id_carte")
+     * @ORM\JoinColumn(name="id_carte", referencedColumnName="id")
      * @ORM\Column(name="id_carte", type="integer", nullable=true)
      */
     private $idCarte;

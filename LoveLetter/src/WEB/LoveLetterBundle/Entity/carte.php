@@ -14,16 +14,7 @@ class carte
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="id_carte", type="integer", unique=true)
      */
     private $idCarte;
@@ -49,16 +40,6 @@ class carte
      */
     private $image;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set idCarte

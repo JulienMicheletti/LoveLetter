@@ -15,21 +15,14 @@ class manche
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="id_manche", type="integer", unique=true)
      */
     private $idManche;
 
     /**
      * @var int
+     *
      *
      * @ORM\Column(name="id_defausse", type="integer")
      */
@@ -38,6 +31,9 @@ class manche
     /**
      * @var int
      *
+     *
+     * @ORM\ManyToOne(targetEntity="WEB\LoveLetterBundle\Entity\partie")
+     * @ORM\JoinColumn(nullable=false)
      * @ORM\Column(name="id_partie", type="integer")
      */
     private $idPartie;
