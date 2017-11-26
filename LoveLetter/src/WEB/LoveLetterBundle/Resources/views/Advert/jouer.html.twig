@@ -4,9 +4,28 @@
 
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+    <!--<![endif]-->
+    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/layouts/marketing.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/cartes.css') }}" type="text/css" />
+{% endblock %}
+
 {% block ocplatform_body %}
-    <p>
-        {{ nom }}
-    </p>
+    {% for category in nom.categories %}
+        <img src="{{ asset (category.image) }}">{% if not loop.last %}, {% endif %}
+    {% endfor %}
+
+
 
 {% endblock %}

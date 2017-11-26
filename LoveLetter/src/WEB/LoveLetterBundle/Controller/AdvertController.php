@@ -5,8 +5,15 @@
 namespace WEB\LoveLetterBundle\Controller;
 
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use WEB\LoveLetterBundle\Entity\partie;
+use WEB\LoveLetterBundle\Entity\manche;
+use WEB\LoveLetterBundle\Entity\defausse;
+use WEB\LoveLetterBundle\Entity\utilisateur;
+use WEB\LoveLetterBundle\Entity\main;
+use WEB\LoveLetterBundle\Entity\pioche;
 use WEB\LoveLetterBundle\Entity\carte;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -26,27 +33,41 @@ class AdvertController extends Controller
 
     public function jouerAction()
     {
-        $doctrine = $this->getDoctrine();
+
+        /**   $defausse = new Defausse();
+        $defausse->setIdDefausse(1);
+        $defausse->setIdCarte($carte->getIdCarte()); */
+
+       /** $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('WEBLoveLetterBundle:carte')
+        ;*/
         $em = $this->getDoctrine()->getManager();
-        $advertRepository = $em->getRepository('WEBLoveLetterBundle:carte');
-        // Création de l'entité
-        $carte = new Carte();
-        $carte->setEffet('Effet2');
-        $carte->setIdCarte(1);
-        $carte->setImage("testImage2");
-        $carte->setNom("Kuribo");
+        $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
+        $pioche = new Pioche();
+        $pioche->setId(10);
 
-        // On récupère l'EntityManager
-        $em = $this->getDoctrine()->getManager();
+        foreach ($listCarte as $carte) {
+            $pioche->addCategory($carte);
+        }
 
-        // Étape 1 : On « persiste » l'entité
-        $em->persist($carte);
-
-        // Étape 2 : On « flush » tout ce qui a été persisté avant
+        $em->persist($pioche);
         $em->flush();
+       /** $manche1 = new Manche();
+        $manche1->setIdDefausse($defausse->getIdDefausse());
+        $manche1->setIdManche(0);
+        $manche1->setIdPioche($pioche->getIdPioche());
+        $manche1->setIdPartie($partie->getIdPartie());
 
-        //return $this->redirect($this->generateUrl('oc_platform_jouer', array('nom' => $carte->getNom())));
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('nom'  => $carte->getNom()));
+        $manche2 = new Manche();
+        $manche2->setIdDefausse($defausse->getIdDefausse());
+        $manche2->setIdManche(0);
+        $manche2->setIdPioche($pioche->getIdPioche());
+        $manche2->setIdPartie($partie->getIdPartie());*/
+
+
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('nom'  => $pioche));
         // return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig');
     }
 

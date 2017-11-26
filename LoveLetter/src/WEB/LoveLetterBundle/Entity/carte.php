@@ -3,6 +3,7 @@
 namespace WEB\LoveLetterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * carte
@@ -13,11 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
 class carte
 {
     /**
-     * @var int
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\Column(name="id_carte", type="integer", unique=true)
      */
-    private $idCarte;
+    protected $id;
 
     /**
      * @var string
@@ -48,9 +48,9 @@ class carte
      *
      * @return carte
      */
-    public function setIdCarte($idCarte)
+    public function setId($idCarte)
     {
-        $this->idCarte = $idCarte;
+        $this->id = $idCarte;
 
         return $this;
     }
@@ -60,9 +60,9 @@ class carte
      *
      * @return int
      */
-    public function getIdCarte()
+    public function getId()
     {
-        return $this->idCarte;
+        return $this->id;
     }
 
     /**
@@ -136,5 +136,5 @@ class carte
     {
         return $this->image;
     }
-}
 
+}

@@ -3,6 +3,8 @@
 namespace WEB\LoveLetterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Tests\Constraints\CardSchemeValidatorTest;
 
 /**
  * pioche
@@ -13,20 +15,46 @@ use Doctrine\ORM\Mapping as ORM;
 class pioche
 {
     /**
-     * @var int
-     *
      * @ORM\Id
-     * @ORM\Column(name="id_pioche", type="integer", unique=true)
+     * @ORM\Column(name="id", type="integer", unique=true)
      */
-    private $idPioche;
+    private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_carte", type="integer", nullable=true)
+     * @ORM\ManyToMany(targetEntity="WEB\LoveLetterBundle\Entity\carte", cascade={"persist"})
      */
-    private $idCarte;
+    private $cartes;
 
+    // Comme la propriété $categories doit être un ArrayCollection,
+    // On doit la définir dans un constructeur :
+    public function __construct()
+    {
+        $this->cartes = new ArrayCollection();
+    }
+
+    // Notez le singulier, on ajoute une seule catégorie à la fois
+    public function addCategory(Carte $carte)
+    {
+        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+        $this->cartes[] = $carte;
+
+        return $this;
+    }
+
+    public function removeCategory(Carte $carte)
+    {
+        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+        $this->cartes->removeElement($carte);
+    }
+
+    // Notez le pluriel, on récupère une liste de catégories ici !
+    public function getCategorie($i){
+        return $this->cartes[$i];
+    }
+    public function getCategories()
+    {
+        return $this->cartes;
+    }
 
     /**
      * Get id
@@ -39,51 +67,15 @@ class pioche
     }
 
     /**
-     * Set idPioche
-     *
-     * @param integer $idPioche
-     *
-     * @return pioche
-     */
-    public function setIdPioche($idPioche)
-    {
-        $this->idPioche = $idPioche;
-
-        return $this;
-    }
-
-    /**
-     * Get idPioche
-     *
-     * @return int
-     */
-    public function getIdPioche()
-    {
-        return $this->idPioche;
-    }
-
-    /**
      * Set idCarte
      *
      * @param integer $idCarte
      *
-     * @return pioche
+     * @return carte
      */
-    public function setIdCarte($idCarte)
+    public function setId($id)
     {
-        $this->idCarte = $idCarte;
-
-        return $this;
-    }
-
-    /**
-     * Get idCarte
-     *
-     * @return int
-     */
-    public function getIdCarte()
-    {
-        return $this->idCarte;
+        $this->id = $id;
     }
 }
 
