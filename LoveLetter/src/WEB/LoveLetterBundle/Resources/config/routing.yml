@@ -13,3 +13,9 @@ oc_platform_jouer:
     requirements:
         id: \d+
 
+oc_platform_piocher:
+    path:      /platform/advert/piocher
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:piocher
+    requirements:
+        id: \d+

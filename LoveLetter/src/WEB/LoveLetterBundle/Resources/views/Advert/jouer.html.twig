@@ -18,11 +18,12 @@
 
     <!--<![endif]-->
     <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/layouts/marketing.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/cartes.css') }}" type="text/css" />
+
 {% endblock %}
 
 {% block ocplatform_body %}
-    {% for carte in pioche.categories %}
-        <img src="{{ asset (carte.image) }}">{% if not loop.last %}, {% endif %}
-    {% endfor %}
+        <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}">
+        {% if not carte == null %}
+            <img src="{{ asset (carte.image) }}">
+        {% endif %}
 {% endblock %}

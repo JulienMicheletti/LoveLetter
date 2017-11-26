@@ -33,10 +33,11 @@ class AdvertController extends Controller
 
     public function jouerAction()
     {
+        global $pioche;
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
         $pioche = new Pioche();
-        $pioche->setId(12);
+        $pioche->setId(1);
 
         foreach ($listCarte as $carte) {
             $pioche->addCategory($carte);
@@ -45,7 +46,19 @@ class AdvertController extends Controller
         $em->persist($pioche);
         $em->flush();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche'  => $pioche));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche'  => $pioche, 'carte' => null));
+    }
+
+    public function piocherAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
+
+        $nb = rand(1, 8);
+        $carte = $pioche->getCategorie($nb);
+        //$pioche->removeCategory($carte);
+
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte'  => $carte));
     }
 
 
