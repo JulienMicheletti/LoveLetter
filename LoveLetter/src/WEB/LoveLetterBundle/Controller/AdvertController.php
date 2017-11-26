@@ -33,20 +33,10 @@ class AdvertController extends Controller
 
     public function jouerAction()
     {
-
-        /**   $defausse = new Defausse();
-        $defausse->setIdDefausse(1);
-        $defausse->setIdCarte($carte->getIdCarte()); */
-
-       /** $repo = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('WEBLoveLetterBundle:carte')
-        ;*/
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
         $pioche = new Pioche();
-        $pioche->setId(10);
+        $pioche->setId(12);
 
         foreach ($listCarte as $carte) {
             $pioche->addCategory($carte);
@@ -54,21 +44,8 @@ class AdvertController extends Controller
 
         $em->persist($pioche);
         $em->flush();
-       /** $manche1 = new Manche();
-        $manche1->setIdDefausse($defausse->getIdDefausse());
-        $manche1->setIdManche(0);
-        $manche1->setIdPioche($pioche->getIdPioche());
-        $manche1->setIdPartie($partie->getIdPartie());
 
-        $manche2 = new Manche();
-        $manche2->setIdDefausse($defausse->getIdDefausse());
-        $manche2->setIdManche(0);
-        $manche2->setIdPioche($pioche->getIdPioche());
-        $manche2->setIdPartie($partie->getIdPartie());*/
-
-
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('nom'  => $pioche));
-        // return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig');
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche'  => $pioche));
     }
 
 

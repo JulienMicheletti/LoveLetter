@@ -22,10 +22,7 @@
 {% endblock %}
 
 {% block ocplatform_body %}
-    {% for category in nom.categories %}
-        <img src="{{ asset (category.image) }}">{% if not loop.last %}, {% endif %}
+    {% for carte in pioche.categories %}
+        <img src="{{ asset (carte.image) }}">{% if not loop.last %}, {% endif %}
     {% endfor %}
-
-
-
 {% endblock %}
