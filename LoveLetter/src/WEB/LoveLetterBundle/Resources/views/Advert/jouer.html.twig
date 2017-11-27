@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block ocplatform_body %}
-        <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}">
+    <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not carte == null %}
             <img src="{{ asset (carte.image) }}">
         {% endif %}

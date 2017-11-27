@@ -55,7 +55,6 @@ class pioche
     {
         return $this->cartes;
     }
-
     /**
      * Get id
      *

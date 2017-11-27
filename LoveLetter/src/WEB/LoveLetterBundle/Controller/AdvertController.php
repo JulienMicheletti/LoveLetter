@@ -55,8 +55,14 @@ class AdvertController extends Controller
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
 
         $nb = rand(1, 8);
+        while ($pioche->getCategorie($nb) == null){
+            $nb = rand(1, 8);
+        }
         $carte = $pioche->getCategorie($nb);
-        //$pioche->removeCategory($carte);
+        $pioche->removeCategory($carte);
+
+        $em->persist($pioche);
+        $em->flush();
 
         return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte'  => $carte));
     }
