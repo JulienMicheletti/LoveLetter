@@ -18,11 +18,13 @@
 
     <!--<![endif]-->
     <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/layouts/marketing.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/cartes.css') }}" type="text/css" />
+
 
 {% endblock %}
 
 {% block ocplatform_body %}
-    <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
+    <a href="{{ path("oc_platform_piocher") }}"><img class="pioche" src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not carte == null %}
             <img src="{{ asset (carte.image) }}">
         {% endif %}

@@ -1,16 +1,10 @@
-img
-{
-    width:10%;
-    height:10%;
-}
-img:hover
-{
-    width:15%;
-    height:15%;
+img.pioche{
+    height: 100px;
+    width: 20px;
+    margin: auto;
 }
 
-div
-{
-    position: fixed;
-    bottom: 100%;
+img.pioche:hover{
+    height: 200px;
+    margin: auto;
 }
