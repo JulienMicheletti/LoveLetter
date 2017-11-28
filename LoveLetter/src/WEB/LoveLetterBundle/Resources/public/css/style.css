@@ -1,0 +1,75 @@
+body
+{
+    background-color: #E4F1FE;
+}
+
+.current
+{
+    background-color: #2574A9;
+}
+
+#Jouer
+{
+    text-align: center;
+    width: 200px;
+    height: 60px;
+    background-color: blue;
+    color: white;
+    margin:auto;
+    text-decoration: none;
+    line-height: 60px;
+    font-family: Sensation;
+}
+
+nav ul
+{
+    text-align: left;
+    list-style: none;
+    background-color: #1F3A93;
+    font-family: Sensation;
+}
+
+nav li
+{
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+    line-height: 60px;
+}
+
+nav li a
+{
+    display: block;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+nav li :hover
+{
+    background-color: #19B5FE;
+    color: #FFFFFF;
+}
+
+#corps
+{
+    display: flex;
+    background-color: #19B5FE;
+    height: 700px;
+    margin-top:0px;
+}
+
+#fin
+{
+    display: flex;
+    justify-content: flex-end;
+    font-family: Sensation;
+    background-color: #1F3A93;
+    height: 50px;
+    margin-top: 20px;
+    padding: 0.25%;
+}
+
+@font-face{
+    font-family: 'Sensation';
+    src: url('Sansation.ttf');
+}

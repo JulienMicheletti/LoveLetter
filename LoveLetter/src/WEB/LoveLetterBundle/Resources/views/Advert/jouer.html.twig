@@ -4,27 +4,8 @@
 
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
-
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
-    <![endif]-->
-    <!--[if gt IE 8]><!-->
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
-    <!--<![endif]-->
-
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-
-    <!--<![endif]-->
-    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/layouts/marketing.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('bundles/webloveletter/css/cartes.css') }}" type="text/css" />
-
-
-{% endblock %}
-
 {% block ocplatform_body %}
-    <a href="{{ path("oc_platform_piocher") }}"><img class="pioche" src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
+    <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not carte == null %}
             <img src="{{ asset (carte.image) }}">
         {% endif %}

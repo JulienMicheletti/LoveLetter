@@ -36,8 +36,17 @@ class AdvertController extends Controller
         global $pioche;
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
-        $pioche = new Pioche();
-        $pioche->setId(1);
+        $anciennePioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
+        if ($anciennePioche != null){
+            $pioche = $anciennePioche;
+        } else {
+            $pioche = new Pioche();
+            $pioche->setId(1);
+        }
+
+        foreach ($listCarte as $carte) {
+            $pioche->removeCategory($carte);
+        }
 
         foreach ($listCarte as $carte) {
             $pioche->addCategory($carte);

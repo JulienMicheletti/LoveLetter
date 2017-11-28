@@ -3,13 +3,5 @@
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
 {% block ocplatform_body %}
-    <div class="splash-container">
-        <div class="splash">
-            <h1 class="splash-head">Love Letter</h1>
-            <p class="splash-subhead">
-                Imaginez un monde sans limites
-            </p>
-                <a href="{{ path("oc_platform_jouer") }}" class="pure-button pure-button-primary">Jouer</a>
-        </div>
-    </div>
+    <a id="Jouer" href="{{ path("oc_platform_jouer") }}">Jouer</a>
 {% endblock %}
