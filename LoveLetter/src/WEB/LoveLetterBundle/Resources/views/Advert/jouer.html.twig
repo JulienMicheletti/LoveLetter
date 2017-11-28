@@ -11,6 +11,9 @@
     <a class="element" href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
     <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
     <div class="element"></div>
+        {% if fin == true %}
+            la manche est finie !
+        {% endif %}
         {% if not carte == null %}
             <a class="element"><img src="{{ asset (carte.image) }}"></a>
         {% else %}

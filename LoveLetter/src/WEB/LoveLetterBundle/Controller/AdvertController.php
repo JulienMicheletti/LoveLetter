@@ -28,11 +28,11 @@ class AdvertController extends Controller
 
     public function jouerAction()
     {
-        global $pioche;
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
+        $finManche = false;
 
         foreach ($listCarte as $carte) {
             $pioche->removeCarte($carte);
@@ -53,14 +53,15 @@ class AdvertController extends Controller
         $em->persist($defausse);
         $em->flush();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'nb' => $nb, 'c' => $carte));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'fin' => $finManche));
     }
 
     public function piocherAction()
     {
+        global $finManche;
+        global $carte;
         $em = $this->getDoctrine()->getManager();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
-
         $nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {
@@ -69,13 +70,13 @@ class AdvertController extends Controller
             $carte = $pioche->getCategorie($nb);
             $pioche->removeCarte($carte);
         } else {
-            $carte = null;
+            $finManche = true;
         }
 
         $em->persist($pioche);
         $em->flush();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte, 'fin' => $finManche));
     }
 
     public function plateau(){
