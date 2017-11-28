@@ -9,10 +9,10 @@ use Symfony\Component\Validator\Tests\Constraints\CardSchemeValidatorTest;
 /**
  * pioche
  *
- * @ORM\Table(name="pioche")
+ * @ORM\Table(name="plateau")
  * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\piocheRepository")
  */
-class pioche
+class plateau
 {
     /**
      * @ORM\Id
@@ -25,15 +25,13 @@ class pioche
      */
     private $cartes;
 
-    // Comme la propriété $categories doit être un ArrayCollection,
-    // On doit la définir dans un constructeur :
     public function __construct()
     {
         $this->cartes = new ArrayCollection();
     }
 
     // Notez le singulier, on ajoute une seule catégorie à la fois
-    public function addCategory(Carte $carte)
+    public function addCarte(Carte $carte)
     {
         // Ici, on utilise l'ArrayCollection vraiment comme un tableau
         $this->cartes[] = $carte;
@@ -56,10 +54,10 @@ class pioche
     }
 
     // Notez le pluriel, on récupère une liste de catégories ici !
-    public function getCategorie($i){
+    public function getCarte($i){
         return $this->cartes[$i];
     }
-    public function getCategories()
+    public function getCartes()
     {
         return $this->cartes;
     }

@@ -8,11 +8,6 @@ namespace WEB\LoveLetterBundle\Controller;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use WEB\LoveLetterBundle\Entity\partie;
-use WEB\LoveLetterBundle\Entity\manche;
-use WEB\LoveLetterBundle\Entity\defausse;
-use WEB\LoveLetterBundle\Entity\utilisateur;
-use WEB\LoveLetterBundle\Entity\main;
 use WEB\LoveLetterBundle\Entity\pioche;
 use WEB\LoveLetterBundle\Entity\carte;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -36,26 +31,29 @@ class AdvertController extends Controller
         global $pioche;
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
-        $anciennePioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
-        if ($anciennePioche != null){
-            $pioche = $anciennePioche;
-        } else {
-            $pioche = new Pioche();
-            $pioche->setId(1);
-        }
+        $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
+        $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
 
         foreach ($listCarte as $carte) {
-            $pioche->removeCategory($carte);
-        }
-
-        foreach ($listCarte as $carte) {
+            $pioche->removeCarte($carte);
             $pioche->addCategory($carte);
+            $defausse->removeCarte($carte);
         }
-
         $em->persist($pioche);
+        $em->persist($defausse);
         $em->flush();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche'  => $pioche, 'carte' => null));
+        $nb = rand(1, 8);
+        while ($pioche->getCategorie($nb) == null) {
+            $nb = rand(1, 8);
+        }
+        $defausse->addCarte($pioche->getCategorie($nb));
+        $pioche->removeCarte($pioche->getCategorie($nb));
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null));
     }
 
     public function piocherAction()
@@ -63,34 +61,25 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
 
-        $nb = rand(1, 8);
-        while ($pioche->getCategorie($nb) == null){
-            $nb = rand(1, 8);
+        $nb = rand(0, 8);
+        if ($pioche->getNbElements() != 0) {
+            while ($pioche->getCategorie($nb) == null) {
+                $nb = rand(1, 8);
+            }
+            $carte = $pioche->getCategorie($nb);
+            $pioche->removeCarte($carte);
+        } else {
+            $carte = null;
         }
-        $carte = $pioche->getCategorie($nb);
-        $pioche->removeCategory($carte);
 
         $em->persist($pioche);
         $em->flush();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte'  => $carte));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte));
     }
 
+    public function plateau(){
 
-    public function menuAction($limit)
-    {
-        // On fixe en dur une liste ici, bien entendu par la suite
-        // on la récupérera depuis la BDD !
-        $listAdverts = array(
-            array('id' => 2, 'title' => 'Recherche développeur Symfony'),
-            array('id' => 5, 'title' => 'Mission de webmaster'),
-            array('id' => 9, 'title' => 'Offre de stage webdesigner')
-        );
-
-        return $this->render('WEBLoveLetterBundle:Advert:menu.html.twig', array(
-            // Tout l'intérêt est ici : le contrôleur passe
-            // les variables nécessaires au template !
-            'listAdverts' => $listAdverts
-        ));
     }
+
 }
