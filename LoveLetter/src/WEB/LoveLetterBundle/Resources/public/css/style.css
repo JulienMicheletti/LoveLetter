@@ -8,6 +8,15 @@ body
     background-color: #2574A9;
 }
 
+.element
+{
+    display: flex;
+    width: 30%;
+    height: 30%;
+    justify-content: center;
+    align-items: center;
+}
+
 #Jouer
 {
     text-align: center;
@@ -53,6 +62,8 @@ nav li :hover
 #corps
 {
     display: flex;
+    justify-content: center;
+    flex-wrap:wrap;
     background-color: #19B5FE;
     height: 700px;
     margin-top:0px;
