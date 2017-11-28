@@ -5,7 +5,11 @@
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
 {% block ocplatform_body %}
-    <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
+    <div class="element">
+        <a class="element"><img src="{{ asset (regle[0].image) }}"></a>
+        <a class="element"><img src="{{ asset (regle[1].image) }}"></a>
+        <a class="element"><img src="{{ asset (regle[2].image) }}"></a>
+    </div>
     <div class="element"></div>
     <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
     <div class="plateau">
@@ -14,12 +18,13 @@
             <a href="" ><img src="{{ asset (defausse.image) }}"></a>
         {% endif %}
     </div>
-    <div class="element"><a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
+    {% if not carte == null %}
+        <a class="element"><img src="{{ asset (carte.image) }}"></a>
+    {% else %}
+        <div class="element"></div>
+    {% endif %}
     <div class="element"></div>
-        {% if not carte == null %}
-            <a class="element"><img src="{{ asset (carte.image) }}"></a>
-        {% else %}
-            <div class="element"></div>
-        {% endif %}
+    <div class="element"></div>
+
 
 {% endblock %}

@@ -56,6 +56,67 @@ class AdvertController extends Controller
         return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef));
     }
 
+    public function jouer2Action()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
+        $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
+        $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
+
+        foreach ($listCarte as $carte) {
+            $pioche->removeCarte($carte);
+            $pioche->addCategory($carte);
+            $defausse->removeCarte($carte);
+        }
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+
+        //DEFAUSSE DE BASE
+        $nb = rand(1,8);
+        $carte = $pioche->getCategorie($nb);
+        $defausse->addCarte($carte);
+        $carteDef = $defausse->getCarte(1);
+        $pioche->removeCarte($carte);
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+
+        //2 JOUEURS : CARTE 1
+        while ($pioche->getCategorie($nb) == null) {
+            $nb = rand(1, 8);
+        }
+        $carte1 = $pioche->getCategorie($nb);
+        $defausse->addCarte($carte1);
+        $pioche->removeCarte($carte1);
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+        //2 JOUEURS : CARTE 2
+        while ($pioche->getCategorie($nb) == null) {
+            $nb = rand(1, 8);
+        }
+        $carte2 = $pioche->getCategorie($nb);
+        $defausse->addCarte($carte2);
+        $pioche->removeCarte($carte2);
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+        //2 JOUEURS : CARTE 2
+        while ($pioche->getCategorie($nb) == null) {
+            $nb = rand(1, 8);
+        }
+        $carte3 = $pioche->getCategorie($nb);
+        $defausse->addCarte($carte3);
+        $pioche->removeCarte($carte3);
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+
+        $array = array($carte1, $carte2, $carte3);
+        return $this->render('WEBLoveLetterBundle:Advert:jouer2.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef, 'regle' => $array));
+    }
+
     public function piocherAction()
     {
         global $finManche;

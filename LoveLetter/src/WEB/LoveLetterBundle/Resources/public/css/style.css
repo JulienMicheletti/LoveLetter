@@ -13,8 +13,18 @@ body
     display: flex;
     width: 30%;
     height: 30%;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+}
+
+.plateau
+{
+    display: flex;
+    width: 30%;
+    height: 30%;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid black;
 }
 
 #Jouer
