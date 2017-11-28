@@ -41,14 +41,19 @@ class AdvertController extends Controller
         }
         $em->persist($pioche);
         $em->persist($defausse);
+        $em->flush();
 
         $nb = rand(1,8);
 
-        $defausse->addCarte($pioche->getCategorie($nb));
-        $pioche->removeCarte($pioche->getCategorie($nb));
-      $em->flush();
+        $carte = $pioche->getCategorie($nb);
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'nb' => $nb));
+        $defausse->addCarte($carte);
+        $pioche->removeCarte($carte);
+        $em->persist($pioche);
+        $em->persist($defausse);
+        $em->flush();
+
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'nb' => $nb, 'c' => $carte));
     }
 
     public function piocherAction()
@@ -56,7 +61,7 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
 
-        $nb = rand(0, 8);
+        $nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {
                 $nb = rand(1, 8);

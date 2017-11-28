@@ -57,7 +57,13 @@ class pioche
 
     // Notez le pluriel, on récupère une liste de catégories ici !
     public function getCategorie($i){
-        return $this->cartes->get($i);
+        foreach ($this->cartes as $carte) {
+            if ($carte->getId() == $i){
+                return $carte;
+            }
+        }
+        return null;
+
     }
     public function getCategories()
     {
