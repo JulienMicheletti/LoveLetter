@@ -11,20 +11,15 @@
         <a class="element"><img src="{{ asset (regle[2].image) }}"></a>
     </div>
     <div class="element"></div>
-    <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
+    <div class="element"><a><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
     <div class="plateau">
-        <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
+       <a class="piocher"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not defausse == null %}
-            <a href="" ><img src="{{ asset (defausse.image) }}"></a>
+            <a><img src="{{ asset (defausse.image) }}"></a>
         {% endif %}
     </div>
-    {% if not carte == null %}
-        <a class="element"><img src="{{ asset (carte.image) }}"></a>
-    {% else %}
-        <div class="element"></div>
-    {% endif %}
+    <div class="main"></div>
     <div class="element"></div>
     <div class="element"></div>
-
 
 {% endblock %}

@@ -7,6 +7,7 @@ namespace WEB\LoveLetterBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WEB\LoveLetterBundle\Entity\pioche;
 use WEB\LoveLetterBundle\Entity\carte;
@@ -129,15 +130,18 @@ class AdvertController extends Controller
                 $nb = rand(1, 8);
             }
             $carte = $pioche->getCategorie($nb);
+            $img = $carte->getNom();
             $pioche->removeCarte($carte);
         } else {
-           $carte = null;
+           $img = null;
         }
 
         $em->persist($pioche);
         $em->flush();
+        $response = new JsonResponse();
 
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte, 'defausse' => null));
+        return $response->setData(array('carte' => $img, 'defausse' => null));
+        //return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte, 'defausse' => null));
     }
 
     public function plateau(){
