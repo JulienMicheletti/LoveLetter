@@ -22,6 +22,7 @@ class manche
     /**
      * @var string
      *
+     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\utilisateur")
      * @ORM\Column(name="gagnant", type="string", length=200, unique=true)
      */
     private $gagnant;
@@ -62,7 +63,7 @@ class manche
      *
      * @return manche
      */
-    public function setGagnant($gagnant)
+    public function setGagnant(Utilisateur $gagnant)
     {
         $this->gagnant = $gagnant;
 
