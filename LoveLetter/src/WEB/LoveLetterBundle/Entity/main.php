@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Tests\Constraints\CardSchemeValidatorTest;
 
 /**
- * pioche
+ * main
  *
- * @ORM\Table(name="defausse")
- * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\defausseRepository")
+ * @ORM\Table(name="main")
+ * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\mainRepository")
  */
-class defausse
+class main
 {
     /**
      * @ORM\Id
@@ -53,9 +53,11 @@ class defausse
         $this->cartes->removeElement($carte);
     }
 
+    // Notez le pluriel, on récupère une liste de catégories ici !
     public function getCarte($i){
-        return $this->cartes->get($i);
+        return $this->cartes[$i];
     }
+
     public function getCartes()
     {
         return $this->cartes;
@@ -75,12 +77,11 @@ class defausse
      *
      * @param integer $idCarte
      *
-     * @return defausse
+     * @return main
      */
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 }

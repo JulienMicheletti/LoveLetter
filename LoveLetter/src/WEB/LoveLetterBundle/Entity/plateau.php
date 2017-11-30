@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Tests\Constraints\CardSchemeValidatorTest;
  * pioche
  *
  * @ORM\Table(name="plateau")
- * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\piocheRepository")
+ * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\plateauRepository")
  */
 class plateau
 {
