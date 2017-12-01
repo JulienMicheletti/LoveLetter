@@ -24,7 +24,7 @@ class AdvertController extends Controller
             // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
             throw new NotFoundHttpException('Page "' . $page . '" inexistante.');
         }
-        return $this->render('WEBLoveLetterBundle:Advert:index.html.twig', array('listAdverts' => array()));
+        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array()));
     }
 
     public function jouerAction()
@@ -135,13 +135,11 @@ class AdvertController extends Controller
         } else {
            $img = null;
         }
-
         $em->persist($pioche);
         $em->flush();
         $response = new JsonResponse();
 
         return $response->setData(array('carte' => $img, 'defausse' => null));
-        //return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte, 'defausse' => null));
     }
 
     public function plateau(){

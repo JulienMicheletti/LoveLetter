@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityRepository;
 class utilisateur
 {
     /**
-     * @ORM\Column(name="pseudo", type="integer")
+     * @ORM\Column(name="pseudo", type="string", length=200)
      * @ORM\Id
      */
     protected $pseudo;
