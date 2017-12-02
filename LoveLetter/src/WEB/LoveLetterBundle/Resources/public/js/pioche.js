@@ -5,7 +5,7 @@ $("document").ready(function(){
             type: 'get',
             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/piocher',
             beforeSend: function () {
-                console.log("j'attend");
+                console.log("Pioche ...");
             },
             success: function (data) {
                 finalstring = "<a><img src=\"";

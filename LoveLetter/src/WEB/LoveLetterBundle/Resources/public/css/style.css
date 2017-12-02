@@ -3,6 +3,13 @@ body
     background-color: #E4F1FE;
 }
 
+.erreur
+{
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: red;
+}
+
 .LLetter
 {
     display: flex;
@@ -33,7 +40,7 @@ body
 
 .con_titre
 {
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 10px;
     background-color: white;
     font-family: Sensation;

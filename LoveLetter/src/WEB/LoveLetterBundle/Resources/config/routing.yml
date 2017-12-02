@@ -28,3 +28,10 @@ oc_platform_piocher:
         _controller: WEBLoveLetterBundle:Advert:piocher
     requirements:
         id: \d+
+
+oc_platform_login:
+    path:     /platform/advert/login/{user}/{mdp}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:login
+    requirements:
+        id: \d+

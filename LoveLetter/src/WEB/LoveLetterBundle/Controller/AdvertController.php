@@ -27,6 +27,23 @@ class AdvertController extends Controller
         return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array()));
     }
 
+    public function loginAction($user, $mdp)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
+            "pseudo" => $user,
+            "mot_de_passe" => $mdp,
+        ]);
+        $response = new JsonResponse();
+
+        if ($entities == null){
+            return $response->setData(array('check'=>0));
+        } else {
+            $usr = $entities->getPseudo();
+            return $response->setData(array('check'=>1, 'pseudo'=>$usr));
+        }
+    }
+
     public function jouerAction()
     {
         $em = $this->getDoctrine()->getManager();
