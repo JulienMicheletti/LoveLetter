@@ -13,7 +13,7 @@ $("document").ready(function () {
                 if (data.check == 0){
                     $(".return").append("<span class='erreur'>Pseudo ou Mot de passe incorrect</span>");
                 } else {
-                    window.location.href = "http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/jouer2";
+                    window.location.href = "http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/menu/1";
                 }
             }
         });
