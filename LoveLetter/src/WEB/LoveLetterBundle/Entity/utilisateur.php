@@ -1,92 +1,1 @@
-<?php
-
-namespace WEB\LoveLetterBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityRepository;
-
-/**
- * utilisateur
- *
- * @ORM\Table(name="utilisateur")
- * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\utilisateurRepository")
- */
-class utilisateur
-{
-    /**
-     * @ORM\Column(name="pseudo", type="integer")
-     * @ORM\Id
-     */
-    protected $pseudo;
-
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mod_de_passe", type="string", length=200)
-     */
-    private $mot_de_passe;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="nb_win", type="integer")
-     */
-    private $nbWin;
-
-    /**
-     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\pioche")
-     */
-    private $pioche;
-
-    /**
-     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\main")
-     */
-    private $main;
-
-    /**
-     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\defausse")
-     */
-    private $defausse;
-
-    /**
-     * Get pseudo
-     *
-     * @return int
-     */
-    public function getPseudo()
-    {
-        return $this->pseudo;
-    }
-
-    /**
-     * Get nbWin
-     *
-     * @return int
-     */
-    public function getNbWin()
-    {
-        return $this->nbWin;
-    }
-
-    public function setNbWin($nbWin)
-    {
-        $this->nbWin = $nbWin;
-        return $this;
-    }
-
-    public function getPioche()
-    {
-        return $this->pioche;
-    }
-
-    public function getMain()
-    {
-        return $this->main;
-    }
-
-    public function getDefausse()
-    {
-        return $this->defausse;
-    }
-}
+<?phpnamespace WEB\LoveLetterBundle\Entity;use Doctrine\ORM\Mapping as ORM;use Doctrine\ORM\EntityRepository;/** * utilisateur * * @ORM\Table(name="utilisateur") * @ORM\Entity(repositoryClass="WEB\LoveLetterBundle\Repository\utilisateurRepository") */class utilisateur{    /**     * @ORM\Column(name="pseudo", type="string", length=200)     * @ORM\Id     */    protected $pseudo;    /**     * @var string     *     * @ORM\Column(name="mod_de_passe", type="string", length=200)     */    private $mot_de_passe;    /**     * @var integer     *     * @ORM\Column(name="nb_win", type="integer")     */    private $nbWin;    /**     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\pioche")     */    private $pioche;    /**     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\main")     */    private $main;    /**     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\defausse")     */    private $defausse;    /**     * Get pseudo     *     * @return int     */    public function getPseudo()    {        return $this->pseudo;    }    /**     * Get nbWin     *     * @return int     */    public function getNbWin()    {        return $this->nbWin;    }    public function setNbWin($nbWin)    {        $this->nbWin = $nbWin;        return $this;    }    public function getPioche()    {        return $this->pioche;    }    public function getMain()    {        return $this->main;    }    public function getDefausse()    {        return $this->defausse;    }}
