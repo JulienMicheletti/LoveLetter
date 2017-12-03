@@ -33,6 +33,38 @@ class manche
     private $defausse;
 
     /**
+     * @ORM\ManyToMany(targetEntity="WEB\LoveLetterBundle\Entity\utilisateur", cascade={"persist"})
+     */
+    private $utilisateur;
+
+    // Comme la propriété $categories doit être un ArrayCollection,
+    // On doit la définir dans un constructeur :
+    public function __construct()
+    {
+        $this->cartes = new ArrayCollection();
+    }
+
+    // Notez le singulier, on ajoute une seule catégorie à la fois
+    public function addUtilisateur(Utilisateur $user)
+    {
+        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+        $this->utilisateur[] = $user;
+
+        return $this;
+    }
+
+    // Notez le pluriel, on récupère une liste de catégories ici !
+    public function getUtilisateur($i)
+    {
+        foreach ($this->utilisateur as $user) {
+            if ($user->getId() == $i) {
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Set id
      *
      * @param integer $id

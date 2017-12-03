@@ -14,10 +14,10 @@ use Doctrine\ORM\EntityRepository;
 class utilisateur
 {
     /**
-     * @ORM\Column(name="pseudo", type="string", length=200)
+     * @ORM\Column(name="id", type="string", length=200)
      * @ORM\Id
      */
-    protected $pseudo;
+    protected $id;
 
 
     /**
@@ -56,7 +56,7 @@ class utilisateur
      */
     public function getPseudo()
     {
-        return $this->pseudo;
+        return $this->id;
     }
 
     /**
