@@ -32,7 +32,7 @@ class AdvertController extends Controller
         }
         return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array()));
     }
-
+/*
     public function loginAction($user, $mdp)
     {
         $em = $this->getDoctrine()->getManager();
@@ -49,6 +49,19 @@ class AdvertController extends Controller
             $_SESSION['username'] = $usr;
             return $response->setData(array('check'=>1, 'pseudo'=>$usr));
         }
+    }
+*/
+
+    public function loginAction(Request $request)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')){
+            return $this->redirectToRoute('oc_platform_menu', array("id"=>1));
+        }
+        $authenticationUtils = $this->get('security.authentication_utils');
+        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array(
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error'         => $authenticationUtils->getLastAuthenticationError(),
+        ));
     }
 
     public function jouerAction($id)
