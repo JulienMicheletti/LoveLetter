@@ -7,14 +7,14 @@ oc_platform_home:
         page: \d*
 
 oc_platform_jouer:
-    path:      /platform/advert/jouer
+    path:      /platform/advert/jouer/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:jouer
     requirements:
         id: \d+
 
 oc_platform_jouer2:
-    path:      /platform/advert/jouer2
+    path:      /platform/advert/jouer2/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:jouer2
     requirements:
@@ -24,6 +24,20 @@ oc_platform_piocher:
     path:      /platform/advert/piocher
     defaults:
         _controller: WEBLoveLetterBundle:Advert:piocher
+    requirements:
+        id: \d+
+
+oc_platform_gestion:
+    path:      /platform/advert/gestion/{nb_joueurs}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:gestion
+    requirements:
+        id: \d+
+
+oc_platform_adversaire2:
+    path:      /platform/advert/adversaire2
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:adversaire2
     requirements:
         id: \d+
 

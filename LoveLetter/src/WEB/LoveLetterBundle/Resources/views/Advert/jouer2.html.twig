@@ -5,6 +5,7 @@
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
 {% block ocplatform_body %}
+    <script src="{{ asset('bundles/webloveletter/js/adversaire.js') }}"></script>
     <div class="element"></div>
     <div class="element">
         <a class="element"><img src="{{ asset (regle[0].image) }}"></a>
@@ -12,7 +13,7 @@
         <a class="element"><img src="{{ asset (regle[2].image) }}"></a>
     </div>
     <div class="element"></div>
-    <div class="element"><a><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
+    <div class="adversaire"></div>
     <div class="plateau">
        <a class="piocher"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not defausse == null %}

@@ -8,12 +8,14 @@ $("document").ready(function(){
                 console.log("Pioche ...");
             },
             success: function (data) {
-                finalstring = "<a><img src=\"";
-                finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                finalstring += data.carte+".png";
-                finalstring += "\"></a>";
-                $(".main").append(finalstring);
-                console.log(finalstring);
+                if (data.check == 1) {
+                    finalstring = "<a><img src=\"";
+                    finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
+                    finalstring += data.carte + ".png";
+                    finalstring += "\"></a>";
+                    $(".main").append(finalstring);
+                    console.log(finalstring);
+                }
             }
         });
     });

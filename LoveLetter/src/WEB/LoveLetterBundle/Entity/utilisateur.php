@@ -75,6 +75,10 @@ class utilisateur
         return $this;
     }
 
+    public function setMain($main){
+        $this->main = $main;
+    }
+
     public function getPioche()
     {
         return $this->pioche;
@@ -88,5 +92,9 @@ class utilisateur
     public function getDefausse()
     {
         return $this->defausse;
+    }
+
+    public function __toString(){
+        return $this->id;
     }
 }
