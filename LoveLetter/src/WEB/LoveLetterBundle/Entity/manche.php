@@ -33,6 +33,11 @@ class manche
     private $defausse;
 
     /**
+     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\pioche")
+     */
+    private $pioche;
+
+    /**
      * @ORM\ManyToMany(targetEntity="WEB\LoveLetterBundle\Entity\utilisateur", cascade={"persist"})
      */
     private $utilisateur;
@@ -111,6 +116,7 @@ class manche
     {
         return $this->gagnant;
     }
+
     public function setDefausse(Defaussse $defausse)
     {
         $this->defausse = $defausse;
@@ -121,6 +127,18 @@ class manche
     public function getDefausse()
     {
         return $this->defausse;
+    }
+
+    public function setPioche(Pioche $pioche)
+    {
+        $this->pioche = $pioche;
+
+        return $this;
+    }
+
+    public function getPioche()
+    {
+        return $this->pioche;
     }
 
 }
