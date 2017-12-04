@@ -1,14 +1,3 @@
 web_loveletter:
     resource: "@WEBLoveLetterBundle/Resources/config/routing.yml"
     prefix:   /
-
-login:
-    path: /login
-    defaults:
-       _controller: WEBLoveLetterBundle:Advert:login
-
-login_check:
-    path: /login_check
-
-logout:
-    path: /logout

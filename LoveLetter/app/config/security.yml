@@ -19,13 +19,9 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-    main_login:
-      pattern: ^/login$
-      anonymous: true
-      provider: main
     main:
       pattern: ^/
-      anonymous: false
+      anonymous: true
       provider: main
       form_login:
         login_path: login

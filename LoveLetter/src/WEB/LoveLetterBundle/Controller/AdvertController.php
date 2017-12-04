@@ -30,7 +30,7 @@ class AdvertController extends Controller
             // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
             throw new NotFoundHttpException('Page "' . $page . '" inexistante.');
         }
-        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array()));
+        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array(), 'error' => null, 'last_username' => null));
     }
 /*
     public function loginAction($user, $mdp)

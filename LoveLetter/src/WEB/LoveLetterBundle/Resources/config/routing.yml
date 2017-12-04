@@ -1,3 +1,8 @@
+oc_platform_test:
+   path: /
+   defaults:
+      _controller: WEBLoveLetterBundle:Advert:login
+
 oc_platform_home:
     path:      /platform/{page}
     defaults:
@@ -41,16 +46,20 @@ oc_platform_adversaire2:
     requirements:
         id: \d+
 
-oc_platform_login:
-    path:     /platform/advert/login/{user}/{mdp}
-    defaults:
-        _controller: WEBLoveLetterBundle:Advert:login
-    requirements:
-        id: \d+
-
 oc_platform_menu:
     path:      /platform/advert/menu/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:menu
     requirements:
         id: \d+
+
+login:
+    path: /platform/login
+    defaults:
+       _controller: WEBLoveLetterBundle:Advert:login
+
+login_check:
+    path: /platform/login_check
+
+logout:
+    path: /platform/logout
