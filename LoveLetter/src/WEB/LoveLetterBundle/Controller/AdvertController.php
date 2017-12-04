@@ -33,7 +33,7 @@ class AdvertController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
-            "pseudo" => $user,
+            "id" => $user,
             "mot_de_passe" => $mdp,
         ]);
         $response = new JsonResponse();
@@ -159,6 +159,19 @@ class AdvertController extends Controller
         $response = new JsonResponse();
 
         return $response->setData(array('carte' => $img, 'defausse' => null));
+    }
+
+    public function poserAction(Carte $carte)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
+
+        $plateau->addCarte($carte);
+        $em->persist($plateau);
+        $em->flush();
+        $response = new JsonResponse();
+
+        return $response->setData(array('carte' => $carte, 'defausse' => null, 'plateau' => $plateau));
     }
 
     public function menuAction(Request $request)

@@ -27,6 +27,13 @@ oc_platform_piocher:
     requirements:
         id: \d+
 
+oc_platform_poser:
+    path:      /platform/advert/poser
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:poser
+    requirements:
+        id: \d+
+
 oc_platform_login:
     path:     /platform/advert/login/{user}/{mdp}
     defaults:
