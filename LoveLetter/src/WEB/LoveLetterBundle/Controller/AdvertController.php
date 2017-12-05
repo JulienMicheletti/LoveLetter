@@ -141,6 +141,7 @@ class AdvertController extends Controller
     {
         global $finManche;
         global $carte;
+        global $id;
         $em = $this->getDoctrine()->getManager();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $nb = rand(1, 8);
@@ -150,6 +151,7 @@ class AdvertController extends Controller
             }
             $carte = $pioche->getCategorie($nb);
             $img = $carte->getNom();
+            $id = $carte->getId();
             $pioche->removeCarte($carte);
         } else {
             $img = null;
@@ -158,10 +160,10 @@ class AdvertController extends Controller
         $em->flush();
         $response = new JsonResponse();
 
-        return $response->setData(array('carte' => $img, 'defausse' => null));
+        return $response->setData(array('carte' => $img, 'defausse' => null, 'id' => $id));
     }
 
-    public function poserAction(Carte $carte)
+    public function poserAction($carte)
     {
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
@@ -171,7 +173,7 @@ class AdvertController extends Controller
         $em->flush();
         $response = new JsonResponse();
 
-        return $response->setData(array('carte' => $carte, 'defausse' => null, 'plateau' => $plateau));
+        return $response->setData(array('carte' => $carte));
     }
 
     public function menuAction(Request $request)
