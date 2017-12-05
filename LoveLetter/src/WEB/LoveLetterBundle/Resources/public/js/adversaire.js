@@ -7,7 +7,6 @@ $("document").ready(function(){
                 var string = "";
                 console.log(data.tab.taille);
                 if (data.tab.taille == 1) {
-                    console.log("test");
                     string = "<a><img src=\"";
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
                     string += data.tab.c1 + ".png";
@@ -21,7 +20,16 @@ $("document").ready(function(){
                     string += "\"></a>";
                     $(".adversaire").html(string);
                 }
-               console.log(string);
+                var i = data.tab;
+                var plateau = "";
+                while (i > 0){
+                    plateau = "<a><img src=\"";
+                    plateau += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
+                    plateau += data.plateau[i] + ".png";
+                    plateau += "\"></a>";
+                    $(".plateau").append(plateau);
+                    i++;
+                }
             }
         });
     }

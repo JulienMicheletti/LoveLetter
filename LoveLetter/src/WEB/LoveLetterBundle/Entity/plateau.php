@@ -40,11 +40,7 @@ class plateau
     }
 
     public function getNbElements(){
-        $i = 0;
-        foreach ($this->cartes as $carte) {
-            $i++;
-        }
-        return $i;
+        return $this->cartes->count();
     }
 
     public function removeCarte(Carte $carte)
@@ -55,8 +51,9 @@ class plateau
 
     // Notez le pluriel, on récupère une liste de catégories ici !
     public function getCarte($i){
-        return $this->cartes[$i];
+        return $this->cartes->get($i);
     }
+
     public function getCartes()
     {
         return $this->cartes;

@@ -1,10 +1,10 @@
 $("document").ready(function(){
     $(".piocher").click(function(){
         var finalstring;
-        var carteC = "prine";
+        var carteC = "prince";
         $.ajax({
             type: 'get',
-            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/piocher',
+            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/piocher',
             beforeSend: function () {
                 console.log("Pioche ...");
             },
@@ -18,7 +18,7 @@ $("document").ready(function(){
                 var newstring = $(finalstring).on('click', function(){
                     $.ajax({
                         type: 'get',
-                        url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/poser/'+idCarte+'/'+carteC,
+                        url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/'+idCarte+'/'+carteC,
                         beforeSend: function(){
                             if (idCarte == 1){
                                 carteC = prompt("Devinez la carte que le joueur possède", "");
