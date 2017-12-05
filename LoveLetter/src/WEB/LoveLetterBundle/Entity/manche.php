@@ -86,7 +86,7 @@ class manche
     public function getOther($id)
     {
         foreach ($this->utilisateur as $user) {
-            if ($user->getPseudo() != $id) {
+            if ($user->getUsername() != $id) {
                 return $user;
             }
         }

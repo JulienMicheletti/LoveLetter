@@ -1,10 +1,5 @@
-oc_platform_test:
-   path: /
-   defaults:
-      _controller: WEBLoveLetterBundle:Advert:login
-
 oc_platform_home:
-    path:      /platform/{page}
+    path:      /
     defaults:
         _controller: WEBLoveLetterBundle:Advert:index
         page:        1
@@ -12,63 +7,50 @@ oc_platform_home:
         page: \d*
 
 oc_platform_jouer:
-    path:      /platform/advert/jouer/{id}
+    path:      /advert/jouer/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:jouer
     requirements:
         id: \d+
 
 oc_platform_jouer2:
-    path:      /platform/advert/jouer2/{id}
+    path:      /advert/jouer2/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:jouer2
     requirements:
         id: \d+
 
 oc_platform_piocher:
-    path:      /platform/advert/piocher
+    path:      /advert/piocher
     defaults:
         _controller: WEBLoveLetterBundle:Advert:piocher
     requirements:
         id: \d+
 
 oc_platform_poser:
-    path:      /platform/advert/poser/{carte}
+    path:      /advert/poser/{carte}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:poser
     requirements:
         id: \d+
 
-oc_platform_login:
-    path:     /platform/advert/login/{user}/{mdp}
 oc_platform_gestion:
-    path:      /platform/advert/gestion/{nb_joueurs}
+    path:      /advert/gestion/{nb_joueurs}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:gestion
     requirements:
         id: \d+
 
 oc_platform_adversaire2:
-    path:      /platform/advert/adversaire2
+    path:      /advert/adversaire2
     defaults:
         _controller: WEBLoveLetterBundle:Advert:adversaire2
     requirements:
         id: \d+
 
 oc_platform_menu:
-    path:      /platform/advert/menu/{id}
+    path:      /advert/menu/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:menu
     requirements:
         id: \d+
-
-login:
-    path: /platform/login
-    defaults:
-       _controller: WEBLoveLetterBundle:Advert:login
-
-login_check:
-    path: /platform/login_check
-
-logout:
-    path: /platform/logout

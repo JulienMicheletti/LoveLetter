@@ -25,37 +25,9 @@ class AdvertController extends Controller
             // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
             throw new NotFoundHttpException('Page "' . $page . '" inexistante.');
         }
-        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array(), 'error' => null, 'last_username' => null));
+        return $this->redirectToRoute('oc_platform_menu', array('id' => 1));
     }
-    /*
-        public function loginAction($user, $mdp)
-        {
-            $em = $this->getDoctrine()->getManager();
-            $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
-                "id" => $user,
-                "mot_de_passe" => $mdp,
-            ]);
-            $response = new JsonResponse();
-            if ($entities == null){
-                return $response->setData(array('check'=>0));
-            } else {
-                $usr = $entities->getPseudo();
-                $_SESSION['username'] = $usr;
-                return $response->setData(array('check'=>1, 'pseudo'=>$usr));
-            }
-        }
-    */
-    public function loginAction(Request $request)
-    {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')){
-            return $this->redirectToRoute('oc_platform_menu', array("id"=>1));
-        }
-        $authenticationUtils = $this->get('security.authentication_utils');
-        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array(
-            'last_username' => $authenticationUtils->getLastUsername(),
-            'error'         => $authenticationUtils->getLastAuthenticationError(),
-        ));
-    }
+
     public function jouerAction($id)
     {
         /*$em = $this->getDoctrine()->getManager();
@@ -116,7 +88,9 @@ class AdvertController extends Controller
         $manche = $partie->getManche(10);
         $pioche = $manche->getPioche();
         $img = null;
-      //  if ($manche->getnbUtilisateur() == 2) {
+        $id = null;
+        $check = 0;
+    //    if ($manche->getnbUtilisateur() == 2) {
             $check = 1;
             $nb = rand(1, 8);
             if ($pioche->getNbElements() != 0) {
@@ -129,17 +103,15 @@ class AdvertController extends Controller
             } else {
                 $img = null;
             }
-            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
+            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
             $main = $utilsateur->getMain();
             $main->addCarte($carte);
             $id = $carte->getId();
             $em->persist($main);
             $em->persist($pioche);
             $em->flush();
-            $response = new JsonResponse();
-      //  } else {
-           // $check = 0;
-          //  $response = new JsonResponse();
+      //  }
+        $response = new JsonResponse();
         return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id));
     }
     public function poserAction($carte)
@@ -167,10 +139,11 @@ class AdvertController extends Controller
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
-        $main = $em->getRepository('WEBLoveLetterBundle:main')->find($_SESSION['username']);
+        $usr = $this->getUser()->getUsername();
+        $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         if ($main == null){
             $main = new main();
-            $main->setId($_SESSION['username']);
+            $main->setId($this->getUser());
             $em->persist($main);
             $em->flush();
         }
@@ -179,10 +152,9 @@ class AdvertController extends Controller
         }
         $em->persist($main);
         $em->flush();
-        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $utilisateur->setMain($main);
-        $manche->removeUtilisateur($utilisateur);
-        $em->persist($main);
+        $em->persist($utilisateur);
         $em->flush();
         //Mettres les cartes dans la pioche
         foreach ($listCarte as $carte) {
@@ -225,27 +197,26 @@ class AdvertController extends Controller
     public function adversaire2Action(){
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $manche = $partie->getManche(10);
         $reponse = new JsonResponse();
         if ($manche->getnbUtilisateur() == 2) {
-            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($_SESSION['username']);
             $enemy = $manche->getOther($utilisateur);
             $main = $enemy->getMain();
             $array = array();
             $taille = $main->getNbCartes();
-            $array = array("taille"=>1, "c1" => $_SESSION['username'], "c2"=>null);
-            /*if ($taille == 0) {
+            if ($taille == 0) {
                 $array = array("taille" => 0, "c1" => null, "c2" => null);
             } elseif ($taille == 1) {
                 $carte1 = $main->getCarte(0);
-                $array = array("taille" => 1, "c1" => $carte1, "c2" => null);
+                $array = array("taille" => 1, "c1" => $carte1->getNom(), "c2" => null);
             } elseif ($taille == 2) {
                 $carte1 = $main->getCarte(0);
                 $carte2 = $main->getCarte(1);
-                $array = array("taille" => 2, "c1" => $carte1, "c2" => $carte2);
-            }*/
+                $array = array("taille" => 2, "c1" => $carte1->getNom(), "c2" => $carte2);
+            }
         } else {
-            $array = array("taille" => 0, "c1" => $_SESSION['username'], "c2" => null);
+            $array = array("taille" => 0, "c1" => null, "c2" => null);
         }
         return $reponse->setData(array('tab' => $array));
     }
@@ -271,7 +242,7 @@ class AdvertController extends Controller
             }
         }
         return $this->render('WEBLoveLetterBundle:Advert:menu.html.twig', array(
-            'form' => $form->createView(), 'pseudo' => $_SESSION['username']
+            'form' => $form->createView(), 'pseudo' => $this->getUser()
         ));
     }
 }

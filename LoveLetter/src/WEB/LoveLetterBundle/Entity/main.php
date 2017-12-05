@@ -51,12 +51,7 @@ class main
 
     // Notez le pluriel, on récupère une liste de catégories ici !
     public function getCarte($i){
-        foreach ($this->cartes as $carte) {
-        if ($carte->getId() == $i){
-            return $carte;
-        }
-    }
-    return null;
+        return $this->cartes->get($i);
     }
 
     public function getCartes()

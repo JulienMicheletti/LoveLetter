@@ -3,7 +3,7 @@
 security:
   encoders:
     Symfony\Component\Security\Core\User\User: plaintext
-    WEB\LoveLetterBundle\Entity\utilisateur: plaintext
+    WEB\LoveLetterBundle\Entity\utilisateur: sha512
 
   role_hierarchy:
     ROLE_ADMIN:       ROLE_USER
@@ -11,9 +11,7 @@ security:
 
   providers:
     main:
-      entity:
-        class: WEB\LoveLetterBundle\Entity\utilisateur
-        property: username
+      id: fos_user.user_provider.username
 
   firewalls:
     dev:
@@ -24,11 +22,12 @@ security:
       anonymous: true
       provider: main
       form_login:
-        login_path: login
-        check_path: login_check
+        login_path: fos_user_security_login
+        check_path: fos_user_security_check
       logout:
-        path:       logout
-        target:     login
-
+        path:       fos_user_security_logout
+        target:     fos_user_security_login
+      remember_me:
+        secret: %secret%
   access_control:
     #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
