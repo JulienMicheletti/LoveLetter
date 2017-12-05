@@ -1,10 +1,6 @@
 <?php
-
 // src/OC/PlatformBundle/Controller/AdvertController.php
-
 namespace WEB\LoveLetterBundle\Controller;
-
-
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 class AdvertController extends Controller
 {
     public function indexAction($page)
@@ -32,26 +27,24 @@ class AdvertController extends Controller
         }
         return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array(), 'error' => null, 'last_username' => null));
     }
-/*
-    public function loginAction($user, $mdp)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
-            "id" => $user,
-            "mot_de_passe" => $mdp,
-        ]);
-        $response = new JsonResponse();
-
-        if ($entities == null){
-            return $response->setData(array('check'=>0));
-        } else {
-            $usr = $entities->getPseudo();
-            $_SESSION['username'] = $usr;
-            return $response->setData(array('check'=>1, 'pseudo'=>$usr));
+    /*
+        public function loginAction($user, $mdp)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
+                "id" => $user,
+                "mot_de_passe" => $mdp,
+            ]);
+            $response = new JsonResponse();
+            if ($entities == null){
+                return $response->setData(array('check'=>0));
+            } else {
+                $usr = $entities->getPseudo();
+                $_SESSION['username'] = $usr;
+                return $response->setData(array('check'=>1, 'pseudo'=>$usr));
+            }
         }
-    }
-*/
-
+    */
     public function loginAction(Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')){
@@ -63,7 +56,6 @@ class AdvertController extends Controller
             'error'         => $authenticationUtils->getLastAuthenticationError(),
         ));
     }
-
     public function jouerAction($id)
     {
         /*$em = $this->getDoctrine()->getManager();
@@ -73,7 +65,6 @@ class AdvertController extends Controller
 */
         return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef));
     }
-
     public function jouer2Action($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -82,7 +73,6 @@ class AdvertController extends Controller
         $pioche = $manche->getPioche();
         $defausse = $manche->getDefausse();
         $cartedef = $defausse->getCarte(0);
-
         //2 JOUEURS : CARTE 1
         $nb = rand(1, 8);
         while ($pioche->getCategorie($nb) == null) {
@@ -115,11 +105,8 @@ class AdvertController extends Controller
         $em->persist($pioche);
         $em->persist($defausse);
         $em->flush();
-
         return $this->render('WEBLoveLetterBundle:Advert:jouer2.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $cartedef, 'regle' => $array));
-
     }
-
     public function piocherAction()
     {
         global $finManche;
@@ -129,7 +116,7 @@ class AdvertController extends Controller
         $manche = $partie->getManche(10);
         $pioche = $manche->getPioche();
         $img = null;
-        if ($manche->getnbUtilisateur() == 2) {
+      //  if ($manche->getnbUtilisateur() == 2) {
             $check = 1;
             $nb = rand(1, 8);
             if ($pioche->getNbElements() != 0) {
@@ -142,34 +129,40 @@ class AdvertController extends Controller
             } else {
                 $img = null;
             }
-            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($_SESSION['username']);
+            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
             $main = $utilsateur->getMain();
             $main->addCarte($carte);
+            $id = $carte->getId();
             $em->persist($main);
             $em->persist($pioche);
             $em->flush();
             $response = new JsonResponse();
-        } else {
-            $check = 0;
-            $response = new JsonResponse();
-        }
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null));
+      //  } else {
+           // $check = 0;
+          //  $response = new JsonResponse();
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id));
     }
-
-        return $response->setData(array('carte' => $img, 'defausse' => null, 'id' => $id));
-    }
-
     public function poserAction($carte)
     {
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
+        $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
+       // $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
+        $main = $utilsateur->getMain();
 
-        $plateau->addCarte($carte);
+       /** foreach ($listCarte as $carte) {
+            $plateau->removeCarte($carte);
+        }**/
+
+        $card = $main->getCarte($carte);
+        $plateau->addCarte($card);
+        $main->removeCarte($card);
+        $nomCarte = $card->getNom();
         $em->persist($plateau);
         $em->flush();
         $response = new JsonResponse();
-
-        return $response->setData(array('carte' => $carte));
+        return $response->setData(array('card' => $nomCarte));
+    }
     public function gestionAction($nb_joueurs)
     {
         $em = $this->getDoctrine()->getManager();
@@ -177,6 +170,7 @@ class AdvertController extends Controller
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($_SESSION['username']);
         if ($main == null){
@@ -190,8 +184,9 @@ class AdvertController extends Controller
         }
         $em->persist($main);
         $em->flush();
-        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($_SESSION['username']);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
         $utilisateur->setMain($main);
+        $manche->removeUtilisateur($utilisateur);
         $em->persist($main);
         $em->flush();
         //Mettres les cartes dans la pioche
@@ -203,6 +198,12 @@ class AdvertController extends Controller
         $em->persist($pioche);
         $em->persist($defausse);
         $em->flush();
+        //Vider le plateau
+        foreach($listCarte as $carte){
+            $plateau->removeCarte($carte);
+        }
+        $em->persist($plateau);
+        $em->flush();
         //Enlever la première carte du dessus
         $nb = rand(1, 8);
         $carte = $pioche->getCategorie($nb);
@@ -211,25 +212,21 @@ class AdvertController extends Controller
         $em->persist($pioche);
         $em->persist($defausse);
         $em->flush();
-
         $manche->resetDefausse();
         $manche->resetPioche();
         $em->persist($manche);
         $em->flush();
-
         $manche->addUtilisateur($utilisateur);
         $manche->setDefausse($defausse);
         $manche->setPioche($pioche);
         $em->persist($manche);
         $em->flush();
-
         if ($nb_joueurs == 2){
             return $this->redirectToRoute('oc_platform_jouer2', array('id' => $partie->getId()));
         } else {
             return $this->redirectToRoute('oc_platform_jouer', array('id' => $partie->getId()));
         }
     }
-
     public function adversaire2Action(){
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
@@ -256,14 +253,11 @@ class AdvertController extends Controller
             $array = array("taille" => 0, "c1" => $_SESSION['username'], "c2" => null);
         }
         return $reponse->setData(array('tab' => $array));
-
     }
-
     public function menuAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
-
         $form = $this->get('form.factory')->createNamedBuilder('menu-form', FormType::class, $partie)
             ->add('NbJoueurs', ChoiceType::class, array(
                 'choices'  => array(
@@ -273,14 +267,11 @@ class AdvertController extends Controller
             ->add('Valider', SubmitType::class)
             ->getForm();
         ;
-
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-
             if ($form->isValid()) {
                 $em->persist($partie);
                 $em->flush();
-
                 return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => $partie->getnbJoueurs()));
             }
         }
@@ -288,5 +279,4 @@ class AdvertController extends Controller
             'form' => $form->createView(), 'pseudo' => $_SESSION['username']
         ));
     }
-
 }

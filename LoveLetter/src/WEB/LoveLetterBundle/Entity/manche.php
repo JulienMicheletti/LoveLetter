@@ -69,6 +69,12 @@ class manche
         return null;
     }
 
+    public function removeUtilisateur(Utilisateur $user)
+    {
+        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+        $this->utilisateur->removeElement($user);
+    }
+
     public function getnbUtilisateur(){
         return $this->utilisateur->count();
     }

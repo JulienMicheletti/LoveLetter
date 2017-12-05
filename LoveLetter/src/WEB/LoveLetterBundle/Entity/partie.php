@@ -164,7 +164,7 @@ class partie
         return $i;
     }
 
-    public function removeCarte(Manche $manche)
+    public function removeManche(Manche $manche)
     {
         // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
         $this->manches->removeElement($manche);
