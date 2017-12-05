@@ -39,12 +39,8 @@ class main
         return $this;
     }
 
-    public function getNbElements(){
-        $i = 0;
-        foreach ($this->cartes as $carte) {
-            $i++;
-        }
-        return $i;
+    public function getNbCartes(){
+        return $this->cartes->count();
     }
 
     public function removeCarte(Carte $carte)
@@ -75,7 +71,7 @@ class main
     /**
      * Set idCarte
      *
-     * @param integer $idCarte
+     * @param integer $id
      *
      * @return main
      */

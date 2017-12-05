@@ -46,7 +46,7 @@ class manche
     // On doit la définir dans un constructeur :
     public function __construct()
     {
-        $this->cartes = new ArrayCollection();
+       $this->utilisateur = new ArrayCollection();
     }
 
     // Notez le singulier, on ajoute une seule catégorie à la fois
@@ -63,6 +63,24 @@ class manche
     {
         foreach ($this->utilisateur as $user) {
             if ($user->getId() == $i) {
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    public function getnbUtilisateur(){
+        return $this->utilisateur->count();
+    }
+
+    public function getUtilisateurs(){
+        return $this->utilisateur;
+    }
+
+    public function getOther($id)
+    {
+        foreach ($this->utilisateur as $user) {
+            if ($user->getPseudo() != $id) {
                 return $user;
             }
         }
@@ -117,7 +135,7 @@ class manche
         return $this->gagnant;
     }
 
-    public function setDefausse(Defaussse $defausse)
+    public function setDefausse(defausse $defausse)
     {
         $this->defausse = $defausse;
 
@@ -141,4 +159,13 @@ class manche
         return $this->pioche;
     }
 
+    public function resetDefausse()
+    {
+        $this->defausse = null;
+    }
+
+    public function resetPioche()
+    {
+        $this->pioche = null;
+    }
 }

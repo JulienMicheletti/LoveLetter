@@ -2,8 +2,18 @@
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 {% block ocplatform_body %}
 
-<h3>Veuillez choisir le nombre de joueurs</h3>
-
-    {{ form(form) }}
-
+    <div id="Menu">
+        <p align="center" class="LL-titre">LoveLetter</p>
+        <div class="menu-nb">
+            <h1 class="con_titre">Bienvenue {{ pseudo }}</h1>
+            <p align="center">Pour commencer une partie veuillez choisir le nombre de joueurs et appuyez sur valider !</p>
+            {{ form_start(form) }}
+            <div class="menu-form">
+                <p>Nombres de joueurs : {{ form_widget(form.NbJoueurs) }}</p>
+                {{ form_errors(form.NbJoueurs) }}
+                {{ form_widget(form.Valider) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
