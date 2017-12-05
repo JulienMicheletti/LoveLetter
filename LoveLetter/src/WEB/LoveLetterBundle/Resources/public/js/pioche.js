@@ -15,7 +15,6 @@ $("document").ready(function(){
                 finalstring += "\"></a>";
                 var idCarte = data.id;
                 var plateaustring;
-                var removestring;
                 var newstring = $(finalstring).on('click', function(){
                     $.ajax({
                         type: 'get',
@@ -25,10 +24,6 @@ $("document").ready(function(){
                             plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                             plateaustring += data.card + ".png";
                             plateaustring += "\"></a>";
-                            removestring = "<a class=\"" + data.card + "\"><img src=\"";
-                            removestring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                            removestring += data.card + ".png";
-                            removestring += "\"></a>";
                             $(".plateau").append(plateaustring);
                             $("."+data.card+"").remove();
                             console.log(plateaustring);

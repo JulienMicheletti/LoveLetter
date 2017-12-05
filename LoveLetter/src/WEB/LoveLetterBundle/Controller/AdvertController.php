@@ -149,11 +149,6 @@ class AdvertController extends Controller
         $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
        // $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
         $main = $utilsateur->getMain();
-
-       /** foreach ($listCarte as $carte) {
-            $plateau->removeCarte($carte);
-        }**/
-
         $card = $main->getCarte($carte);
         $plateau->addCarte($card);
         $main->removeCarte($card);
