@@ -1,3 +1,8 @@
+oc_platform_test:
+   path: /
+   defaults:
+      _controller: WEBLoveLetterBundle:Advert:login
+
 oc_platform_home:
     path:      /platform/{page}
     defaults:

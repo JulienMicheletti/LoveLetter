@@ -156,9 +156,6 @@ class AdvertController extends Controller
         return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null));
     }
 
-        return $response->setData(array('carte' => $img, 'defausse' => null, 'id' => $id));
-    }
-
     public function poserAction($carte)
     {
         $em = $this->getDoctrine()->getManager();
@@ -170,6 +167,8 @@ class AdvertController extends Controller
         $response = new JsonResponse();
 
         return $response->setData(array('carte' => $carte));
+    }
+
     public function gestionAction($nb_joueurs)
     {
         $em = $this->getDoctrine()->getManager();
