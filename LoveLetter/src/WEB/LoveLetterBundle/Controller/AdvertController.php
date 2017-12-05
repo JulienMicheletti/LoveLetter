@@ -90,41 +90,42 @@ class AdvertController extends Controller
         $img = null;
         $id = null;
         $check = 0;
-        if ($manche->getnbUtilisateur() == 2) {
-            $check = 1;
-            $nb = rand(1, 8);
-            if ($pioche->getNbElements() != 0) {
-                while ($pioche->getCategorie($nb) == null) {
-                    $nb = rand(1, 8);
-                }
-                $carte = $pioche->getCategorie($nb);
-                $img = $carte->getNom();
-                $pioche->removeCarte($carte);
-            } else {
-                $img = null;
-            }
-            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-            $main = $utilsateur->getMain();
-            $main->addCarte($carte);
-            $id = $carte->getId();
-            $em->persist($main);
-            $em->persist($pioche);
-            $em->flush();
-        }
+       if ($manche->getnbUtilisateur() == 2) {
+           $check = 1;
+           $nb = rand(1, 8);
+           if ($pioche->getNbElements() != 0) {
+               while ($pioche->getCategorie($nb) == null) {
+                   $nb = rand(1, 8);
+               }
+               $carte = $pioche->getCategorie($nb);
+               $img = $carte->getNom();
+               $pioche->removeCarte($carte);
+           } else {
+               $img = null;
+           }
+           $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+           $other = $manche->getOther("bob")->getUsername();
+           $main = $utilsateur->getMain();
+           $main->addCarte($carte);
+           $id = $carte->getId();
+           $em->persist($main);
+           $em->persist($pioche);
+           $em->flush();
+       }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other));
     }
     public function poserAction($idcarte, $carte)
     {
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
-        $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+
         $carteA = "princesse";
-        $main = $utilsateur->getMain();
-        $card = $main->getCarte($idcarte);
+        $main = $utilisateur->getMain();
+        $card = $main->getIdCarte($idcarte);
         $plateau->addCarte($card);
         $main->removeCarte($card);
-        $nomCarte = $card->getNom();
         $em->persist($plateau);
         $em->flush();
 
@@ -154,6 +155,7 @@ class AdvertController extends Controller
         $em->persist($main);
         $em->flush();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $manche->removeUtilisateur($utilisateur);
         $utilisateur->setMain($main);
         $em->persist($utilisateur);
         $em->flush();

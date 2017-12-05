@@ -20,41 +20,37 @@ class RefreshController extends Controller
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $manche = $partie->getManche(10);
-        $array = array(3);
-        $array['taille'] = 0;
-        $array['c1'] = 0;
-        $array['c2'] = 0;
+        $reponse = new JsonResponse();
         if ($manche->getnbUtilisateur() == 2) {
             $enemy = $manche->getOther($utilisateur);
             $main = $enemy->getMain();
+            $array = array();
             $taille = $main->getNbCartes();
-            if ($taille == 1) {
+            if ($taille == 0) {
+                $array = array("taille" => 0, "c1" => null, "c2" => null);
+            } elseif ($taille == 1) {
                 $carte1 = $main->getCarte(0);
-                $array['taille'] = 1;
-                $array['c1'] = $carte1->getNom();
+                $array = array("taille" => 1, "c1" => $carte1->getNom(), "c2" => null);
             } elseif ($taille == 2) {
                 $carte1 = $main->getCarte(0);
                 $carte2 = $main->getCarte(1);
-                $array['taille'] = 2;
-                $array['c1'] = $carte1->getNom();
-                $array['c2'] = $carte2->getNom();
+                $array = array("taille" => 2, "c1" => $carte1->getNom(), "c2" => $carte2);
             }
+        } else {
+            $array = array("taille" => 0, "c1" => null, "c2" => null);
         }
-        return array($array);
+        return $reponse->setData(array('tab' => $array));
     }
 
     public function refreshAction(){
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
-        $array = $plateau->getCartes();
-        $i = $plateau->getNbElements();
-       /* for ($i; $i < $plateau->getNbElements(); $i++){
-            //$var = $i;
-            //$carte = "carte".$var;
-            $array[$i] = $plateau->getCarte($i);
-        }*/
+        $array = array();
+        $i = 0;
+        for ($i; $i < $plateau->getNbElements(); $i++){
+            $array[$i+1] = $plateau->getCarte($i)->getNom();
+        }
         $reponse = new JsonResponse();
-        $adversaire = $this->adversaire2Action();
-        return $reponse->setData(array('taille' => $i, 'plateau' => $array, 'tab' => $adversaire));
+        return $reponse->setData(array('taille' => $i, 'plateau' => $array));
     }
 }

@@ -1,5 +1,4 @@
-body
-{
+body {
     background-color: #E4F1FE;
 }
 
@@ -102,9 +101,10 @@ body
      align-items: center;
  }
 
-.plateau
+.plateau_global
 {
     display: flex;
+    flex-wrap: wrap;
     width: 30%;
     height: 30%;
     justify-content: space-around;

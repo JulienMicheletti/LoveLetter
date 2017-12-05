@@ -1,12 +1,12 @@
 $("document").ready(function(){
-    function refresh(){
+    function refresh_adversaire2(){
         $.ajax({
-           type:'get',
-           url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/adversaire2',
+            type:'get',
+            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/adversaire2',
             success: function (data) {
                 var string = "";
-                console.log(data.tab.taille);
                 if (data.tab.taille == 1) {
+                    // console.log("test");
                     string = "<a><img src=\"";
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
                     string += data.tab.c1 + ".png";
@@ -20,19 +20,31 @@ $("document").ready(function(){
                     string += "\"></a>";
                     $(".adversaire").html(string);
                 }
-                var i = data.tab;
-                var plateau = "";
-                while (i > 0){
-                    plateau = "<a><img src=\"";
-                    plateau += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
-                    plateau += data.plateau[i] + ".png";
-                    plateau += "\"></a>";
-                    $(".plateau").append(plateau);
-                    i++;
-                }
             }
         });
     }
 
-    setInterval(refresh, 1500);
+    function refresh_plateau(){
+        $.ajax({
+            type:'get',
+            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
+            success: function (data){
+                var i = data.taille;
+                var plateau = "";
+                while (i > 0){
+                    plateau += "<a><img src=\"";
+                    plateau += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
+                    plateau += data.plateau[i] + ".png";
+                    plateau += "\"></a>";
+                    i -= 1;
+                }
+                console.log(plateau);
+                if (data.taille > 0)
+                    $(".plateau").html(plateau);
+            }
+        })
+    }
+
+    setInterval(refresh_adversaire2, 1500);
+    setInterval(refresh_plateau, 1500);
 });
