@@ -28,7 +28,7 @@ oc_platform_piocher:
         id: \d+
 
 oc_platform_poser:
-    path:      /advert/poser/{carte}
+    path:      /platform/advert/poser/{idcarte}/{carte}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:poser
     requirements:
@@ -52,5 +52,12 @@ oc_platform_menu:
     path:      /advert/menu/{id}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:menu
+    requirements:
+        id: \d+
+
+oc_platform_guard:
+    path:      /advert/guard/{carteA}/{carteD}
+    defaults:
+        _controller: WEBLoveLetterBundle:Effet:guard
     requirements:
         id: \d+
