@@ -19,19 +19,17 @@ $("document").ready(function(){
                 var users = data.utilisateurs;
                 var me = data.me;
                 var newstring = $(finalstring).on('click', function(){
+                    if (idCarte == 1){
+                        joueur = prompt("Quel joueur ciblez vous ?");
+                        while (joueur != users && joueur != me){
+                            alert("Ce joueur n'existe pas !");
+                            joueur = prompt("Quel joueur ciblez vous ?");
+                        }
+                        carteC = prompt("Devinez la carte que le joueur possède", "");
+                    }
                     $.ajax({
                         type: 'get',
                         url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/'+idCarte+'/'+carteC,
-                        beforeSend: function(){
-                            if (idCarte == 1){
-                                joueur = prompt("Quel joueur ciblez vous ?");
-                                while (joueur != users && joueur != me){
-                                    alert("Ce joueur n'existe pas !");
-                                    joueur = prompt("Quel joueur ciblez vous ?");
-                                }
-                                carteC = prompt("Devinez la carte que le joueur possède", "");
-                            }
-                        },
                         success: function(data){
                             console.log(data.carteA);
                             console.log(data.carteD);
