@@ -4,10 +4,11 @@
    elles, hériteront probablement du layout. Je dis « probablement » car,
    ici pour cette vue, on n'en sait rien et c'est une info qui ne nous concerne pas. #}
 
-<h3>Formulaire d'annonce</h3>
+{% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
-{# On laisse vide la vue pour l'instant, on la comblera plus tard
-   lorsqu'on saura afficher un formulaire. #}
-<div class="well">
-    Ici se trouvera le formulaire.
-</div>
+{% block ocplatform_body %}
+    <form method="post" action=path("oc_platform_form">
+        <p><input type="text" name="pseudo" /></p>
+    </form>
+
+{% endblock %}>

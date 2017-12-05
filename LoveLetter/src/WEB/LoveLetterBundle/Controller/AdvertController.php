@@ -9,9 +9,11 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use WEB\LoveLetterBundle\Entity\pioche;
-use WEB\LoveLetterBundle\Entity\carte;
+use WEB\LoveLetterBundle\Entity\partie;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AdvertController extends Controller
 {
@@ -24,7 +26,24 @@ class AdvertController extends Controller
             // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
             throw new NotFoundHttpException('Page "' . $page . '" inexistante.');
         }
-        return $this->render('WEBLoveLetterBundle:Advert:index.html.twig', array('listAdverts' => array()));
+        return $this->render('WEBLoveLetterBundle:Advert:login.html.twig', array('listAdverts' => array()));
+    }
+
+    public function loginAction($user, $mdp)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('WEBLoveLetterBundle:utilisateur')->findOneBy([
+            "id" => $user,
+            "mot_de_passe" => $mdp,
+        ]);
+        $response = new JsonResponse();
+
+        if ($entities == null){
+            return $response->setData(array('check'=>0));
+        } else {
+            $usr = $entities->getPseudo();
+            return $response->setData(array('check'=>1, 'pseudo'=>$usr));
+        }
     }
 
     public function jouerAction()
@@ -43,7 +62,7 @@ class AdvertController extends Controller
         $em->persist($defausse);
         $em->flush();
 
-        $nb = rand(1,8);
+        $nb = rand(1, 8);
 
         $carte = $pioche->getCategorie($nb);
 
@@ -74,7 +93,7 @@ class AdvertController extends Controller
         $em->flush();
 
         //DEFAUSSE DE BASE
-        $nb = rand(1,8);
+        $nb = rand(1, 8);
         $carte = $pioche->getCategorie($nb);
         $defausse->addCarte($carte);
         $carteDef = $defausse->getCarte(1);
@@ -122,6 +141,7 @@ class AdvertController extends Controller
     {
         global $finManche;
         global $carte;
+        global $id;
         $em = $this->getDoctrine()->getManager();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $nb = rand(1, 8);
@@ -131,21 +151,63 @@ class AdvertController extends Controller
             }
             $carte = $pioche->getCategorie($nb);
             $img = $carte->getNom();
+            $id = $carte->getId();
             $pioche->removeCarte($carte);
         } else {
-           $img = null;
+            $img = null;
         }
-
         $em->persist($pioche);
         $em->flush();
         $response = new JsonResponse();
 
-        return $response->setData(array('carte' => $img, 'defausse' => null));
-        //return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('carte' => $carte, 'defausse' => null));
+        return $response->setData(array('carte' => $img, 'defausse' => null, 'id' => $id));
     }
 
-    public function plateau(){
+    public function poserAction($carte)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
 
+        $plateau->addCarte($carte);
+        $em->persist($plateau);
+        $em->flush();
+        $response = new JsonResponse();
+
+        return $response->setData(array('carte' => $carte));
+    }
+
+    public function menuAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+
+        $form = $this->get('form.factory')->createBuilder(FormType::class, $partie)
+            ->add('nbJoueurs', ChoiceType::class, array(
+                'choices'  => array(
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,)))
+            ->add('Valider', SubmitType::class)
+            ->getForm();
+        ;
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $em->persist($partie);
+                $em->flush();
+
+                if ($partie->getnbJoueurs() == 2){
+                    return $this->redirectToRoute('oc_platform_jouer2', array('id' => $partie->getId()));
+                } else {
+                    return $this->redirectToRoute('oc_platform_jouer', array('id' => $partie->getId()));
+                }
+            }
+        }
+        return $this->render('WEBLoveLetterBundle:Advert:menu.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
 }

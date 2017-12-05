@@ -7,24 +7,14 @@
     {% endblock %}
     <script src="{{ asset('bundles/webloveletter/js/jquery.js') }}"></script>
     <script src="{{ asset('bundles/webloveletter/js/pioche.js') }}"></script>
+    <script src="{{ asset('bundles/webloveletter/js/login.js') }}"></script>
     <title>{% block title %}LoveLetter{% endblock %}</title>
 </head>
 <body>
-<nav  id="navigation">
-    <ul>
-        <li><a class="current" href="home.html">Accueil</a></li>
-        <li><a href="">Se deconnecter</a></li>
-    </ul>
-</nav>
 <div id="corps">
-    <div class="element"></div>
     {% block body %}
 
     {% endblock %}
-    <div class="element"></div>
-</div>
-<div id="fin">
-    <p>Copyright © / 2017 - Willaime - Micheletti /All rights reserved</p>
 </div>
 </body>
 </html>

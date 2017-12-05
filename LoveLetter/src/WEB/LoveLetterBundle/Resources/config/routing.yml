@@ -20,11 +20,30 @@ oc_platform_jouer2:
     requirements:
         id: \d+
 
-
-
 oc_platform_piocher:
     path:      /platform/advert/piocher
     defaults:
         _controller: WEBLoveLetterBundle:Advert:piocher
+    requirements:
+        id: \d+
+
+oc_platform_poser:
+    path:      /platform/advert/poser/{carte}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:poser
+    requirements:
+        id: \d+
+
+oc_platform_login:
+    path:     /platform/advert/login/{user}/{mdp}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:login
+    requirements:
+        id: \d+
+
+oc_platform_menu:
+    path:      /platform/advert/menu/{id}
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:menu
     requirements:
         id: \d+
