@@ -91,27 +91,32 @@ class AdvertController extends Controller
         $id = null;
         $check = 0;
        if ($manche->getnbUtilisateur() == 2) {
-           $check = 1;
-           $nb = rand(1, 8);
-           if ($pioche->getNbElements() != 0) {
-               while ($pioche->getCategorie($nb) == null) {
-                   $nb = rand(1, 8);
-               }
-               $carte = $pioche->getCategorie($nb);
-               $img = $carte->getNom();
-               $pioche->removeCarte($carte);
-           } else {
-               $img = null;
-           }
            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-           $other = $manche->getOther($utilisateur)->getUsername();
-           $me = $utilisateur->getUsername();
-           $main = $utilisateur->getMain();
-           $main->addCarte($carte);
-           $id = $carte->getId();
-           $em->persist($main);
-           $em->persist($pioche);
-           $em->flush();
+           if ($utilisateur->getVictoire() == 0){
+               $img = null;
+               $check = 2;
+           } else {
+               $check = 1;
+               $nb = rand(1, 8);
+               if ($pioche->getNbElements() != 0) {
+                   while ($pioche->getCategorie($nb) == null) {
+                       $nb = rand(1, 8);
+                   }
+                   $carte = $pioche->getCategorie($nb);
+                   $img = $carte->getNom();
+                   $pioche->removeCarte($carte);
+               } else {
+                   $img = null;
+               }
+               $other = $manche->getOther($utilisateur)->getUsername();
+               $me = $utilisateur->getUsername();
+               $main = $utilisateur->getMain();
+               $main->addCarte($carte);
+               $id = $carte->getId();
+               $em->persist($main);
+               $em->persist($pioche);
+               $em->flush();
+           }
        }
         $response = new JsonResponse();
         return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other));
@@ -158,6 +163,7 @@ class AdvertController extends Controller
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $manche->removeUtilisateur($utilisateur);
         $utilisateur->setMain($main);
+        $utilisateur->setVictoire(1);
         $em->persist($utilisateur);
         $em->flush();
         //Mettres les cartes dans la pioche

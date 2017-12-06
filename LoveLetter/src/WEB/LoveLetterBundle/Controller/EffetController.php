@@ -34,7 +34,10 @@ class EffetController extends Controller
 
         if ($carteA == $carteD){
             $rep = true;
+            $enemy->setVictoire(0);
         }
+        $em->persist($enemy);
+        $em->flush();
         $response = new JsonResponse();
         return $response->setData(array('card' => "garde", 'rep' => $rep, "carteA" => $carteA, "carteD" => $carteD));
     }
