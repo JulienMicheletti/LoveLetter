@@ -63,7 +63,7 @@ class AdvertController extends Controller
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
 */
-        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef));
+        // return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef));
     }
     public function jouer2Action($id)
     {
@@ -116,48 +116,49 @@ class AdvertController extends Controller
         $manche = $partie->getManche(10);
         $pioche = $manche->getPioche();
         $img = null;
-      //  if ($manche->getnbUtilisateur() == 2) {
-            $check = 1;
-            $nb = rand(1, 8);
-            if ($pioche->getNbElements() != 0) {
-                while ($pioche->getCategorie($nb) == null) {
-                    $nb = rand(1, 8);
-                }
-                $carte = $pioche->getCategorie($nb);
-                $img = $carte->getNom();
-                $pioche->removeCarte($carte);
-            } else {
-                $img = null;
+        //  if ($manche->getnbUtilisateur() == 2) {
+        $check = 1;
+        $nb = rand(1, 8);
+        if ($pioche->getNbElements() != 0) {
+            while ($pioche->getCategorie($nb) == null) {
+                $nb = rand(1, 8);
             }
-            $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
-            $main = $utilsateur->getMain();
-            $main->addCarte($carte);
-            $id = $carte->getId();
-            $em->persist($main);
-            $em->persist($pioche);
-            $em->flush();
-            $response = new JsonResponse();
-      //  } else {
-           // $check = 0;
-          //  $response = new JsonResponse();
+            $carte = $pioche->getCategorie($nb);
+            $img = $carte->getNom();
+            $pioche->removeCarte($carte);
+        } else {
+            $img = null;
+        }
+        $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
+        $main = $utilsateur->getMain();
+        $main->addCarte($carte);
+        $id = $carte->getId();
+        $em->persist($main);
+        $em->persist($pioche);
+        $em->flush();
+        $response = new JsonResponse();
+        //  } else {
+        // $check = 0;
+        //  $response = new JsonResponse();
         return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id));
     }
-    public function poserAction($carte)
+    public function poserAction($idcarte, $carte)
     {
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find(1);
-       // $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
+        $carteA = "princesse";
         $main = $utilsateur->getMain();
-        $card = $main->getCarte($carte);
+        $card = $main->getCarte($idcarte);
         $plateau->addCarte($card);
         $main->removeCarte($card);
         $nomCarte = $card->getNom();
         $em->persist($plateau);
         $em->flush();
-        $response = new JsonResponse();
-        return $response->setData(array('card' => $nomCarte));
+
+        return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
     }
+
     public function gestionAction($nb_joueurs)
     {
         $em = $this->getDoctrine()->getManager();

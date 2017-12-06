@@ -1,7 +1,7 @@
 $("document").ready(function(){
     $(".piocher").click(function(){
         var finalstring;
-        var carte;
+        var carteC = "prine";
         $.ajax({
             type: 'get',
             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/piocher',
@@ -18,7 +18,13 @@ $("document").ready(function(){
                 var newstring = $(finalstring).on('click', function(){
                     $.ajax({
                         type: 'get',
-                        url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/poser/'+idCarte,
+                        url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/platform/advert/poser/'+idCarte+'/'+carteC,
+                        beforeSend: function(){
+                            if (idCarte == 1){
+                                carteC = prompt("Devinez la carte que le joueur possède", "");
+
+                            }
+                        },
                         success: function(data){
                             plateaustring = "<a><img src=\"";
                             plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
@@ -27,6 +33,7 @@ $("document").ready(function(){
                             $(".plateau").append(plateaustring);
                             $("."+data.card+"").remove();
                             console.log(plateaustring);
+                            console.log(data.rep);
                         }
                     })
                 });
