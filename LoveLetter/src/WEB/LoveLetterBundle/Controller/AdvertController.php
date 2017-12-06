@@ -85,6 +85,7 @@ class AdvertController extends Controller
         global $carte;
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
         $manche = $partie->getManche(10);
         $pioche = $manche->getPioche();
         $img = null;
@@ -113,13 +114,32 @@ class AdvertController extends Controller
                $main = $utilisateur->getMain();
                $main->addCarte($carte);
                $id = $carte->getId();
-               $em->persist($main);
+               $rep = false;
+           $listCartes = $main->getCartes();
+           if ($img == "comtesse"){
+              foreach ($listCartes as $c) {
+                   if ($c->getNom() == "roi" || $c->getNom() == "prince") {
+                       $rep = true;
+                       $main->removeCarte($carte);
+                       $defausse->addCarte($carte);
+                    }
+                }
+           } else if ($img == "roi" || $img == "prince"){
+               foreach ($listCartes as $carte) {
+                   if ($carte->getNom() == "comtesse") {
+                       $rep = true;
+                       $main->removeCarte($carte);
+                       $defausse->addCarte($carte);
+                   }
+               }
+           }
+           $em->persist($main);
                $em->persist($pioche);
                $em->flush();
            }
        }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep));
     }
     public function poserAction($idcarte, $carte)
     {
@@ -135,7 +155,9 @@ class AdvertController extends Controller
         $em->persist($plateau);
         $em->flush();
 
-        return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
+        if ($idcarte == 1){
+            return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
+        }
     }
 
     public function gestionAction($nb_joueurs)
