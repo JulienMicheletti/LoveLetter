@@ -48,6 +48,13 @@ oc_platform_adversaire2:
     requirements:
         id: \d+
 
+oc_platform_refresh:
+    path:      /advert/refresh
+    defaults:
+        _controller: WEBLoveLetterBundle:Refresh:refresh
+    requirements:
+        id: \d+
+
 oc_platform_menu:
     path:      /advert/menu/{id}
     defaults:
@@ -56,7 +63,7 @@ oc_platform_menu:
         id: \d+
 
 oc_platform_guard:
-    path:      /advert/guard/{carteD}
+    path:      /advert/guard/{carteA}/{carteD}
     defaults:
         _controller: WEBLoveLetterBundle:Effet:guard
     requirements:

@@ -14,11 +14,12 @@
     </div>
     <div class="element"></div>
     <div class="adversaire"></div>
-    <div class="plateau">
+    <div class="plateau_global">
        <a class="piocher"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
         {% if not defausse == null %}
             <a><img src="{{ asset (defausse.image) }}"></a>
         {% endif %}
+        <div class="plateau"></div>
     </div>
     <div class="main"></div>
     <div class="element"></div>

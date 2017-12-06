@@ -1,7 +1,7 @@
 $("document").ready(function(){
     $(".piocher").click(function(){
         var finalstring;
-        var carteC = "prine";
+        var carteC = "prince";
         var joueur = "default";
         $.ajax({
             type: 'get',
