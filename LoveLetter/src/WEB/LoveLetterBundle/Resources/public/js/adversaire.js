@@ -2,12 +2,12 @@ $("document").ready(function(){
     function refresh(){
         $.ajax({
            type:'get',
-           url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/adversaire2',
+           url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/adversaire2',
             success: function (data) {
                 var string = "";
-                console.log(data.tab.taille);
+                //console.log(data.tab.taille);
                 if (data.tab.taille == 1) {
-                    console.log("test");
+                   // console.log("test");
                     string = "<a><img src=\"";
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
                     string += data.tab.c1 + ".png";
@@ -21,7 +21,7 @@ $("document").ready(function(){
                     string += "\"></a>";
                     $(".adversaire").html(string);
                 }
-               console.log(string);
+              // console.log(string);
             }
         });
     }
