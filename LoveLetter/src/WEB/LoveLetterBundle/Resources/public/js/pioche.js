@@ -33,6 +33,8 @@ $("document").ready(function(){
                             }
                         },
                         success: function(data){
+                            console.log(data.carteA);
+                            console.log(data.carteD);
                             plateaustring = "<a><img src=\"";
                             plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                             plateaustring += data.card + ".png";

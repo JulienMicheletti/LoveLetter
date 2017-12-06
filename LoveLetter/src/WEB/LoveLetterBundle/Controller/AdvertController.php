@@ -122,7 +122,6 @@ class AdvertController extends Controller
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
 
-        $carteA = "princesse";
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
         $plateau->addCarte($card);
@@ -130,7 +129,7 @@ class AdvertController extends Controller
         $em->persist($plateau);
         $em->flush();
 
-        return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
+        return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
     }
 
     public function gestionAction($nb_joueurs)

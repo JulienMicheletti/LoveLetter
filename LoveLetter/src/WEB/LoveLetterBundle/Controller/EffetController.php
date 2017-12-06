@@ -30,12 +30,12 @@ class EffetController extends Controller
 
         $enemy = $manche->getOther($utilisateur);
         $main = $enemy->getMain();
-        $carteA = $main->getCartes->getNom();
+        $carteA = $main->getCarte(0)->getNom();
 
         if ($carteA == $carteD){
             $rep = true;
         }
         $response = new JsonResponse();
-        return $response->setData(array('card' => "garde", 'rep' => $rep));
+        return $response->setData(array('card' => "garde", 'rep' => $rep, "carteA" => $carteA, "carteD" => $carteD));
     }
 }
