@@ -147,7 +147,6 @@ class AdvertController extends Controller
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
 
-        $carteA = "princesse";
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
         $plateau->addCarte($card);
@@ -155,8 +154,10 @@ class AdvertController extends Controller
         $em->persist($plateau);
         $em->flush();
 
-        if ($idcarte == 1){
-            return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
+        if ($idcarte == 1){ //guard
+            return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
+        } elseif ($idcarte == 6){ //roi
+            return $this->redirectToRoute('oc_platform_king', array());
         }
     }
 

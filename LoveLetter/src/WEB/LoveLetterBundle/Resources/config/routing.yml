@@ -70,8 +70,15 @@ oc_platform_countess:
         id: \d+
 
 oc_platform_guard:
-    path:      /advert/guard/{carteA}/{carteD}
+    path:      /advert/guard/{carteD}
     defaults:
         _controller: WEBLoveLetterBundle:Effet:guard
+    requirements:
+        id: \d+
+
+oc_platform_king:
+    path:      /advert/king
+    defaults:
+        _controller: WEBLoveLetterBundle:Effet:king
     requirements:
         id: \d+

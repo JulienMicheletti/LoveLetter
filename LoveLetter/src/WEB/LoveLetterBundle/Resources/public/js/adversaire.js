@@ -11,15 +11,14 @@ $("document").ready(function(){
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
                     string += data.tab.c1 + ".png";
                     string += "\"></a>";
-                    $(".adversaire").html(string);
                 }
                 if (data.tab.taille == 2){
                     string += "<a><img src=\"";
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
                     string += data.tab.c2 + ".png";
                     string += "\"></a>";
-                    $(".adversaire").html(string);
                 }
+                $(".adversaire").html(string);
             }
         });
     }
@@ -27,7 +26,7 @@ $("document").ready(function(){
     function refresh_plateau(){
         $.ajax({
             type:'get',
-            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
             success: function (data){
                 var i = data.taille;
                 var plateau = "";
@@ -46,5 +45,5 @@ $("document").ready(function(){
     }
 
     setInterval(refresh_adversaire2, 1500);
-    setInterval(refresh_plateau, 1500);
+    setInterval(refresh_plateau, 1000);
 });

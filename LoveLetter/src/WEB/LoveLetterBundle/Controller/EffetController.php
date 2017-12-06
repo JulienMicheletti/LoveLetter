@@ -21,6 +21,30 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class EffetController extends Controller
 {
+    public function kingAction(){
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $manche = $partie->getManche(10);
+        $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
+
+        $enemy = $manche->getOther($utilisateur);
+        $main_enemy = $enemy->getMain();
+        $main_me = $utilisateur->getMain();
+        $carte_enemy = $main_enemy->getCarte(0);
+        $carte_me = $main_me->getCarte(0);
+        $main_me->addCarte($carte_enemy);
+        $main_enemy->addCarte($carte_me);
+        $main_me->removeCarte($carte_me);
+        $main_enemy->removeCarte($carte_enemy);
+        $c_id = $carte_enemy->getId();
+        $em->persist($main_enemy);
+        $em->persist($main_me);
+        $em->flush();
+        $response = new JsonResponse();
+        $rep = array('nom' => $carte_enemy->getNom(), 'cid' => $c_id);
+        return $response->setData(array('card' => "roi", 'rep'=>$rep));
+    }
     public function guardAction($carteD){
         $rep = false;
         $em = $this->getDoctrine()->getManager();
