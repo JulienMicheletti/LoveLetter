@@ -36,7 +36,7 @@ $("document").ready(function(){
                             console.log(data.rep);
                         }
                     })
-                });
+                });//
                 $(".main").append(newstring);
                 console.log(newstring);
             }
