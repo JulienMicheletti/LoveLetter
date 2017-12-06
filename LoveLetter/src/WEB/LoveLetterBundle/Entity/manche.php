@@ -2,6 +2,7 @@
 
 namespace WEB\LoveLetterBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
 
@@ -23,7 +24,7 @@ class manche
      * @var string
      *
      * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\utilisateur")
-     * @ORM\Column(name="gagnant", type="string", length=200, unique=true)
+     * @ORM\Column(name="gagnant", type="string", length=200)
      */
     private $gagnant;
 

@@ -23,9 +23,16 @@ class utilisateur extends BaseUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="nb_win", type="integer")
+     * @ORM\Column(name="nb_win", type="integer", nullable=true)
      */
     private $nbWin;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="victoire", type="integer", nullable=true)
+     */
+    private $victoire;
 
     /**
      * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\pioche")
@@ -75,5 +82,15 @@ class utilisateur extends BaseUser
     public function getDefausse()
     {
         return $this->defausse;
+    }
+
+    public function setVictoire($var)
+    {
+        $this->victoire = $var;
+    }
+
+    public function getVictoire()
+    {
+        return $this->victoire;
     }
 }
