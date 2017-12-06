@@ -49,6 +49,12 @@ class main
         $this->cartes->removeElement($carte);
     }
 
+    public function removeAll(){
+        foreach ($this->cartes as $carte){
+            $this->cartes->removeElement($carte);
+        }
+    }
+
     // Notez le pluriel, on récupère une liste de catégories ici !
     public function getCarte($i){
         return $this->cartes->get($i);

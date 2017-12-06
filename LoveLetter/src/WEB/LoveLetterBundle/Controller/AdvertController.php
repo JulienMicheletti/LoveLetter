@@ -139,7 +139,7 @@ class AdvertController extends Controller
            }
        }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me));
     }
     public function poserAction($idcarte, $carte)
     {
@@ -149,15 +149,21 @@ class AdvertController extends Controller
 
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
-        $plateau->addCarte($card);
-        $main->removeCarte($card);
+        if ($card != null){
+            $plateau->addCarte($card);
+            $main->removeCarte($card);
+        }
+
+        $em->persist($main);
         $em->persist($plateau);
         $em->flush();
 
         if ($idcarte == 1){ //guard
             return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
-        } elseif ($idcarte == 6){ //roi
+        } elseif ($idcarte == 6) { //roi
             return $this->redirectToRoute('oc_platform_king', array());
+        } elseif ($idcarte == 5){
+            return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
         }
     }
 

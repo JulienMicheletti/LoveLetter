@@ -40,6 +40,14 @@ $("document").ready(function(){
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
+                        } else if (idCarte == 5){
+                            console.log(me);
+                            joueur = prompt("Quel joueur ciblez vous ?");
+                            while (joueur != users && joueur != me){
+                                alert("Ce joueur n'existe pas !");
+                                joueur = prompt("Quel joueur ciblez vous ?");
+                            }
+                            carteC = joueur;
                         }
                         $.ajax({
                             type: 'get',
@@ -52,6 +60,22 @@ $("document").ready(function(){
                                 plateaustring += "\"></a>";
                                 $(".plateau").append(plateaustring);*/
                                 $("." + data.card + "").remove();
+                                if (idCarte == 1 && data.rep == true){
+                                    alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
+                                }else if (idCarte == 1 && data.rep == false){
+                                    alert("Effet garde : Vous vous êtes trompé");
+                                }
+                                if (data.repPrince == true && data.user == me){
+                                    alert("Effet du prince : Votre main a été remplacée");
+                                    console.log(data.user);
+                                    console.log(data.nouvelleCarte);
+                                    $("."+data.ancienneCarte+"").remove();
+                                    finalstring = "<a class=\"" + data.nouvelleCarte + "\"><img src=\"";
+                                    finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
+                                    finalstring += data.nouvelleCarte + ".png";
+                                    finalstring += "\"></a>";
+                                    $(".main").append(finalstring);
+                                }
                                 if (data.card == "roi") {
                                     idCarte = data.rep.cid;
                                     var mainstring = "<a class=\"" + data.rep.nom + "\"><img src=\"";
