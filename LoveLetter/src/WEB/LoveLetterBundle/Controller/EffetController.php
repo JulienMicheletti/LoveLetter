@@ -21,9 +21,17 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class EffetController extends Controller
 {
+    public function guardAction($carteD){
+        $rep = false;
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $manche = $partie->getManche(10);
 
-    public function guardAction($carteA, $carteD){
-       $rep = false;
+        $enemy = $manche->getOther($utilisateur);
+        $main = $enemy->getMain();
+        $carteA = $main->getCartes->getNom();
+
         if ($carteA == $carteD){
             $rep = true;
         }

@@ -17,7 +17,7 @@ $("document").ready(function(){
                 var idCarte = data.id;
                 var plateaustring;
                 var users = data.utilisateurs;
-                console.log(data.utilisateurs);
+                var me = data.me;
                 var newstring = $(finalstring).on('click', function(){
                     $.ajax({
                         type: 'get',
@@ -25,8 +25,11 @@ $("document").ready(function(){
                         beforeSend: function(){
                             if (idCarte == 1){
                                 joueur = prompt("Quel joueur ciblez vous ?");
+                                while (joueur != users && joueur != me){
+                                    alert("Ce joueur n'existe pas !");
+                                    joueur = prompt("Quel joueur ciblez vous ?");
+                                }
                                 carteC = prompt("Devinez la carte que le joueur possède", "");
-
                             }
                         },
                         success: function(data){

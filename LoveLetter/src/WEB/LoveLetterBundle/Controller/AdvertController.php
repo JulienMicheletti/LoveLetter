@@ -103,9 +103,10 @@ class AdvertController extends Controller
            } else {
                $img = null;
            }
-           $utilsateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-           $other = $manche->getOther("bob")->getUsername();
-           $main = $utilsateur->getMain();
+           $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+           $other = $manche->getOther($utilisateur)->getUsername();
+           $me = $utilisateur->getUsername();
+           $main = $utilisateur->getMain();
            $main->addCarte($carte);
            $id = $carte->getId();
            $em->persist($main);
@@ -113,7 +114,7 @@ class AdvertController extends Controller
            $em->flush();
        }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'me' => $me));
     }
     public function poserAction($idcarte, $carte)
     {
