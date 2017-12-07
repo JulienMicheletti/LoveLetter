@@ -46,9 +46,9 @@ class AdvertController extends Controller
         $defausse = $manche->getDefausse();
         $cartedef = $defausse->getCarte(0);
         //2 JOUEURS : CARTE 1
-        $nb = rand(1, 8);
+        $nb = rand(1, 16);
         while ($pioche->getCategorie($nb) == null) {
-            $nb = rand(1, 8);
+            $nb = rand(1, 16);
         }
         $carte1 = $pioche->getCategorie($nb);
         $defausse->addCarte($carte1);
@@ -58,7 +58,7 @@ class AdvertController extends Controller
         $em->flush();
         //2 JOUEURS : CARTE 2
         while ($pioche->getCategorie($nb) == null) {
-            $nb = rand(1, 8);
+            $nb = rand(1, 16);
         }
         $carte2 = $pioche->getCategorie($nb);
         $defausse->addCarte($carte2);
@@ -68,7 +68,7 @@ class AdvertController extends Controller
         $em->flush();
         //2 JOUEURS : CARTE 3
         while ($pioche->getCategorie($nb) == null) {
-            $nb = rand(1, 8);
+            $nb = rand(1, 16);
         }
         $carte3 = $pioche->getCategorie($nb);
         $defausse->addCarte($carte3);
@@ -93,6 +93,7 @@ class AdvertController extends Controller
         $other = null;
         $rep = false;
         $me = null;
+        $type = null;
         $check = 0;
        if ($manche->getnbUtilisateur() == 2) {
            if ($enemy == 0)
@@ -107,10 +108,10 @@ class AdvertController extends Controller
                $check = 2;
            } else {
                $check = 1;
-               $nb = rand(1, 8);
+               $nb = rand(1, 16);
                if ($pioche->getNbElements() != 0) {
                    while ($pioche->getCategorie($nb) == null) {
-                       $nb = rand(1, 8);
+                       $nb = rand(1, 16);
                    }
                    $carte = $pioche->getCategorie($nb);
                    $img = $carte->getNom();
@@ -123,6 +124,7 @@ class AdvertController extends Controller
                $main = $utilisateur->getMain();
                $main->addCarte($carte);
                $id = $carte->getId();
+               $type = $carte->getType();
                $rep = false;
            $listCartes = $main->getCartes();
            if ($img == "comtesse"){
@@ -148,9 +150,9 @@ class AdvertController extends Controller
            }
        }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type));
     }
-    public function poserAction($idcarte, $carte)
+    public function poserAction($idcarte, $carte, $typeCarte)
     {
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
@@ -167,13 +169,13 @@ class AdvertController extends Controller
         $em->persist($plateau);
         $em->flush();
 
-        if ($idcarte == 1){ //guard
+        if ($typeCarte == 1){ //guard
             return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
-        } elseif ($idcarte == 6) { //roi
+        } elseif ($typeCarte == 6) { //roi
             return $this->redirectToRoute('oc_platform_king', array());
-        } elseif ($idcarte == 5){
+        } elseif ($typeCarte == 5){
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
-        } elseif ($idcarte == 2){
+        } elseif ($typeCarte == 2){
             return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
         }
     }

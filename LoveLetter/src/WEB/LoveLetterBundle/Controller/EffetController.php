@@ -94,6 +94,8 @@ class EffetController extends Controller
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $defausse = $manche->getDefausse();
+        $alertPrincesse = false;
         if ($utilisateur->getUsername() != $nomUtilisateur){
             $user = $utilisateur;
             $utilisateur = $manche->getOther($user);
@@ -104,12 +106,18 @@ class EffetController extends Controller
         $carteSuppr = $main->getCarte(0);
         if ($carteSuppr != null){
             $main->removeCarte($carteSuppr);
+            $defausse->addCarte($carteSuppr);
         }
         $nomCarte = "default";
+        $id = 0;
         $em->persist($main);
         $em->flush();
 
         $nomCarteSuppr = $carteSuppr->getNom();
+        if ($nomCarteSuppr == "princesse"){
+            $alertPrincesse = true;
+            $utilisateur->setVictoire(0);
+        }
         /*$nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {
@@ -118,6 +126,7 @@ class EffetController extends Controller
             $carte = $pioche->getCategorie($nb);
             $nomCarte = $carte->getNom();
             $pioche->removeCarte($carte);
+            $id = $carte->getId();
             $main->addCarte($carte);
         }*/
         $em->persist($main);
@@ -125,6 +134,6 @@ class EffetController extends Controller
         $em->flush();
         $rep = true;
         $response = new JsonResponse();
-        return $response->setData(array('card' => "prince", 'repPrince' => $rep, 'nouvelleCarte' => $nomCarte, 'ancienneCarte' => $nomCarteSuppr, 'user' => $utilisateur->getUsername()));
+        return $response->setData(array('card' => "prince", 'repPrince' => $rep, 'nouvelleCarte' => $nomCarte, 'ancienneCarte' => $nomCarteSuppr, 'user' => $utilisateur->getUsername(), 'alertPrincesse' => $alertPrincesse));
     }
 }
