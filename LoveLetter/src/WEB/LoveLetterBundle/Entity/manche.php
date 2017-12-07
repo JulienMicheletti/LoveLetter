@@ -59,6 +59,10 @@ class manche
         return $this;
     }
 
+    public function viderUtilisateur(){
+        $this->utilisateur->clear();
+    }
+
     // Notez le pluriel, on récupère une liste de catégories ici !
     public function getUtilisateur($i)
     {

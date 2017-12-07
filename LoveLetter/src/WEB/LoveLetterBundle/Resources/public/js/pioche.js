@@ -5,7 +5,7 @@ $("document").ready(function(){
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/0',
+            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/0',
             beforeSend: function () {
                 console.log("Pioche ...");
             },
@@ -65,7 +65,7 @@ $("document").ready(function(){
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 console.log(data.carte);
                                 /*plateaustring = "<a><img src=\"";
@@ -105,7 +105,7 @@ $("document").ready(function(){
                                     setTimeout(function(){
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
+                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
                                             success: function(data){
                                                 alert("Effet du prêtre : effet terminé !");
                                             }
@@ -144,7 +144,7 @@ $("document").ready(function(){
                                         }
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                             success: function (data) {
                                                 console.log(data.carteA);
                                                 console.log(data.carteD);
@@ -175,7 +175,7 @@ $("document").ready(function(){
                                                     setTimeout(function(){
                                                         $.ajax({
                                                             type: 'get',
-                                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
+                                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
                                                             success: function(data){
                                                                 alert("Effet du prêtre : effet terminé !");
                                                             }
@@ -204,7 +204,7 @@ $("document").ready(function(){
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/'+id,
+            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/'+id,
             beforeSend: function () {
                 console.log("Pioche du prince ..");
             },
@@ -258,7 +258,7 @@ $("document").ready(function(){
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 console.log(data.carte);
                                 $("." + data.card + "").remove();
@@ -283,7 +283,7 @@ $("document").ready(function(){
                                     setTimeout(function(){
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
+                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
                                             success: function(data){
                                                 alert("Effet du prêtre : effet terminé !");
                                             }
@@ -348,7 +348,7 @@ $("document").ready(function(){
                                                     setTimeout(function(){
                                                         $.ajax({
                                                             type: 'get',
-                                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
+                                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/'+carteC+'/0',
                                                             success: function(data){
                                                                 alert("Effet du prêtre : effet terminé !");
                                                             }

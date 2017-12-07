@@ -21,7 +21,7 @@ oc_platform_jouer2:
         id: \d+
 
 oc_platform_piocher:
-    path:      /advert/piocher/{enemy}
+    path:      /advert/piocher/{enemy_check}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:piocher
     requirements:

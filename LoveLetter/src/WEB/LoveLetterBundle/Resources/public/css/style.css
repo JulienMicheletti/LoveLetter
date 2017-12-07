@@ -74,6 +74,15 @@ body {
     font-family: Sensation;
 }
 
+.regle2
+{
+    display: flex;
+    width: 30%;
+    height: 30%;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .element
 {
     display: flex;

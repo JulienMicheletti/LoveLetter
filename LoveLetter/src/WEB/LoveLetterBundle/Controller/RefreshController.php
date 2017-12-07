@@ -37,7 +37,7 @@ class RefreshController extends Controller
             } elseif ($taille == 2) {
                 $carte1 = $main->getCarte(0);
                 $carte2 = $main->getCarte(1);
-                $array = array("taille" => 2, "c1" => $carte1->getNom(), "c2" => $carte2);
+                $array = array("taille" => 2, "c1" => $carte1->getNom(), "c2" => $carte2->getNom());
             }
         } else {
             $array = array("taille" => 0, "c1" => null, "c2" => null);
@@ -48,12 +48,44 @@ class RefreshController extends Controller
     public function refreshAction(){
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
+        $manche = $em->getRepository('WEBLoveLetterBundle:manche')->find(10);
+        $def = $manche->getDefausse();
+        $defausse_array = array();
+        if ($manche->getnbUtilisateur()==2){
+            $defausse_array[1] = $def->getCarte(0)->getNom();
+            $defausse_array[2] = $def->getCarte(1)->getNom();
+            $defausse_array[3] = $def->getCarte(2)->getNom();
+            $defausse_array[4] = $def->getCarte(3)->getNom();
+        } else {
+            $carte = $em->getRepository('WEBLoveLetterBundle:carte')->find(99);
+            $carte = $carte->getNom();
+            $defausse_array[1] = $carte;
+            $defausse_array[2] = $carte;
+            $defausse_array[3] = $carte;
+            $defausse_array[4] = $carte;
+        }
         $array = array();
         $i = 0;
         for ($i; $i < $plateau->getNbElements(); $i++){
             $array[$i+1] = $plateau->getCarte($i)->getNom();
         }
         $reponse = new JsonResponse();
-        return $reponse->setData(array('taille' => $i, 'plateau' => $array));
+        return $reponse->setData(array('taille' => $i, 'plateau' => $array, 'defausse' => $defausse_array));
+    }
+
+    public function refreshMainAction(){
+        $em = $this->getDoctrine()->getManager();
+        $me = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $main = $me->getMain();
+        $taille = $main->getNbCartes();
+        if (taille == 0){
+            $array = array("taille" => 0, "c1" => null, "c2" => null);
+        } elseif ($taille == 1){
+            $array = array("taille" => 1, "c1" => $main->getCarte(0)->getNom(), "c2" => null);
+        } elseif ($taille == 2){
+            $array = array("taille" => 2, "c1" => $main->getCarte(0)->getNom(), "c2" => $main->getCarte(1)->getNom());
+        }
+        $response = new JsonResponse();
+        return $response->setData(array("tab"=>$array));
     }
 }
