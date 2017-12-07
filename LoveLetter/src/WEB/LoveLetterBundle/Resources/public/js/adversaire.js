@@ -27,7 +27,7 @@ $("document").ready(function(){
     function refresh_plateau(){
         $.ajax({
             type:'get',
-            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
             success: function (data){
                 var i = data.taille;
                 var plateau = "";

@@ -42,21 +42,42 @@ class EffetController extends Controller
         return $response->setData(array('card' => "garde", 'rep' => $rep));
     }
 
-    public function countAction(){
-        $rep = false;
+    public function princeAction($nomUtilisateur){
         $em = $this->getDoctrine()->getManager();
-        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        if ($utilisateur->getUsername() != $nomUtilisateur){
+            $user = $utilisateur;
+            $utilisateur = $manche->getOther($user);
+        }
+        $pioche = $manche->getPioche();
 
         $main = $utilisateur->getMain();
-        $listCartes = $main->getCartes();
-        foreach ($listCartes as $carte){
-            if ($carte->getNom() == "roi" || $carte->getNom() == "prince"){
-                $rep = true;
-            }
+        $carteSuppr = $main->getCarte(0);
+        if ($carteSuppr != null){
+            $main->removeCarte($carteSuppr);
         }
+        $nomCarte = "default";
+        $em->persist($main);
+        $em->flush();
+
+        $nomCarteSuppr = $carteSuppr->getNom();
+        $nb = rand(1, 8);
+        if ($pioche->getNbElements() != 0) {
+            while ($pioche->getCategorie($nb) == null) {
+                $nb = rand(1, 8);
+            }
+            $carte = $pioche->getCategorie($nb);
+            $nomCarte = $carte->getNom();
+            $pioche->removeCarte($carte);
+            $main->addCarte($carte);
+        }
+        $em->persist($main);
+        $em->persist($pioche);
+        $em->flush();
+        $rep = true;
         $response = new JsonResponse();
-        return $response->setData(array('card' => "comtesse", 'rep' => $rep));
+        return $response->setData(array('card' => "prince", 'repPrince' => $rep, 'nouvelleCarte' => $nomCarte, 'ancienneCarte' => $nomCarteSuppr, 'user' => $utilisateur->getUsername()));
     }
 }

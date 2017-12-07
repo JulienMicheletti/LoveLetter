@@ -62,15 +62,15 @@ oc_platform_menu:
     requirements:
         id: \d+
 
-oc_platform_countess:
-    path:      /advert/countess
+oc_platform_prince:
+    path:      /advert/prince/{nomUtilisateur}
     defaults:
-        _controller: WEBLoveLetterBundle:Effet:countess
+        _controller: WEBLoveLetterBundle:Effet:prince
     requirements:
         id: \d+
 
 oc_platform_guard:
-    path:      /advert/guard/{carteA}/{carteD}
+    path:      /advert/guard/{carteD}
     defaults:
         _controller: WEBLoveLetterBundle:Effet:guard
     requirements:

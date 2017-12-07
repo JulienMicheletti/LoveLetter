@@ -139,7 +139,7 @@ class AdvertController extends Controller
            }
        }
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me));
     }
     public function poserAction($idcarte, $carte)
     {
@@ -147,16 +147,21 @@ class AdvertController extends Controller
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
 
-        $carteA = "princesse";
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
-        $plateau->addCarte($card);
-        $main->removeCarte($card);
+        if ($card != null){
+            $plateau->addCarte($card);
+            $main->removeCarte($card);
+        }
+
+        $em->persist($main);
         $em->persist($plateau);
         $em->flush();
 
         if ($idcarte == 1){
-            return $this->redirectToRoute('oc_platform_guard', array('carteA' => $carteA, 'carteD' => $carte));
+            return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
+        } else if ($idcarte == 5){
+            return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
         }
     }
 
