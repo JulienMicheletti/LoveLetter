@@ -1,4 +1,6 @@
 $("document").ready(function(){
+    refresh_plateau();
+    refresh_adversaire2();
     function refresh_adversaire2(){
         $.ajax({
             type:'get',
@@ -14,8 +16,8 @@ $("document").ready(function(){
                 }
                 if (data.tab.taille == 2){
                     string += "<a><img src=\"";
-                    string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
-                    string += data.tab.c2 + ".png";
+                    string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/pioche.png";
+                 //   string += data.tab.c2 + ".png";
                     string += "\"></a>";
                 }
                 $(".adversaire").html(string);
@@ -43,7 +45,6 @@ $("document").ready(function(){
             }
         })
     }
-
     setInterval(refresh_adversaire2, 1500);
     setInterval(refresh_plateau, 1000);
 });

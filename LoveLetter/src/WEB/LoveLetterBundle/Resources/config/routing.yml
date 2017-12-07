@@ -21,7 +21,7 @@ oc_platform_jouer2:
         id: \d+
 
 oc_platform_piocher:
-    path:      /advert/piocher
+    path:      /advert/piocher/{enemy}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:piocher
     requirements:
@@ -44,7 +44,7 @@ oc_platform_gestion:
 oc_platform_adversaire2:
     path:      /advert/adversaire2
     defaults:
-        _controller: WEBLoveLetterBundle:Advert:adversaire2
+        _controller: WEBLoveLetterBundle:Refresh:adversaire2
     requirements:
         id: \d+
 
@@ -80,5 +80,12 @@ oc_platform_king:
     path:      /advert/king
     defaults:
         _controller: WEBLoveLetterBundle:Effet:king
+    requirements:
+        id: \d+
+
+oc_platform_pretre:
+    path:      /advert/pretre/{nomEnemy}/{checkvisible}
+    defaults:
+        _controller: WEBLoveLetterBundle:Effet:pretre
     requirements:
         id: \d+

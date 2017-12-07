@@ -30,7 +30,10 @@ class RefreshController extends Controller
                 $array = array("taille" => 0, "c1" => null, "c2" => null);
             } elseif ($taille == 1) {
                 $carte1 = $main->getCarte(0);
-                $array = array("taille" => 1, "c1" => $carte1->getNom(), "c2" => null);
+                if ($main->getVisible() == 1)
+                    $array = array("taille" => 1, "c1" => $carte1->getNom(), "c2" => null);
+                else
+                    $array = array("taille" => 1, "c1" => "pioche", "c2" => null);
             } elseif ($taille == 2) {
                 $carte1 = $main->getCarte(0);
                 $carte2 = $main->getCarte(1);
