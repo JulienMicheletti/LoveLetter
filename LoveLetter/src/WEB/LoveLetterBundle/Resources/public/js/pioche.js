@@ -93,9 +93,12 @@ $("document").ready(function(){
                                     alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                 }
                                 if (data.repPrince == true){
-                                    if (data.user == me)
+                                    if (data.user == me) {
                                         alert("Effet du prince : Votre main a été remplacée");
-                                    piocher(".adversaire");
+                                        piocher(".main", 0);
+                                    }
+                                    else
+                                        piocher(".adversaire", 1);
                                 }
                                 if (data.carte == "prêtre"){
                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -160,9 +163,12 @@ $("document").ready(function(){
                                                     alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                                 }
                                                 if (data.repPrince == true){
-                                                    if (data.user == me)
+                                                    if (data.user == me) {
                                                         alert("Effet du prince : Votre main a été remplacée");
-                                                    piocher(".adversaire");
+                                                        piocher(".main", 0);
+                                                    }
+                                                    else
+                                                        piocher(".adversaire", 1);
                                                 }
                                                 if (data.carte == "prêtre"){
                                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -192,13 +198,13 @@ $("document").ready(function(){
             }
         });
     });
-    function piocher(nomClass){
+    function piocher(nomClass, id){
         var finalstring;
         var carteC = "defaultCarte";
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/1',
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/'+id,
             beforeSend: function () {
                 console.log("Pioche du prince ..");
             },
@@ -209,13 +215,14 @@ $("document").ready(function(){
                     console.log("PRINCE :"+data.carte);
                     finalstring = "<a class=\"" + data.carte + "\"><img src=\"";
                     finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                    finalstring += "pioche" + ".png";
+                    finalstring +=  data.carte + ".png";
                     finalstring += "\"></a>";
                     console.log(data.rep);
                     if (data.repComtesse == true) {
                         $(".comtesse").remove();
                     }
                     var idCarte = data.id;
+                    var typeCarte = data.type;
                     var plateaustring;
                     var users = data.utilisateurs;
                     var me = data.me;
@@ -251,7 +258,7 @@ $("document").ready(function(){
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC,
+                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 console.log(data.carte);
                                 $("." + data.card + "").remove();
@@ -264,9 +271,12 @@ $("document").ready(function(){
                                     alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                 }
                                 if (data.repPrince == true){
-                                    if (data.user == me)
+                                    if (data.user == me) {
                                         alert("Effet du prince : Votre main a été remplacée");
-                                    piocher(".adversaire");
+                                        piocher(".main", 0);
+                                    }
+                                    else
+                                        piocher(".adversaire", 1);
                                 }
                                 if (data.carte == "prêtre"){
                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -316,11 +326,6 @@ $("document").ready(function(){
                                             success: function (data) {
                                                 console.log(data.carteA);
                                                 console.log(data.carteD);
-                                                /*plateaustring = "<a><img src=\"";
-                                                    plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                                                    plateaustring += data.card + ".png";
-                                                    plateaustring += "\"></a>";
-                                                    $(".plateau").append(plateaustring);*/
                                                 $("." + data.card + "").remove();
                                                 if (typeCarte == 1 && data.rep == true){
                                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
@@ -331,9 +336,12 @@ $("document").ready(function(){
                                                     alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                                 }
                                                 if (data.repPrince == true){
-                                                    if (data.user == me)
+                                                    if (data.user == me) {
                                                         alert("Effet du prince : Votre main a été remplacée");
-                                                    piocher(".adversaire");
+                                                        piocher(".main", 0);
+                                                    }
+                                                    else
+                                                        piocher(".adversaire", 1);
                                                 }
                                                 if (data.carte == "prêtre"){
                                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -357,7 +365,7 @@ $("document").ready(function(){
                             }
                         });
                     })
-                    $(nomClass).append(newstring);
+                    $(nomClass).html(newstring);
                     console.log(newstring);
                 }
             }
