@@ -36,6 +36,24 @@ class EffetController extends Controller
             $rep = true;
         }
         $response = new JsonResponse();
-        return $response->setData(array('card' => "garde", 'rep' => $rep, "carteA" => $carteA, "carteD" => $carteD));
+        return $response->setData(array('card' => "garde", 'rep' => $rep));
+    }
+
+    public function countAction(){
+        $rep = false;
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $manche = $partie->getManche(10);
+
+        $main = $utilisateur->getMain();
+        $listCartes = $main->getCartes();
+        foreach ($listCartes as $carte){
+            if ($carte->getNom() == "roi" || $carte->getNom() == "prince"){
+                $rep = true;
+            }
+        }
+        $response = new JsonResponse();
+        return $response->setData(array('card' => "comtesse", 'rep' => $rep));
     }
 }

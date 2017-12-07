@@ -62,6 +62,13 @@ oc_platform_menu:
     requirements:
         id: \d+
 
+oc_platform_countess:
+    path:      /advert/countess
+    defaults:
+        _controller: WEBLoveLetterBundle:Effet:countess
+    requirements:
+        id: \d+
+
 oc_platform_guard:
     path:      /advert/guard/{carteA}/{carteD}
     defaults:

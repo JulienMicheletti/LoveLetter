@@ -14,6 +14,10 @@ $("document").ready(function(){
                 finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                 finalstring += data.carte + ".png";
                 finalstring += "\"></a>";
+                console.log(data.rep);
+                if (data.repComtesse == true){
+                    $(".comtesse").remove();
+                }
                 var idCarte = data.id;
                 var plateaustring;
                 var users = data.utilisateurs;
