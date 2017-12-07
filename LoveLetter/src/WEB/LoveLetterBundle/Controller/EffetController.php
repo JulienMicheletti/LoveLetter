@@ -142,10 +142,12 @@ class EffetController extends Controller
         $em->persist($main);
         $em->flush();
 
-      //  if ($nomCarteSuppr == "princesse" && $nomUtilisateur == "bob"){
-         //   $alertPrincesse = true;
-           // $utilisateur->setVictoire(0);
-       // }
+       if ($nomCarteSuppr == "princesse" && $nomUtilisateur == $user->getUsername()){
+            $alertPrincesse = true;
+            $user->setVictoire(0);
+        } else if ($nomCarteSuppr == "princesse" && $nomUtilisateur == $utilisateur->getUsername()){
+           $utilisateur->setVictoire(0);
+       }
         /*$nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {
