@@ -21,6 +21,29 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class EffetController extends Controller
 {
+    public function pretreAction($nomEnemy, $checkvisible){
+        $em = $this->getDoctrine()->getManager();
+        if ($checkvisible == 0) {
+            $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+            $manche = $partie->getManche(10);
+            $enemy = $manche->getUserByName($nomEnemy);
+            $main = $enemy->getMain();
+            $main->setVisible(0);
+            $em->persist($main);
+            $em->flush();
+
+        } else {
+            $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+            $manche = $partie->getManche(10);
+            $enemy = $manche->getUserByName($nomEnemy);
+            $main = $enemy->getMain();
+            $main->setVisible(1);
+            $em->persist($main);
+            $em->flush();
+        }
+        $response = new JsonResponse();
+        return $response->setData(array('carte' => "prêtre", "rep" => "ok"));
+    }
     public function kingAction(){
         $em = $this->getDoctrine()->getManager();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
@@ -123,7 +146,7 @@ class EffetController extends Controller
             $alertPrincesse = true;
             $utilisateur->setVictoire(0);
         }
-        $nb = rand(1, 8);
+        /*$nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {
                 $nb = rand(1, 8);
@@ -133,7 +156,7 @@ class EffetController extends Controller
             $pioche->removeCarte($carte);
             $id = $carte->getId();
             $main->addCarte($carte);
-        }
+        }*/
         $em->persist($main);
         $em->persist($pioche);
         $em->flush();

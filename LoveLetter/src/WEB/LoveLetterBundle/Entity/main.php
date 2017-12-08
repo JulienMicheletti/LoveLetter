@@ -25,6 +25,11 @@ class main
      */
     private $cartes;
 
+    /**
+     * @ORM\Column(name="visible", type="integer", nullable=true)
+     */
+    private $visible;
+
     public function __construct()
     {
         $this->cartes = new ArrayCollection();
@@ -104,6 +109,14 @@ class main
     {
         $this->id = $id;
         return $this;
+    }
+
+    public function setVisible($var){
+        $this->visible = $var;
+    }
+
+    public function getVisible(){
+        return $this->visible;
     }
 }
 

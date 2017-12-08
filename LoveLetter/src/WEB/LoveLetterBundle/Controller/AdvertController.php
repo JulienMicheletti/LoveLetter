@@ -79,7 +79,7 @@ class AdvertController extends Controller
         $em->flush();
         return $this->render('WEBLoveLetterBundle:Advert:jouer2.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $cartedef, 'regle' => $array));
     }
-    public function piocherAction()
+    public function piocherAction($enemy)
     {
         global $finManche;
         global $carte;
@@ -90,13 +90,22 @@ class AdvertController extends Controller
         $pioche = $manche->getPioche();
         $img = null;
         $id = null;
+        $other = null;
+        $rep = false;
+        $me = null;
         $type = null;
         $other = null;
         $rep = null;
         $me = null;
         $check = 0;
        if ($manche->getnbUtilisateur() == 2) {
-           $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+           if ($enemy == 0)
+               $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+           else {
+               $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+               $enemy = $manche->getOther($utilisateur);
+               $utilisateur = $enemy;
+           }
            if ($utilisateur->getVictoire() == 0){
                $img = null;
                $check = 2;
@@ -169,8 +178,13 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_king', array());
         } elseif ($typeCarte == 5){
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
+<<<<<<< HEAD
         } else if ($typeCarte == 3){
             return $this->redirectToRoute('oc_platform_baron');
+=======
+        } elseif ($typeCarte == 2){
+            return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
+>>>>>>> 178892d0e9cc90d7518fd2b426322b5c11289965
         }
     }
 
@@ -188,6 +202,7 @@ class AdvertController extends Controller
         if ($main == null){
             $main = new main();
             $main->setId($this->getUser());
+            $main->setVisible(0);
             $em->persist($main);
             $em->flush();
         }

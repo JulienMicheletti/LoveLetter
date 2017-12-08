@@ -94,6 +94,15 @@ class manche
         return null;
     }
 
+    public function getUserByName($username){
+        foreach ($this->utilisateur as $user){
+            if ($user->getUsername() == $username){
+                return $user;
+            }
+        }
+        return null;
+    }
+
     /**
      * Set id
      *
