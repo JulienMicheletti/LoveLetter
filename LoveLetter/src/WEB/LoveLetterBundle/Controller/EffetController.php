@@ -135,17 +135,17 @@ class EffetController extends Controller
         if ($carteSuppr != null){
             $main->removeCarte($carteSuppr);
             $defausse->addCarte($carteSuppr);
+            $nomCarteSuppr = $carteSuppr->getNom();
         }
         $nomCarte = "default";
         $id = 0;
         $em->persist($main);
         $em->flush();
 
-        $nomCarteSuppr = $carteSuppr->getNom();
-        if ($nomCarteSuppr == "princesse"){
-            $alertPrincesse = true;
-            $utilisateur->setVictoire(0);
-        }
+      //  if ($nomCarteSuppr == "princesse" && $nomUtilisateur == "bob"){
+         //   $alertPrincesse = true;
+           // $utilisateur->setVictoire(0);
+       // }
         /*$nb = rand(1, 8);
         if ($pioche->getNbElements() != 0) {
             while ($pioche->getCategorie($nb) == null) {

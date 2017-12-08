@@ -27,21 +27,21 @@ class carte
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=20, unique=true)
+     * @ORM\Column(name="nom", type="string", length=20)
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="effet", type="string", length=200, unique=true)
+     * @ORM\Column(name="effet", type="string", length=200)
      */
     private $effet;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=200, unique=true)
+     * @ORM\Column(name="image", type="string", length=200)
      */
     private $image;
 

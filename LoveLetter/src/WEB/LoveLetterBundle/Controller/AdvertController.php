@@ -178,13 +178,10 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_king', array());
         } elseif ($typeCarte == 5){
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
-<<<<<<< HEAD
-        } else if ($typeCarte == 3){
-            return $this->redirectToRoute('oc_platform_baron');
-=======
         } elseif ($typeCarte == 2){
             return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
->>>>>>> 178892d0e9cc90d7518fd2b426322b5c11289965
+        } else if ($typeCarte == 3){
+            return $this->redirectToRoute('oc_platform_baron');
         }
     }
 
