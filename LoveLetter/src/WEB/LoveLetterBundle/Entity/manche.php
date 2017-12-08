@@ -29,6 +29,11 @@ class manche
     private $gagnant;
 
     /**
+     * @ORM\Column(name="tour", type="integer", nullable=true)
+     */
+    private $tour;
+
+    /**
      * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\defausse")
      */
     private $defausse;
@@ -42,6 +47,14 @@ class manche
      * @ORM\ManyToMany(targetEntity="WEB\LoveLetterBundle\Entity\utilisateur", cascade={"persist"})
      */
     private $utilisateur;
+
+    public function setTour($i){
+        $this->tour = $i;
+    }
+
+    public function getTour(){
+        return $this->tour;
+    }
 
     // Comme la propriété $categories doit être un ArrayCollection,
     // On doit la définir dans un constructeur :
