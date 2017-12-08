@@ -10,8 +10,8 @@ $("document").ready(function(){
                 console.log("Pioche ...");
             },
             success: function (data) {
-                if (data.fin == true){
-                    alert("fin de la manche");
+                if (data.fin == true) {
+                    alert("fin de la manche, piochez une carte pour délencher la suivante");
                 }else if (data.check == 2) {
                     alert("Vous avez perdu pour cette manche, vous ne pouvez plus jouer, ni piocher !");
                 } else {

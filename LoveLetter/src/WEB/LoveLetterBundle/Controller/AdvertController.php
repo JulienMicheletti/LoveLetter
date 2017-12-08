@@ -92,7 +92,6 @@ class AdvertController extends Controller
 
     public function piocherAction($enemy_check)
     {
-        global $finManche;
         global $carte;
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
@@ -110,6 +109,9 @@ class AdvertController extends Controller
         $me = null;
         $fin = false;
         $check = 0;
+        if ($manche->getEnd() == 1){
+            return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2));
+        }
         if ($manche->getnbUtilisateur() == 2) {
             if ($enemy_check == 0)
                 $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
@@ -131,38 +133,41 @@ class AdvertController extends Controller
                     $carte = $pioche->getCategorie($nb);
                     $img = $carte->getNom();
                     $pioche->removeCarte($carte);
+                    $other = $manche->getOther($utilisateur)->getUsername();
+                    $me = $utilisateur->getUsername();
+                    $main = $utilisateur->getMain();
+                    $main->addCarte($carte);
+                    $id = $carte->getId();
+                    $type = $carte->getType();
+                    $rep = false;
+                    $listCartes = $main->getCartes();
+                    if ($img == "comtesse") {
+                        foreach ($listCartes as $c) {
+                            if ($c->getNom() == "roi" || $c->getNom() == "prince") {
+                                $rep = true;
+                                $main->removeCarte($carte);
+                                $defausse->addCarte($carte);
+                            }
+                        }
+                    } else if ($img == "roi" || $img == "prince") {
+                        foreach ($listCartes as $carte) {
+                            if ($carte->getNom() == "comtesse") {
+                                $rep = true;
+                                $main->removeCarte($carte);
+                                $defausse->addCarte($carte);
+                            }
+                        }
+                    }
+                    $em->persist($main);
+                    $em->persist($pioche);
+                    $em->flush();
                 } else {
                     $img = null;
                     $fin = true;
+                    $manche->setEnd(1);
+                    $em->persist($manche);
+                    $em->flush();
                 }
-                $other = $manche->getOther($utilisateur)->getUsername();
-                $me = $utilisateur->getUsername();
-                $main = $utilisateur->getMain();
-                $main->addCarte($carte);
-                $id = $carte->getId();
-                $type = $carte->getType();
-                $rep = false;
-                $listCartes = $main->getCartes();
-                if ($img == "comtesse") {
-                    foreach ($listCartes as $c) {
-                        if ($c->getNom() == "roi" || $c->getNom() == "prince") {
-                            $rep = true;
-                            $main->removeCarte($carte);
-                            $defausse->addCarte($carte);
-                        }
-                    }
-                } else if ($img == "roi" || $img == "prince") {
-                    foreach ($listCartes as $carte) {
-                        if ($carte->getNom() == "comtesse") {
-                            $rep = true;
-                            $main->removeCarte($carte);
-                            $defausse->addCarte($carte);
-                        }
-                    }
-                }
-                $em->persist($main);
-                $em->persist($pioche);
-                $em->flush();
             }
         }
         if ($enemy_check == 1)
@@ -222,6 +227,7 @@ class AdvertController extends Controller
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
         $manche->setTour(1);
+        $manche->setEnd(0);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         if ($main == null) {

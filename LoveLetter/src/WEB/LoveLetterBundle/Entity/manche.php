@@ -34,6 +34,11 @@ class manche
     private $tour;
 
     /**
+     * @ORM\Column(name="end", type="integer", nullable=true)
+     */
+    private $end;
+
+    /**
      * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\defausse")
      */
     private $defausse;
@@ -54,6 +59,14 @@ class manche
 
     public function getTour(){
         return $this->tour;
+    }
+
+    public function setEnd($i){
+        $this->end = $i;
+    }
+
+    public function getEnd(){
+        return $this->end;
     }
 
     // Comme la propriété $categories doit être un ArrayCollection,
