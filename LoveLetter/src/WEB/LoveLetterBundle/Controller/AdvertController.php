@@ -152,6 +152,8 @@ class AdvertController extends Controller
                $em->flush();
            }
        }
+       if ($enemy == 1)
+           $img = 'pioche';
         $response = new JsonResponse();
         return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type));
     }
@@ -178,10 +180,10 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_king', array());
         } elseif ($typeCarte == 5){
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
-        } elseif ($typeCarte == 2){
-            return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
         } else if ($typeCarte == 3){
             return $this->redirectToRoute('oc_platform_baron');
+        } elseif ($typeCarte == 2){
+            return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
         }
     }
 

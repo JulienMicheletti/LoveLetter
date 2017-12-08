@@ -93,9 +93,12 @@ $("document").ready(function(){
                                     alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                 }
                                 if (data.repPrince == true){
-                                    if (data.user == me)
+                                    if (data.user == me) {
                                         alert("Effet du prince : Votre main a été remplacée");
-                                    piocher(".adversaire");
+                                        piocher(".main", 0);
+                                    }
+                                    else
+                                        piocher(".adversaire", 1);
                                 }
                                 if (data.carte == "prêtre"){
                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -156,10 +159,16 @@ $("document").ready(function(){
                                                 }else if (typeCarte == 1 && data.rep == false){
                                                     alert("Effet garde : Vous vous êtes trompé");
                                                 }
+                                                if (data.alertPrincesse == true){
+                                                    alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
+                                                }
                                                 if (data.repPrince == true){
-                                                    if (data.user == me)
+                                                    if (data.user == me) {
                                                         alert("Effet du prince : Votre main a été remplacée");
-                                                    piocher(".adversaire");
+                                                        piocher(".main", 0);
+                                                    }
+                                                    else
+                                                        piocher(".adversaire", 1);
                                                 }
                                                 if (data.carte == "prêtre"){
                                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -189,13 +198,13 @@ $("document").ready(function(){
             }
         });
     });
-    function piocher(nomClass){
+    function piocher(nomClass, id){
         var finalstring;
         var carteC = "defaultCarte";
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/1',
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/'+id,
             beforeSend: function () {
                 console.log("Pioche du prince ..");
             },
@@ -206,31 +215,32 @@ $("document").ready(function(){
                     console.log("PRINCE :"+data.carte);
                     finalstring = "<a class=\"" + data.carte + "\"><img src=\"";
                     finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                    finalstring += "pioche" + ".png";
+                    finalstring +=  data.carte + ".png";
                     finalstring += "\"></a>";
                     console.log(data.rep);
                     if (data.repComtesse == true) {
                         $(".comtesse").remove();
                     }
                     var idCarte = data.id;
+                    var typeCarte = data.type;
                     var plateaustring;
                     var users = data.utilisateurs;
                     var me = data.me;
                     var newstring = $(finalstring).on('click', function () {
-                        if (idCarte == 1) {
+                        if (typeCarte == 1) {
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                             carteC = prompt("Devinez la carte que le joueur possède", "");
-                        } else if (idCarte == 6) {
+                        } else if (typeCarte == 6) {
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
-                        } else if (idCarte == 5){
+                        } else if (typeCarte == 5){
                             console.log(me);
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me){
@@ -238,7 +248,7 @@ $("document").ready(function(){
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                             carteC = joueur;
-                        } else if (idCarte == 2){
+                        } else if (typeCarte == 2){
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me){
                                 alert("Ce joueur n'existe pas !");
@@ -248,24 +258,25 @@ $("document").ready(function(){
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC,
+                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 console.log(data.carte);
-                                /*plateaustring = "<a><img src=\"";
-                                plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                                plateaustring += data.card + ".png";
-                                plateaustring += "\"></a>";
-                                $(".plateau").append(plateaustring);*/
                                 $("." + data.card + "").remove();
-                                if (idCarte == 1 && data.rep == true){
+                                if (typeCarte == 1 && data.rep == true){
                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
-                                }else if (idCarte == 1 && data.rep == false){
+                                }else if (typeCarte == 1 && data.rep == false){
                                     alert("Effet garde : Vous vous êtes trompé");
                                 }
+                                if (data.alertPrincesse == true){
+                                    alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
+                                }
                                 if (data.repPrince == true){
-                                    if (data.user == me)
+                                    if (data.user == me) {
                                         alert("Effet du prince : Votre main a été remplacée");
-                                    piocher(".adversaire");
+                                        piocher(".main", 0);
+                                    }
+                                    else
+                                        piocher(".adversaire", 1);
                                 }
                                 if (data.carte == "prêtre"){
                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -286,14 +297,14 @@ $("document").ready(function(){
                                     mainstring += data.rep.nom + ".png";
                                     mainstring += "\"></a>";
                                     newstring = $(mainstring).on('click', function () {
-                                        if (idCarte == 1) {
+                                        if (typeCarte == 1) {
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me) {
                                                 alert("Ce joueur n'existe pas !");
                                                 joueur = prompt("Quel joueur ciblez vous ?");
                                             }
                                             carteC = prompt("Devinez la carte que le joueur possède", "");
-                                        } else if (idCarte == 5){
+                                        } else if (typeCarte == 5){
                                             console.log(me);
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me){
@@ -301,7 +312,7 @@ $("document").ready(function(){
                                                 joueur = prompt("Quel joueur ciblez vous ?");
                                             }
                                             carteC = joueur;
-                                        } else if (idCarte == 2){
+                                        } else if (typeCarte == 2){
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me){
                                                 alert("Ce joueur n'existe pas !");
@@ -311,25 +322,26 @@ $("document").ready(function(){
                                         }
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC,
+                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                             success: function (data) {
                                                 console.log(data.carteA);
                                                 console.log(data.carteD);
-                                                /*plateaustring = "<a><img src=\"";
-                                                    plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                                                    plateaustring += data.card + ".png";
-                                                    plateaustring += "\"></a>";
-                                                    $(".plateau").append(plateaustring);*/
                                                 $("." + data.card + "").remove();
-                                                if (idCarte == 1 && data.rep == true){
+                                                if (typeCarte == 1 && data.rep == true){
                                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
-                                                }else if (idCarte == 1 && data.rep == false){
+                                                }else if (typeCarte == 1 && data.rep == false){
                                                     alert("Effet garde : Vous vous êtes trompé");
                                                 }
+                                                if (data.alertPrincesse == true){
+                                                    alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
+                                                }
                                                 if (data.repPrince == true){
-                                                    if (data.user == me)
+                                                    if (data.user == me) {
                                                         alert("Effet du prince : Votre main a été remplacée");
-                                                    piocher(".adversaire");
+                                                        piocher(".main", 0);
+                                                    }
+                                                    else
+                                                        piocher(".adversaire", 1);
                                                 }
                                                 if (data.carte == "prêtre"){
                                                     alert("Effet du prêtre : La main adverse va être affiché pendant 5 secondes !");
@@ -346,14 +358,14 @@ $("document").ready(function(){
                                             }
                                         });
                                     })
-                                    $(nomClass).html(newstring);
+                                    $(".main").html(newstring);
                                     console.log(newstring);
                                     alert("Effet du Roi : Mains échangées !");
                                 }
                             }
                         });
                     })
-                    $(nomClass).append(newstring);
+                    $(nomClass).html(newstring);
                     console.log(newstring);
                 }
             }
