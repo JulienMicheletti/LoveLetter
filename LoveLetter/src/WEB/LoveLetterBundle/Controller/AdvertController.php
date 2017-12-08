@@ -108,6 +108,7 @@ class AdvertController extends Controller
         $other = null;
         $rep = null;
         $me = null;
+        $fin = false;
         $check = 0;
         if ($manche->getnbUtilisateur() == 2) {
             if ($enemy_check == 0)
@@ -132,6 +133,7 @@ class AdvertController extends Controller
                     $pioche->removeCarte($carte);
                 } else {
                     $img = null;
+                    $fin = true;
                 }
                 $other = $manche->getOther($utilisateur)->getUsername();
                 $me = $utilisateur->getUsername();
@@ -166,7 +168,7 @@ class AdvertController extends Controller
         if ($enemy_check == 1)
             $img = 'pioche';
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type, 'fin' => $fin));
     }
 
     public function poserAction($idcarte, $carte, $typeCarte)
@@ -174,9 +176,17 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $manche = $partie->getManche(10);
+
 
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
+        if ($manche->getTour() == 1){
+            $manche->setTour(2);
+        } else if ($manche->getTour() == 2){
+            $manche->setTour(1);
+        }
         if ($card != null) {
             $plateau->addCarte($card);
             $main->removeCarte($card);
@@ -211,6 +221,7 @@ class AdvertController extends Controller
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
+        $manche->setTour(1);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         if ($main == null) {

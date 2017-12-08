@@ -10,7 +10,9 @@ $("document").ready(function(){
                 console.log("Pioche ...");
             },
             success: function (data) {
-                if (data.check == 2) {
+                if (data.fin == true){
+                    alert("fin de la manche");
+                }else if (data.check == 2) {
                     alert("Vous avez perdu pour cette manche, vous ne pouvez plus jouer, ni piocher !");
                 } else {
                     console.log(data.carte);
