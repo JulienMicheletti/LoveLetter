@@ -28,7 +28,7 @@ oc_platform_piocher:
         id: \d+
 
 oc_platform_poser:
-    path:     /advert/poser/{idcarte}/{carte}
+    path:     /advert/poser/{idcarte}/{carte}/{typeCarte}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:poser
     requirements:

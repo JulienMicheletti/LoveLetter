@@ -23,24 +23,25 @@ $("document").ready(function(){
                         $(".comtesse").remove();
                     }
                     var idCarte = data.id;
+                    var typeCarte = data.type;
                     var plateaustring;
                     var users = data.utilisateurs;
                     var me = data.me;
                     var newstring = $(finalstring).on('click', function () {
-                        if (idCarte == 1) {
+                        if (typeCarte == 1) {
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                             carteC = prompt("Devinez la carte que le joueur possède", "");
-                        } else if (idCarte == 6) {
+                        } else if (typeCarte == 6) {
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
-                        } else if (idCarte == 5){
+                        } else if (typeCarte == 5){
                             console.log(me);
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me){
@@ -51,7 +52,7 @@ $("document").ready(function(){
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC,
+                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 console.log(data.rep);
                                 /*plateaustring = "<a><img src=\"";
@@ -60,10 +61,14 @@ $("document").ready(function(){
                                 plateaustring += "\"></a>";
                                 $(".plateau").append(plateaustring);*/
                                 $("." + data.card + "").remove();
-                                if (idCarte == 1 && data.rep == true){
+                                if (typeCarte == 1 && data.rep == true){
                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
-                                }else if (idCarte == 1 && data.rep == false){
+                                }else if (typeCarte == 1 && data.rep == false){
                                     alert("Effet garde : Vous vous êtes trompé");
+                                }
+                                console.log(data.ancienneCarte);
+                                if (data.alertPrincesse == true){
+                                    alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                                 }
                                 if (data.repPrince == true && data.user == me){
                                     alert("Effet du prince : Votre main a été remplacée");
@@ -83,7 +88,7 @@ $("document").ready(function(){
                                     mainstring += data.rep.nom + ".png";
                                     mainstring += "\"></a>";
                                     newstring = $(mainstring).on('click', function () {
-                                        if (idCarte == 1) {
+                                        if (typeCarte == 1) {
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me) {
                                                 alert("Ce joueur n'existe pas !");
@@ -93,15 +98,15 @@ $("document").ready(function(){
                                         }
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC,
+                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                             success: function (data) {
                                                 console.log(data.carteA);
                                                 console.log(data.carteD);
-                                            /*plateaustring = "<a><img src=\"";
-                                                plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
-                                                plateaustring += data.card + ".png";
-                                                plateaustring += "\"></a>";
-                                                $(".plateau").append(plateaustring);*/
+                                                /*plateaustring = "<a><img src=\"";
+                                                    plateaustring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
+                                                    plateaustring += data.card + ".png";
+                                                    plateaustring += "\"></a>";
+                                                    $(".plateau").append(plateaustring);*/
                                                 $("." + data.card + "").remove();
                                             }
                                         });

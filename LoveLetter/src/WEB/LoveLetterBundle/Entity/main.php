@@ -60,9 +60,19 @@ class main
         return $this->cartes->get($i);
     }
 
-    public function getIdCarte($i){
+    public function getIdCarte($i)
+    {
         foreach ($this->cartes as $carte) {
-            if ($carte->getId() == $i){
+            if ($carte->getId() == $i) {
+                return $carte;
+            }
+        }
+        return null;
+    }
+
+    public function getTypeCarte($i){
+        foreach ($this->cartes as $carte) {
+            if ($carte->getType() == $i){
                 return $carte;
             }
         }

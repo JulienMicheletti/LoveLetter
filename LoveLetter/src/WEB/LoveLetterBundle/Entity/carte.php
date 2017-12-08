@@ -20,6 +20,11 @@ class carte
     protected $id;
 
     /**
+     * @ORM\Column(name="type", type="integer", nullable=true)
+     */
+    protected $type;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=20, unique=true)
@@ -63,6 +68,10 @@ class carte
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getType(){
+        return $this->type;
     }
 
     /**
