@@ -55,6 +55,13 @@ oc_platform_refresh:
     requirements:
         id: \d+
 
+oc_platform_refreshMain:
+    path:      /advert/refreshMain
+    defaults:
+        _controller: WEBLoveLetterBundle:Refresh:refreshMain
+    requirements:
+        id: \d+
+
 oc_platform_menu:
     path:      /advert/menu/{id}
     defaults:
@@ -70,7 +77,7 @@ oc_platform_prince:
         id: \d+
 
 oc_platform_baron:
-    path:      /advert/prince
+    path:      /advert/baron
     defaults:
         _controller: WEBLoveLetterBundle:Effet:baron
     requirements:

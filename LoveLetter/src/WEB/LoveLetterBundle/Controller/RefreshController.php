@@ -76,16 +76,28 @@ class RefreshController extends Controller
     public function refreshMainAction(){
         $em = $this->getDoctrine()->getManager();
         $me = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-        $main = $me->getMain();
-        $taille = $main->getNbCartes();
-        if (taille == 0){
-            $array = array("taille" => 0, "c1" => null, "c2" => null);
-        } elseif ($taille == 1){
-            $array = array("taille" => 1, "c1" => $main->getCarte(0)->getNom(), "c2" => null);
-        } elseif ($taille == 2){
-            $array = array("taille" => 2, "c1" => $main->getCarte(0)->getNom(), "c2" => $main->getCarte(1)->getNom());
+        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
+        $manche = $em->getRepository('WEBLoveLetterBundle:manche')->find(10);
+        $check = 0;
+        $user = null;
+        $array = array();
+        if ($manche->getnbUtilisateur() == 2) {
+            $main = $me->getMain();
+            $taille = $main->getNbCartes();
+            $user = $manche->getOther($me)->getUsername();
+            $me = $me->getUsername();
+            if ($taille == 0) {
+                $array = array("taille" => 0, "c1" => null, "c2" => null, "type1" => null, "type2" => null);
+            } elseif ($taille == 1) {
+                $id = $main->getCarte(0)->getId();
+                $array = array("taille" => 1, "c1" => $main->getCarte(0)->getNom(), "c2" => null, "type1" => $main->getCarte(0)->getType(), "type2" => null, 'idCarte1' => $id, 'idCarte2' => null);
+            } elseif ($taille == 2) {
+                $id = $main->getCarte(0)->getId();
+                $id2 = $main->getCarte(1)->getId();
+                $array = array("taille" => 2, "c1" => $main->getCarte(0)->getNom(), "c2" => $main->getCarte(1)->getNom(), "type1" => $main->getCarte(0)->getType(), "type2" => $main->getCarte(1)->getType(), 'idCarte1' => $id, 'idCarte2' => $id2);
+            }
         }
         $response = new JsonResponse();
-        return $response->setData(array("tab"=>$array));
+        return $response->setData(array("user"=>$user, "me" => $me, "tab"=>$array));
     }
 }
