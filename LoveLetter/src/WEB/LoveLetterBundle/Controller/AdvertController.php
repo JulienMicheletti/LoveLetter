@@ -263,13 +263,13 @@ class AdvertController extends Controller
         if ($main == null) {
             $main = new main();
             $main->setId($this->getUser());
-            $main->setVisible(0);
             $em->persist($main);
             $em->flush();
         }
         foreach ($listCarte as $carte) {
             $main->removeCarte($carte);
         }
+        $main->setVisible(0);
         $em->persist($main);
         $em->flush();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
