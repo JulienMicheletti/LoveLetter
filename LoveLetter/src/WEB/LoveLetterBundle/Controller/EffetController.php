@@ -66,6 +66,34 @@ class EffetController extends Controller
         return $response->setData(array('card' => "garde", 'rep' => $rep));
     }
 
+    public function baronAction(){
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
+        $manche = $partie->getManche(10);
+
+        $enemy = $manche->getOther($utilisateur);
+        $mainE = $enemy->getMain();
+        $carteE = $mainE->getCarte(0)->getType();
+
+        $mainM = $utilisateur->getMain();
+        $carteM = $mainM->getCarte(0)->getType();
+
+        if ($carteM > $carteE){
+            $repBaron = "enemy";
+            $enemy->setVictoire(0);
+        }else if ($carteM < $carteE){
+            $repBaron = "me";
+            $utilisateur->setVictoire(0);
+        }else{
+            $repBaron = "egale";
+        }
+        $em->persist($enemy);
+        $em->flush();
+        $response = new JsonResponse();
+        return $response->setData(array('card' => "garde", 'repBaron' => $repBaron));
+    }
+
     public function princeAction($nomUtilisateur){
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);

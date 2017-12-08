@@ -91,6 +91,9 @@ class AdvertController extends Controller
         $img = null;
         $id = null;
         $type = null;
+        $other = null;
+        $rep = null;
+        $me = null;
         $check = 0;
        if ($manche->getnbUtilisateur() == 2) {
            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
@@ -166,6 +169,8 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_king', array());
         } elseif ($typeCarte == 5){
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
+        } else if ($typeCarte == 3){
+            return $this->redirectToRoute('oc_platform_baron');
         }
     }
 

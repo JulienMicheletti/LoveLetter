@@ -69,6 +69,13 @@ oc_platform_prince:
     requirements:
         id: \d+
 
+oc_platform_baron:
+    path:      /advert/prince
+    defaults:
+        _controller: WEBLoveLetterBundle:Effet:baron
+    requirements:
+        id: \d+
+
 oc_platform_guard:
     path:      /advert/guard/{carteD}
     defaults:

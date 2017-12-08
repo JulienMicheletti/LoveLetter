@@ -42,13 +42,18 @@ $("document").ready(function(){
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                         } else if (typeCarte == 5){
-                            console.log(me);
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me){
                                 alert("Ce joueur n'existe pas !");
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                             carteC = joueur;
+                        } else if (typeCarte == 3){
+                            joueur = prompt("Quel joueur ciblez vous ?");
+                            while (joueur != users && joueur != me){
+                                alert("Ce joueur n'existe pas !");
+                                joueur = prompt("Quel joueur ciblez vous ?");
+                            }
                         }
                         $.ajax({
                             type: 'get',
@@ -65,6 +70,15 @@ $("document").ready(function(){
                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
                                 }else if (typeCarte == 1 && data.rep == false){
                                     alert("Effet garde : Vous vous êtes trompé");
+                                }
+                                if (typeCarte == 3){
+                                        if (data.repBaron == "me"){
+                                            alert("Effet baron : Votre carte est inférieur à la carte adverse, vous êtes éliminé de la manche");
+                                        } else if (data.repBaron == "enemy"){
+                                            alert("Effet baron : Votre carte est supérieur à la carte adverse, l'adversaire est éliminé de la manche");
+                                        } else {
+                                            alert("Effet baron : Vos deux cartes sont égales, personne n'est éliminé");
+                                        }
                                 }
                                 console.log(data.ancienneCarte);
                                 if (data.alertPrincesse == true){
