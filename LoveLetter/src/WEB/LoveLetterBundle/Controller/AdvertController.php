@@ -111,6 +111,7 @@ class AdvertController extends Controller
         $me = null;
         $fin = false;
         $check = 0;
+        $setpose = 0;
         if ($manche->getEnd() == 1){
             if ($enemy->getVictoire() == 1){
                 $nb = $enemy->getPoint() + 1;
@@ -187,6 +188,9 @@ class AdvertController extends Controller
                     $em->persist($main);
                     $em->persist($pioche);
                     $em->flush();
+                    if ($main->getNbCartes() >= 2){
+                        $setpose = 1;
+                    }
                 } else {
                     $img = null;
                     $fin = true;
@@ -199,20 +203,22 @@ class AdvertController extends Controller
         if ($enemy_check == 1)
             $img = 'pioche';
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type, 'fin' => $fin));
+        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type, 'fin' => $fin, 'pose'=>$setpose));
     }
 
     public function poserAction($idcarte, $carte, $typeCarte)
     {
+      //  die('test poser');
         $em = $this->getDoctrine()->getManager();
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
-
+        $response = new JsonResponse();
 
         $main = $utilisateur->getMain();
         $card = $main->getIdCarte($idcarte);
+    //    die($card->getNom());
         if ($manche->getTour() == 1){
             $manche->setTour(2);
         } else if ($manche->getTour() == 2){
@@ -226,8 +232,6 @@ class AdvertController extends Controller
         $em->persist($main);
         $em->persist($plateau);
         $em->flush();
-        $response = new JsonResponse();
-
         if ($typeCarte == 1) { //guard
             return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
         } elseif ($typeCarte == 6) { //roi

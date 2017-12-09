@@ -42,7 +42,7 @@ class EffetController extends Controller
             $em->flush();
         }
         $response = new JsonResponse();
-        return $response->setData(array('carte' => "prêtre", "rep" => "ok"));
+        return $response->setData(array('card' => "prêtre", "rep" => "ok"));
     }
     public function kingAction(){
         $em = $this->getDoctrine()->getManager();
@@ -124,6 +124,7 @@ class EffetController extends Controller
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $defausse = $manche->getDefausse();
         $alertPrincesse = false;
+        $nomCarteSuppr = null;
         if ($utilisateur->getUsername() != $nomUtilisateur){
             $user = $utilisateur;
             $utilisateur = $manche->getOther($user);
