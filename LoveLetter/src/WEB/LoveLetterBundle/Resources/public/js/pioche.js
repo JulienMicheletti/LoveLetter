@@ -6,10 +6,14 @@ $("document").ready(function () {
         $.ajax({
             type: 'get',
             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/0',
-            beforeSend: function () {
+            beforeSend: function (){
                 console.log("Pioche ...");
             },
             success: function (data) {
+                if (data.gagnant != null || data.finP == true){
+                    alert("La partie est finie, félicitation "+data.gagnant);
+                    finP = true;
+                }
                 if (data.fin == true) {
                     alert("fin de la manche, piochez une carte pour déclencher la suivante");
                 } else if (data.check == 2) {
