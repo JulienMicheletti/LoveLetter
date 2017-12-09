@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use WEB\LoveLetterBundle\Entity\plateau;
 
 class AdvertController extends Controller
 {
@@ -208,17 +209,15 @@ class AdvertController extends Controller
 
     public function poserAction($idcarte, $carte, $typeCarte)
     {
-      //  die('test poser');
         $em = $this->getDoctrine()->getManager();
-        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
         $response = new JsonResponse();
 
         $main = $utilisateur->getMain();
+        $plateau = $utilisateur->getPlateau();
         $card = $main->getIdCarte($idcarte);
-    //    die($card->getNom());
         if ($manche->getTour() == 1){
             $manche->setTour(2);
         } else if ($manche->getTour() == 2){
@@ -228,7 +227,6 @@ class AdvertController extends Controller
             $plateau->addCarte($card);
             $main->removeCarte($card);
         }
-
         $em->persist($main);
         $em->persist($plateau);
         $em->flush();
@@ -254,18 +252,30 @@ class AdvertController extends Controller
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
-        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
         $manche->setTour(1);
         $manche->setEnd(0);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
+        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find($usr);
         if ($main == null) {
             $main = new main();
             $main->setId($this->getUser());
             $em->persist($main);
             $em->flush();
         }
+        if ($plateau == null){
+            $plateau = new plateau();
+            $plateau->setId($this->getUser());
+            $em->persist($plateau);
+            $em->flush();
+        }
+        //Vider le plateau
+        foreach ($listCarte as $carte) {
+            $plateau->removeCarte($carte);
+        }
+        $em->persist($plateau);
+        $em->flush();
         foreach ($listCarte as $carte) {
             $main->removeCarte($carte);
         }
@@ -276,6 +286,7 @@ class AdvertController extends Controller
         $enemy = $manche->getOther($utilisateur);
         $enemy->setVictoire(1);
         $manche->removeUtilisateur($utilisateur);
+        $utilisateur->setPlateau($plateau);
         $utilisateur->setMain($main);
         $utilisateur->setVictoire(1);
         $em->persist($utilisateur);
@@ -294,12 +305,6 @@ class AdvertController extends Controller
             }
             $em->persist($pioche);
             $em->persist($defausse);
-            $em->flush();
-            //Vider le plateau
-            foreach ($listCarte as $carte) {
-                $plateau->removeCarte($carte);
-            }
-            $em->persist($plateau);
             $em->flush();
             //Enlever la première carte du dessus
             $nb = rand(1, 8);
@@ -323,34 +328,6 @@ class AdvertController extends Controller
         } else {
             return $this->redirectToRoute('oc_platform_jouer', array('id' => $partie->getId()));
         }
-    }
-
-    public function adversaire2Action()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
-        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-        $manche = $partie->getManche(10);
-        $reponse = new JsonResponse();
-        if ($manche->getnbUtilisateur() == 2) {
-            $enemy = $manche->getOther($utilisateur);
-            $main = $enemy->getMain();
-            $array = array();
-            $taille = $main->getNbCartes();
-            if ($taille == 0) {
-                $array = array("taille" => 0, "c1" => null, "c2" => null);
-            } elseif ($taille == 1) {
-                $carte1 = $main->getCarte(0);
-                $array = array("taille" => 1, "c1" => $carte1->getNom(), "c2" => null);
-            } elseif ($taille == 2) {
-                $carte1 = $main->getCarte(0);
-                $carte2 = $main->getCarte(1);
-                $array = array("taille" => 2, "c1" => $carte1->getNom(), "c2" => $carte2);
-            }
-        } else {
-            $array = array("taille" => 0, "c1" => null, "c2" => null);
-        }
-        return $reponse->setData(array('tab' => $array));
     }
 
     public function menuAction(Request $request)

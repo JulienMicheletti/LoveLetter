@@ -31,15 +31,25 @@ $("document").ready(function () {
             type: 'get',
             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/refresh',
             success: function (data) {
-                var i = data.taille;
+                var i = data.plateau_a[1] + 1;
                 var plateau = "";
-                while (i > 0) {
+                while (i > 1) {
                     plateau += "<a><img src=\"";
                     plateau += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
-                    plateau += data.plateau[i] + ".png";
+                    plateau += data.plateau_a[i] + ".png";
                     plateau += "\"></a>";
                     i -= 1;
                 }
+                i = data.plateau_j[1] + 1;
+                var plateauj = "";
+                while (i > 1) {
+                    plateauj += "<a><img src=\"";
+                    plateauj += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
+                    plateauj += data.plateau_j[i] + ".png";
+                    plateauj += "\"></a>";
+                    i -= 1;
+                }
+                console.log(plateauj);
                 var a = 2;
                 var defausse = "";
                 for (a; a < 5; a++) {
@@ -54,8 +64,11 @@ $("document").ready(function () {
                 defausse += data.defausse[1] + ".png";
                 defausse += "\"></a>";
                 $(".defausse").html(defausse);
-                if (data.taille > 0)
-                    $(".plateau").html(plateau);
+                if (data.plateau_j[1] > 0)
+                    $(".plateau-j").html(plateauj);
+                if (data.plateau_a[1] > 0)
+                    $(".plateau-a").html(plateaua);
+
             }
         })
     }

@@ -35,19 +35,14 @@ class utilisateur extends BaseUser
     private $victoire;
 
     /**
-     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\pioche")
-     */
-    private $pioche;
-
-    /**
      * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\main")
      */
     private $main;
 
     /**
-     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\defausse")
+     * @ORM\OneToOne(targetEntity="WEB\LoveLetterBundle\Entity\plateau")
      */
-    private $defausse;
+    private $plateau;
 
     /**
      * @var integer
@@ -92,19 +87,17 @@ class utilisateur extends BaseUser
         $this->main = $main;
     }
 
-    public function getPioche()
-    {
-        return $this->pioche;
-    }
-
     public function getMain()
     {
         return $this->main;
     }
 
-    public function getDefausse()
-    {
-        return $this->defausse;
+    public function setPlateau($plateau){
+        $this->plateau = $plateau;
+    }
+
+    public function getPlateau(){
+        return $this->plateau;
     }
 
     public function setVictoire($var)

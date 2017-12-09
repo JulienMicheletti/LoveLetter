@@ -47,16 +47,32 @@ class RefreshController extends Controller
 
     public function refreshAction(){
         $em = $this->getDoctrine()->getManager();
-        $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $em->getRepository('WEBLoveLetterBundle:manche')->find(10);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $def = $manche->getDefausse();
         $defausse_array = array();
+        $array_a = array();
+        $array_j = array();
         if ($manche->getnbUtilisateur()==2){
+            $plateau_j = $utilisateur->getPlateau();
+            $plateau_a = $manche->getOther($utilisateur)->getPlateau();
+            $i = 0;
+            $array_a[1] = $plateau_a->getNbElements();
+            for ($i; $i < $plateau_a->getNbElements(); $i++){
+                $array_a[$i+2] = $plateau_a->getCarte($i)->getNom();
+            }
+            $i = 0;
+            $array_j[1] = $plateau_j->getNbElements();
+            for ($i; $i < $plateau_j->getNbElements(); $i++){
+                $array_j[$i+2] = $plateau_j->getCarte($i)->getNom();
+            }
             $defausse_array[1] = $def->getCarte(0)->getNom();
             $defausse_array[2] = $def->getCarte(1)->getNom();
             $defausse_array[3] = $def->getCarte(2)->getNom();
             $defausse_array[4] = $def->getCarte(3)->getNom();
         } else {
+            $array_a[1] = 0;
+            $array_j[1] = 0;
             $carte = $em->getRepository('WEBLoveLetterBundle:carte')->find(99);
             $carte = $carte->getNom();
             $defausse_array[1] = $carte;
@@ -64,13 +80,8 @@ class RefreshController extends Controller
             $defausse_array[3] = $carte;
             $defausse_array[4] = $carte;
         }
-        $array = array();
-        $i = 0;
-        for ($i; $i < $plateau->getNbElements(); $i++){
-            $array[$i+1] = $plateau->getCarte($i)->getNom();
-        }
         $reponse = new JsonResponse();
-        return $reponse->setData(array('taille' => $i, 'plateau' => $array, 'defausse' => $defausse_array));
+        return $reponse->setData(array('plateau_a' => $array_a, "plateau_j" => $array_j, 'defausse' => $defausse_array));
     }
 
     public function refreshMainAction(){
