@@ -131,38 +131,38 @@ class AdvertController extends Controller
                     $carte = $pioche->getCategorie($nb);
                     $img = $carte->getNom();
                     $pioche->removeCarte($carte);
+                    $other = $manche->getOther($utilisateur)->getUsername();
+                    $me = $utilisateur->getUsername();
+                    $main = $utilisateur->getMain();
+                    $main->addCarte($carte);
+                    $id = $carte->getId();
+                    $type = $carte->getType();
+                    $rep = false;
+                    $listCartes = $main->getCartes();
+                    if ($img == "comtesse") {
+                        foreach ($listCartes as $c) {
+                            if ($c->getNom() == "roi" || $c->getNom() == "prince") {
+                                $rep = true;
+                                $main->removeCarte($carte);
+                                $defausse->addCarte($carte);
+                            }
+                        }
+                    } else if ($img == "roi" || $img == "prince") {
+                        foreach ($listCartes as $carte) {
+                            if ($carte->getNom() == "comtesse") {
+                                $rep = true;
+                                $main->removeCarte($carte);
+                                $defausse->addCarte($carte);
+                            }
+                        }
+                    }
+                    $em->persist($main);
+                    $em->persist($pioche);
+                    $em->flush();
                 } else {
                     $img = null;
                     $fin = true;
                 }
-                $other = $manche->getOther($utilisateur)->getUsername();
-                $me = $utilisateur->getUsername();
-                $main = $utilisateur->getMain();
-                $main->addCarte($carte);
-                $id = $carte->getId();
-                $type = $carte->getType();
-                $rep = false;
-                $listCartes = $main->getCartes();
-                if ($img == "comtesse") {
-                    foreach ($listCartes as $c) {
-                        if ($c->getNom() == "roi" || $c->getNom() == "prince") {
-                            $rep = true;
-                            $main->removeCarte($carte);
-                            $defausse->addCarte($carte);
-                        }
-                    }
-                } else if ($img == "roi" || $img == "prince") {
-                    foreach ($listCartes as $carte) {
-                        if ($carte->getNom() == "comtesse") {
-                            $rep = true;
-                            $main->removeCarte($carte);
-                            $defausse->addCarte($carte);
-                        }
-                    }
-                }
-                $em->persist($main);
-                $em->persist($pioche);
-                $em->flush();
             }
         }
         if ($enemy_check == 1)
