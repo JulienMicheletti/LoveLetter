@@ -92,7 +92,6 @@ class AdvertController extends Controller
 
     public function piocherAction($enemy_check)
     {
-        global $finManche;
         global $carte;
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
@@ -110,6 +109,9 @@ class AdvertController extends Controller
         $me = null;
         $fin = false;
         $check = 0;
+        if ($manche->getEnd() == 1){
+            return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2));
+        }
         if ($manche->getnbUtilisateur() == 2) {
             if ($enemy_check == 0)
                 $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
@@ -162,6 +164,9 @@ class AdvertController extends Controller
                 } else {
                     $img = null;
                     $fin = true;
+                    $manche->setEnd(1);
+                    $em->persist($manche);
+                    $em->flush();
                 }
             }
         }
@@ -222,6 +227,7 @@ class AdvertController extends Controller
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find(1);
         $manche = $partie->getManche(10);
         $manche->setTour(1);
+        $manche->setEnd(0);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         if ($main == null) {
