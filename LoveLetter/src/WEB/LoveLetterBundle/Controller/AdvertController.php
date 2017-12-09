@@ -331,6 +331,34 @@ class AdvertController extends Controller
             $manche->setPioche($pioche);
             $em->persist($manche);
             $em->flush();
+            $nb = rand(1, 16);
+            if ($pioche->getNbElements() != 0) {
+                while ($pioche->getCategorie($nb) == null) {
+                    $nb = rand(1, 16);
+                }
+                $carte = $pioche->getCategorie($nb);
+                $pioche->removeCarte($carte);
+                $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+                $main = $utilisateur->getMain();
+                $main->addCarte($carte);
+                $em->persist($pioche);
+                $em->persist($main);
+                $em->flush();
+            }
+            if ($pioche->getNbElements() != 0) {
+                while ($pioche->getCategorie($nb) == null) {
+                    $nb = rand(1, 16);
+                }
+                $carte = $pioche->getCategorie($nb);
+                $pioche->removeCarte($carte);
+                $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+                $enemy = $manche->getOther($utilisateur);
+                $main = $enemy->getMain();
+                $main->addCarte($carte);
+                $em->persist($pioche);
+                $em->persist($main);
+                $em->flush();
+            }
         }
         if ($nb_joueurs == 2) {
             return $this->redirectToRoute('oc_platform_jouer2', array('id' => $partie->getId()));

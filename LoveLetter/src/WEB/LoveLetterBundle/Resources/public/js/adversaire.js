@@ -68,7 +68,10 @@ $("document").ready(function () {
                     $(".plateau-j").html(plateauj);
                 if (data.plateau_a[1] > 0)
                     $(".plateau-a").html(plateaua);
-
+                if (data.plateau_a[1] == 0)
+                    $(".plateau-a").html("<a></a>");
+                if (data.plateau_j[1] == 0)
+                    $(".plateau-j").html("<a></a>");
             }
         })
     }
@@ -79,6 +82,10 @@ $("document").ready(function () {
             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/refreshMain',
             success: function (data) {
                 var string;
+                console.log(data.tab.taille);
+                if (data.tab.taille == 0){
+                    $(".main").html("<a></a>");
+                }
                 if (data.tab.taille >= 1) {
                     string = "<a class=\"" + data.tab.c1 + "\"><img src=\"";
                     string += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";
