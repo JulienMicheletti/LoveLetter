@@ -96,7 +96,9 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
+        $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
         $manche = $partie->getManche(10);
+        $enemy = $manche->getOther($utilisateur);
         $pioche = $manche->getPioche();
         $img = null;
         $id = null;
@@ -110,9 +112,33 @@ class AdvertController extends Controller
         $fin = false;
         $check = 0;
         if ($manche->getEnd() == 1){
+            if ($enemy->getVictoire() == 1){
+                $nb = $enemy->getPoint() + 1;
+                $enemy->setPoint($nb);
+            }
+            if ($utilisateur->getVictoire() == 1){
+                $nb = $utilisateur->getPoint() + 1;
+                $utilisateur->setPoint($nb);
+            }
+            $em->persist($utilisateur);
+            $em->persist($enemy);
+            $em->flush();
+            if ($utilisateur->getPoint() == 7){
+                $utilisateur->setPoint(0);
+                $em->persist($utilisateur);
+                $em->persist($enemy);
+                $em->flush();
+                return $this->render('WEBLoveLetterBundle:Advert:gagnant.html.twig', array('gagnant' => $utilisateur->getUsername()));
+            }
+            if ($enemy->getPoint() == 7){
+                $enemy->setPoint(0);
+                $em->persist($utilisateur);
+                $em->persist($enemy);
+                $em->flush();
+                return $this->render('WEBLoveLetterBundle:Advert:gagnant.html.twig', array('gagnant' => $enemy->getUsername()));
+            }
             return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2));
-        }
-        if ($manche->getnbUtilisateur() == 2) {
+        }else if ($manche->getnbUtilisateur() == 2) {
             if ($enemy_check == 0)
                 $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
             else {
@@ -243,6 +269,8 @@ class AdvertController extends Controller
         $em->persist($main);
         $em->flush();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $enemy = $manche->getOther($utilisateur);
+        $enemy->setVictoire(1);
         $manche->removeUtilisateur($utilisateur);
         $utilisateur->setMain($main);
         $utilisateur->setVictoire(1);

@@ -50,6 +50,13 @@ class utilisateur extends BaseUser
     private $defausse;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="point", type="integer", nullable=true)
+     */
+    private $point;
+
+    /**
      * Get nbWin
      *
      * @return int
@@ -63,6 +70,22 @@ class utilisateur extends BaseUser
     {
         $this->nbWin = $nbWin;
         return $this;
+    }
+
+    public function getPoint()
+    {
+        return $this->point;
+    }
+
+    public function resetPoint()
+    {
+        $this->point = 0;
+        return $this;
+    }
+
+    public function setPoint($point)
+    {
+        $this->point = $point;
     }
 
     public function setMain($main){
