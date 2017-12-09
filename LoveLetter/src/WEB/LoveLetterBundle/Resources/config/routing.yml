@@ -35,7 +35,7 @@ oc_platform_poser:
         id: \d+
 
 oc_platform_gestion:
-    path:      /advert/gestion/{nb_joueurs}
+    path:      /advert/gestion/{nb_joueurs}/{finManche}
     defaults:
         _controller: WEBLoveLetterBundle:Advert:gestion
     requirements:

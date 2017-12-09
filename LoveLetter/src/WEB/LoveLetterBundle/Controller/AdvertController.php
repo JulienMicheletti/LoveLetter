@@ -124,21 +124,23 @@ class AdvertController extends Controller
             $em->persist($utilisateur);
             $em->persist($enemy);
             $em->flush();
-            if ($utilisateur->getPoint() == 7){
-                $utilisateur->setPoint(0);
+            if ($utilisateur->getPoint() >= 7){
+               // $utilisateur->setPoint(0);
+                $em->persist($utilisateur);
+                $em->persist($enemy);
+                $em->flush();  $response = new JsonResponse();
+                return $response->setData(array("finP" => true, "gagnant" => $utilisateur->getUsername()));
+            }
+            if ($enemy->getPoint() >= 7){
+                //$enemy->setPoint(0);
                 $em->persist($utilisateur);
                 $em->persist($enemy);
                 $em->flush();
-                return $this->render('WEBLoveLetterBundle:Advert:gagnant.html.twig', array('gagnant' => $utilisateur->getUsername()));
-            }
-            if ($enemy->getPoint() == 7){
-                $enemy->setPoint(0);
-                $em->persist($utilisateur);
-                $em->persist($enemy);
                 $em->flush();
-                return $this->render('WEBLoveLetterBundle:Advert:gagnant.html.twig', array('gagnant' => $enemy->getUsername()));
+                $response = new JsonResponse();
+                return $response->setData(array("finP" => true, "gagnant" => $enemy->getUsername()));
             }
-            return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2));
+            return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2, 'finManche' => 2));
         }else if ($manche->getnbUtilisateur() == 2) {
             if ($enemy_check == 0)
                 $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
@@ -247,7 +249,7 @@ class AdvertController extends Controller
         }
     }
 
-    public function gestionAction($nb_joueurs)
+    public function gestionAction($nb_joueurs, $finManche)
     {
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
@@ -260,6 +262,13 @@ class AdvertController extends Controller
         $manche->setEnd(0);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
+        if ($finManche == 1){
+            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+            $manche = $partie->getManche(10);
+            $enemy = $manche->getOther($utilisateur);
+            $utilisateur->setPoint(0);
+            $enemy->setPoint(0);
+        }
         if ($main == null) {
             $main = new main();
             $main->setId($this->getUser());
@@ -370,7 +379,7 @@ class AdvertController extends Controller
             if ($form->isValid()) {
                 $em->persist($partie);
                 $em->flush();
-                return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => $partie->getnbJoueurs()));
+                return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => $partie->getnbJoueurs(), 'finManche' => 1));
             }
         }
         return $this->render('WEBLoveLetterBundle:Advert:menu.html.twig', array(
