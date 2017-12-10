@@ -250,14 +250,14 @@ class AdvertController extends Controller
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
         $response = new JsonResponse();
-
+        $immu = $utilisateur->getImmunite();
         $main = $utilisateur->getMain();
         $plateau = $utilisateur->getPlateau();
         $card = $main->getIdCarte($idcarte);
         $enemy = $manche->getOther($utilisateur);
         if ($manche->getTour() == $utilisateur->getUsername()){
             $manche->setTour($manche->getOther($utilisateur)->getUsername());
-            $immu = $utilisateur->getImmunite() + 1;
+            $immu = $immu + 1;
             $utilisateur->setImmunite($immu);
         }
         if ($card != null) {
