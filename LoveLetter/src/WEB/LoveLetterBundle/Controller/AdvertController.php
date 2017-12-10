@@ -260,7 +260,7 @@ class AdvertController extends Controller
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find($usr);
-        if ($finManche == 1){
+        if ($finManche == 1 && $manche->getnbUtilisateur()==2){
             $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
             $manche = $partie->getManche(10);
             $enemy = $manche->getOther($utilisateur);
@@ -292,8 +292,10 @@ class AdvertController extends Controller
         $em->persist($main);
         $em->flush();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
-        $enemy = $manche->getOther($utilisateur);
-        $enemy->setVictoire(1);
+        if ($manche->getnbUtilisateur() == 2) {
+            $enemy = $manche->getOther($utilisateur);
+            $enemy->setVictoire(1);
+        }
         $manche->removeUtilisateur($utilisateur);
         $utilisateur->setPlateau($plateau);
         $utilisateur->setMain($main);
