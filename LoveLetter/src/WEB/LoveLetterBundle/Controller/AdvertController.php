@@ -91,7 +91,7 @@ class AdvertController extends Controller
         return $this->render('WEBLoveLetterBundle:Advert:jouer2.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $cartedef, 'regle' => $array));
     }
 
-    public function piocherAction($enemy_check)
+    public function piocherAction($enemy_check, $tour)
     {
         global $carte;
         $em = $this->getDoctrine()->getManager();
@@ -183,7 +183,7 @@ class AdvertController extends Controller
                     return $response->setData(array("finP" => true, "gagnant" => $enemy->getUsername()));
                 }
                 return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2, 'finManche' => 2));
-            } else if ($manche->getTour() == $this->getUser()->getUsername() || $enemy_check != 0){
+            } else if ($manche->getTour() == $this->getUser()->getUsername() || $tour == 1){
                 $check = 1;
                 $nb = rand(1, 16);
                 if ($pioche->getNbElements() != 0) {
