@@ -183,7 +183,7 @@ class AdvertController extends Controller
                     return $response->setData(array("finP" => true, "gagnant" => $enemy->getUsername()));
                 }
                 return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2, 'finManche' => 2));
-            } else if ($manche->getTour() == $this->getUser()->getUsername()){
+            } else if ($manche->getTour() == $this->getUser()->getUsername() || $enemy_check != 0){
                 $check = 1;
                 $nb = rand(1, 16);
                 if ($pioche->getNbElements() != 0) {
