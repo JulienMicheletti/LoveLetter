@@ -7,7 +7,7 @@ oc_platform_home:
         page: \d*
 
 oc_platform_jouer:
-    path:      /advert/jouer/{id}
+    path:      /advert/jouer
     defaults:
         _controller: WEBLoveLetterBundle:Advert:jouer
     requirements:
@@ -101,5 +101,12 @@ oc_platform_pretre:
     path:      /advert/pretre/{nomEnemy}/{checkvisible}
     defaults:
         _controller: WEBLoveLetterBundle:Effet:pretre
+    requirements:
+        id: \d+
+
+oc_platform_regle:
+    path:      /advert/regle
+    defaults:
+        _controller: WEBLoveLetterBundle:Advert:regle
     requirements:
         id: \d+

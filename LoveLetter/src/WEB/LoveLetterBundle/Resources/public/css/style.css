@@ -2,7 +2,7 @@ body {
     background-color: #E4F1FE;
 }
 
-.login{
+.login, .inscription{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,15 +35,23 @@ input[type=submit]
     font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
-    width: 30%;
+    width: 70%;
 }
 
-input[type=text]:focus, input[type=password]:focus
+.button-ins
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus
 {
     background-color: lightblue;
 }
 
-input[type=text], input[type=password]
+input[type=text], input[type=password], input[type=email]
 {
     width: 100%;
     padding: 12px 20px;
@@ -184,6 +192,13 @@ input[type=text], input[type=password]
     justify-content: center;
 }
 
+.noma, .nomj
+{
+    font-size: 20px;
+    font-family: Sensation;
+    border-bottom: 1px solid black;
+}
+
 .plateau-a, .plateau-j
 {
     display: flex;
@@ -191,6 +206,18 @@ input[type=text], input[type=password]
     width: 30%;
     height: 30%;
     align-items: center;
+}
+
+.plateau-a
+{
+    border: 6px solid #FC575E;
+    border-radius: 4px;
+}
+
+.plateau-j
+{
+    border: 6px solid #112233;
+    border-radius: 4px;
 }
 
 .plateau-a img, .plateau-j img
@@ -227,6 +254,7 @@ input[type=text], input[type=password]
     border: 1px solid #66CC99;
     background-color: #66CC99;
     border-radius: 4px;
+    border: 6px solid darkgreen;
 }
 
 #Jouer
@@ -256,6 +284,29 @@ input[type=text], input[type=password]
     height: 100%;
     align-items: center;
     font-family: Sensation;
+}
+
+.regle
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    height: auto;
+}
+
+.travaux
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    height: auto;
+}
+
+.travaux img
+{
+    width: 70%;
 }
 
 @font-face{

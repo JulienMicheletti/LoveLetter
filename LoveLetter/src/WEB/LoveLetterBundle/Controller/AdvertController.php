@@ -31,14 +31,13 @@ class AdvertController extends Controller
         return $this->redirectToRoute('oc_platform_menu', array('id' => 1));
     }
 
-    public function jouerAction($id)
+    public function regleAction(){
+        return $this->render('WEBLoveLetterBundle:Advert:regle.html.twig', array());
+    }
+
+    public function jouerAction()
     {
-        /*$em = $this->getDoctrine()->getManager();
-        $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
-        $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);
-        $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
-*/
-        // return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array('pioche' => $pioche, 'carte' => null, 'defausse' => $carteDef));
+        return $this->render('WEBLoveLetterBundle:Advert:jouer.html.twig', array());
     }
 
     public function jouer2Action($id)
@@ -294,6 +293,8 @@ class AdvertController extends Controller
 
     public function gestionAction($nb_joueurs, $finManche)
     {
+        if ($nb_joueurs > 2)
+            return $this->redirectToRoute('oc_platform_jouer', array());
         $em = $this->getDoctrine()->getManager();
         $listCarte = $em->getRepository('WEBLoveLetterBundle:carte')->findAll();
         $pioche = $em->getRepository('WEBLoveLetterBundle:pioche')->find(1);

@@ -56,8 +56,10 @@ class RefreshController extends Controller
         $array_point = array();
         $array_point[1] = $utilisateur->getUsername();
         $array_point[2] = $utilisateur->getPoint();
-        $array_point[3] = "En attente d'une adversaire ..";
-        $array_point[4] = 0;
+        $array_point[3] = "Attente du tour ..";
+        $array_point[4] = "En attente d'un adversaire ..";
+        $array_point[5] = 0;
+        $array_point[6] = "Attente du tour ..";
         if ($manche->getnbUtilisateur()==2){
             $plateau_j = $utilisateur->getPlateau();
             $plateau_a = $manche->getOther($utilisateur)->getPlateau();
@@ -75,8 +77,15 @@ class RefreshController extends Controller
             $defausse_array[2] = $def->getCarte(1)->getNom();
             $defausse_array[3] = $def->getCarte(2)->getNom();
             $defausse_array[4] = $def->getCarte(3)->getNom();
-            $array_point[3] = $manche->getOther($utilisateur)->getUsername();
-            $array_point[4] = $manche->getOther($utilisateur)->getPoint();
+            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+            if ($manche->getTour() == $utilisateur->getUsername()){
+                $array_point[3] = "Mon Tour !";
+            } else {
+                $array_point[6] = "Mon Tour !";
+            }
+            $enemy = $manche->getOther($utilisateur);
+            $array_point[4] = $enemy->getUsername();
+            $array_point[5] = $enemy->getPoint();
         } else {
             $array_a[1] = 0;
             $array_j[1] = 0;

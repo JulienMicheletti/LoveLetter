@@ -1,8 +1,10 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
+<div class="inscription">
+    <p align="center" class="LL-titre">LoveLetter</p>
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
     {{ form_widget(form) }}
-    <div>
+    <div class="button-ins">
         <input type="submit" value="{{ 'registration.submit'|trans }}" />
     </div>
 {{ form_end(form) }}
+</div>

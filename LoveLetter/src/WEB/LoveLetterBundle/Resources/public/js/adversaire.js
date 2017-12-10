@@ -33,10 +33,12 @@ $("document").ready(function () {
             success: function (data) {
                 var i = data.plateau_a[1] + 1;
                 var plateau = "";
-                $(".noma").html(data.point[3]);
-                $(".pointa").html(data.point[4]);
+                $(".noma").html(data.point[4]);
+                $(".pointa").html(data.point[5]);
+                $(".toura").html(data.point[6]);
                 $(".nomj").html(data.point[1]);
                 $(".pointj").html(data.point[2]);
+                $(".tourj").html(data.point[3]);
                 while (i > 1) {
                     plateau += "<a><img src=\"";
                     plateau += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/";

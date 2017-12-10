@@ -5,22 +5,8 @@
 {% extends "WEBLoveLetterBundle::layout.html.twig" %}
 
 {% block ocplatform_body %}
-    <div class="element"></div>
-    <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
-    <div class="element"></div>
-    <div class="element">   <a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
-    <div class="plateau">
-        <a href="{{ path("oc_platform_piocher") }}"><img src="{{ asset ('bundles/webloveletter/img/cartes/pioche.png') }}"></a>
-        {% if not defausse == null %}
-            <a href="" ><img src="{{ asset (defausse.image) }}"></a>
-        {% endif %}
+    <div class="travaux">
+        <img  src="{{ asset ('bundles/webloveletter/img/entravaux.jpg') }}"/>
+        <a href="{{ path('oc_platform_menu', {'id':1}) }}">Retour au menu</a>
     </div>
-    <div class="element"><a class="element"><img src="{{ asset ('bundles/webloveletter/img/cartes/roi.png') }}"></a></div>
-    <div class="element"></div>
-        {% if not carte == null %}
-            <a class="element"><img src="{{ asset (carte.image) }}"></a>
-        {% else %}
-            <div class="element"></div>
-        {% endif %}
-    <div class="element"></div>
 {% endblock %}
