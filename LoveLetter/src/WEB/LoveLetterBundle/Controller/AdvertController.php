@@ -311,10 +311,10 @@ class AdvertController extends Controller
             $utilisateur->setPoint(0);
             $enemy->setPoint(0);
         }*/
-      /*  if ($finManche == 1 && $manche->getnbUtilisateur() == 2)
+        if ($finManche == 1 && $manche->getnbUtilisateur() == 2)
             if($manche->getnbUtilisateur()==2){
                 $manche->viderUtilisateur();
-        }*/
+        }
         if ($finManche == 2){
             $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
             $enemy = $manche->getOther($utilisateur);

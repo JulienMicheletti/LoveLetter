@@ -220,7 +220,6 @@ input[type=text], input[type=password]
 .plateau_global
 {
     display: flex;
-    flex-wrap: wrap;
     width: 30%;
     height: 30%;
     justify-content: space-around;
