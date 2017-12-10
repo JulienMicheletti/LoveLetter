@@ -53,6 +53,11 @@ class RefreshController extends Controller
         $defausse_array = array();
         $array_a = array();
         $array_j = array();
+        $array_point = array();
+        $array_point[1] = $utilisateur->getUsername();
+        $array_point[2] = $utilisateur->getPoint();
+        $array_point[3] = "En attente d'une adversaire ..";
+        $array_point[4] = 0;
         if ($manche->getnbUtilisateur()==2){
             $plateau_j = $utilisateur->getPlateau();
             $plateau_a = $manche->getOther($utilisateur)->getPlateau();
@@ -70,6 +75,8 @@ class RefreshController extends Controller
             $defausse_array[2] = $def->getCarte(1)->getNom();
             $defausse_array[3] = $def->getCarte(2)->getNom();
             $defausse_array[4] = $def->getCarte(3)->getNom();
+            $array_point[3] = $manche->getOther($utilisateur)->getUsername();
+            $array_point[4] = $manche->getOther($utilisateur)->getPoint();
         } else {
             $array_a[1] = 0;
             $array_j[1] = 0;
@@ -81,7 +88,7 @@ class RefreshController extends Controller
             $defausse_array[4] = $carte;
         }
         $reponse = new JsonResponse();
-        return $reponse->setData(array('plateau_a' => $array_a, "plateau_j" => $array_j, 'defausse' => $defausse_array));
+        return $reponse->setData(array('plateau_a' => $array_a, "plateau_j" => $array_j, 'defausse' => $defausse_array, 'point' => $array_point));
     }
 
     public function refreshMainAction(){
@@ -109,6 +116,6 @@ class RefreshController extends Controller
             }
         }
         $response = new JsonResponse();
-        return $response->setData(array("user"=>$user, "me" => $me, "tab"=>$array));
+        return $response->setData(array("user"=>$user, "me" => $me, "tab"=>$array, "tour" => $manche->getTour()));
     }
 }

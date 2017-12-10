@@ -174,12 +174,29 @@ input[type=text], input[type=password]
     align-items: center;
 }
 
-.plateau-a, .plateau-j
+.point-a, .point-j
 {
     display: flex;
+    flex-direction: column;
     width: 30%;
     height: 30%;
     align-items: center;
+    justify-content: center;
+}
+
+.plateau-a, .plateau-j
+{
+    display: flex;
+    flex-wrap: wrap;
+    width: 30%;
+    height: 30%;
+    align-items: center;
+}
+
+.plateau-a img, .plateau-j img
+{
+    width: 80%;
+    height: 100%;
 }
 
 .adversaire

@@ -39,6 +39,10 @@ class plateau
         return $this;
     }
 
+    public function vider(){
+        $this->cartes->clear();
+    }
+
     public function getNbElements(){
         return $this->cartes->count();
     }

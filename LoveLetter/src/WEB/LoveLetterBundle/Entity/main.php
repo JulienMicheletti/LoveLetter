@@ -118,5 +118,9 @@ class main
     public function getVisible(){
         return $this->visible;
     }
+
+    public function vider(){
+        $this->cartes->clear();
+    }
 }
 

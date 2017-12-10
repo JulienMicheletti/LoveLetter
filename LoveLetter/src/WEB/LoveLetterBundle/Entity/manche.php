@@ -29,7 +29,7 @@ class manche
     private $gagnant;
 
     /**
-     * @ORM\Column(name="tour", type="integer", nullable=true)
+     * @ORM\Column(name="tour", type="string", length=200, nullable=true)
      */
     private $tour;
 

@@ -157,8 +157,33 @@ class AdvertController extends Controller
             }
             if ($utilisateur->getVictoire() == 0) {
                 $img = null;
-                $check = 2;
-            } else {
+                if ($enemy->getVictoire() == 1){
+                    $nb = $enemy->getPoint() + 1;
+                    $enemy->setPoint($nb);
+                }
+                if ($utilisateur->getVictoire() == 1){
+                    $nb = $utilisateur->getPoint() + 1;
+                    $utilisateur->setPoint($nb);
+                }
+                $em->persist($utilisateur);
+                $em->persist($enemy);
+                $em->flush();
+                if ($utilisateur->getPoint() >= 7){
+                    $em->persist($utilisateur);
+                    $em->persist($enemy);
+                    $em->flush();  $response = new JsonResponse();
+                    return $response->setData(array("finP" => true, "gagnant" => $utilisateur->getUsername()));
+                }
+                if ($enemy->getPoint() >= 7){
+                    $em->persist($utilisateur);
+                    $em->persist($enemy);
+                    $em->flush();
+                    $em->flush();
+                    $response = new JsonResponse();
+                    return $response->setData(array("finP" => true, "gagnant" => $enemy->getUsername()));
+                }
+                return $this->redirectToRoute('oc_platform_gestion', array('nb_joueurs' => 2, 'finManche' => 2));
+            } else if ($manche->getTour() == $this->getUser()->getUsername()){
                 $check = 1;
                 $nb = rand(1, 16);
                 if ($pioche->getNbElements() != 0) {
@@ -174,7 +199,7 @@ class AdvertController extends Controller
                     if ($main->getNbCartes() < 2){
                         $main->addCarte($carte);
                     }else if ($main->getNbCartes() >= 2){
-                        $nbMax == true;
+                        $nbMax = true;
                     }
                     $id = $carte->getId();
                     $type = $carte->getType();
@@ -215,7 +240,7 @@ class AdvertController extends Controller
         if ($enemy_check == 1)
             $img = 'pioche';
         $response = new JsonResponse();
-        return $response->setData(array('check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type, 'fin' => $fin, 'pose'=>$setpose));
+        return $response->setData(array('tour' => $manche->getTour(),'check' => $check, 'carte' => $img, 'defausse' => null, 'id' => $id, 'utilisateurs' => $other, 'repComtesse' => $rep, 'me' => $me, 'type' => $type, 'fin' => $fin, 'pose'=>$setpose));
     }
 
     public function poserAction($idcarte, $carte, $typeCarte)
@@ -229,10 +254,8 @@ class AdvertController extends Controller
         $main = $utilisateur->getMain();
         $plateau = $utilisateur->getPlateau();
         $card = $main->getIdCarte($idcarte);
-        if ($manche->getTour() == 1){
-            $manche->setTour(2);
-        } else if ($manche->getTour() == 2){
-            $manche->setTour(1);
+        if ($manche->getTour() == $utilisateur->getUsername()){
+            $manche->setTour($manche->getOther($utilisateur)->getUsername());
         }
         if ($card != null) {
             $plateau->addCarte($card);
@@ -264,17 +287,34 @@ class AdvertController extends Controller
         $defausse = $em->getRepository('WEBLoveLetterBundle:defausse')->find(1);
         $partie = $em->getRepository('WEBLoveLetterBundle:partie')->find(1);
         $manche = $partie->getManche(10);
-        $manche->setTour(1);
         $manche->setEnd(0);
         $usr = $this->getUser()->getUsername();
         $main = $em->getRepository('WEBLoveLetterBundle:main')->find($usr);
         $plateau = $em->getRepository('WEBLoveLetterBundle:plateau')->find($usr);
-        if ($finManche == 1 && $manche->getnbUtilisateur()==2){
+        if ($manche->getNbUtilisateur() == 0){
+            $manche->setTour($usr);
+        }
+        /*if ($finManche == 1 && $manche->getnbUtilisateur()==2){
             $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
             $manche = $partie->getManche(10);
             $enemy = $manche->getOther($utilisateur);
             $utilisateur->setPoint(0);
             $enemy->setPoint(0);
+        }*/
+      /*  if ($finManche == 1 && $manche->getnbUtilisateur() == 2)
+            if($manche->getnbUtilisateur()==2){
+                $manche->viderUtilisateur();
+        }*/
+        if ($finManche == 2){
+            $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+            $enemy = $manche->getOther($utilisateur);
+            $plateau_e = $enemy->getPlateau();
+            $main_e = $enemy->getMain();
+            $plateau_e->vider();
+            $main_e->vider();
+            $em->persist($plateau_e);
+            $em->persist($main_e);
+            $em->flush();
         }
         if ($main == null) {
             $main = new main();
@@ -309,13 +349,21 @@ class AdvertController extends Controller
         $utilisateur->setPlateau($plateau);
         $utilisateur->setMain($main);
         $utilisateur->setVictoire(1);
+        if ($finManche == 1)
+            $utilisateur->setPoint(0);
         $em->persist($utilisateur);
         $em->flush();
         $manche->addUtilisateur($utilisateur);
         $em->persist($manche);
         $em->flush();
         if ($manche->getnbUtilisateur() == 2) {
-            //Mettres les cartes dans la pioche
+            $nb = rand(1, 2);
+            if ($nb == 1){
+                $manche->setTour($utilisateur->getUsername());
+            } else {
+                $enemy = $manche->getOther($utilisateur);
+                $manche->setTour($enemy);
+            }
             foreach ($listCarte as $carte) {
                 if ($carte->getId() != 99) {
                     $pioche->removeCarte($carte);

@@ -5,7 +5,7 @@ $("document").ready(function () {
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/0',
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/0',
             beforeSend: function (){
                 console.log("Pioche ...");
             },
@@ -20,7 +20,9 @@ $("document").ready(function () {
                     alert("Vous avez perdu pour cette manche, vous ne pouvez plus jouer, ni piocher !");
                 } else if (data.nbMax == true){
                     alert("Vous ne pouvez pas piocher plus de 2 cartes");
-                } else {
+                } else if (data.tour != data.me){
+                    alert("Ce n'est pas votre tour de jouer !");
+                } else{
                     finalstring = "<a class=\"" + data.carte + "\"><img src=\"";
                     finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                     finalstring += data.carte + ".png";
@@ -40,9 +42,9 @@ $("document").ready(function () {
         });
     });
 
-    function setEffet(finalstring, typeCarte, users, me, idCarte) {
+    function setEffet(finalstring, typeCarte, users, me, idCarte, pose) {
         var newstring = $(finalstring).on('click', function () {
-            if (data.pose == 0){
+            if (pose == 0){
                 alert("Vous n'avez qu'une carte en main !");
                 return finalstring;
             }
@@ -54,6 +56,10 @@ $("document").ready(function () {
                     joueur = prompt("Quel joueur ciblez vous ?");
                 }
                 carteC = prompt("Devinez la carte que le joueur possède", "");
+                while (carteC == "garde" | carteC == "Garde"){
+                    alert("Vous ne pouvez pas dire que c'est un Garde !");
+                    carteC = prompt("Devinez la carte que le joueur possède", "");
+                }
             } else if (typeCarte == 6) {
                 joueur = prompt("Quel joueur ciblez vous ?");
                 while (joueur != users && joueur != me) {
@@ -83,7 +89,7 @@ $("document").ready(function () {
             }
             $.ajax({
                 type: 'get',
-                url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                 success: function (data) {
                     $("." + data.card + "").remove();
                     if (typeCarte == 1 && data.rep == true) {
@@ -116,7 +122,7 @@ $("document").ready(function () {
                         setTimeout(function () {
                             $.ajax({
                                 type: 'get',
-                                url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
+                                url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
                                 success: function (data) {
                                     alert("Effet du prêtre : effet terminé !");
                                 }
@@ -137,6 +143,10 @@ $("document").ready(function () {
                                     joueur = prompt("Quel joueur ciblez vous ?");
                                 }
                                 carteC = prompt("Devinez la carte que le joueur possède", "");
+                                while (carteC == "garde" | carteC == "Garde"){
+                                    alert("Vous ne pouvez pas dire que c'est un Garde !");
+                                    carteC = prompt("Devinez la carte que le joueur possède", "");
+                                }
                             } else if (typeCarte == 5) {
                                 console.log(me);
                                 joueur = prompt("Quel joueur ciblez vous ?");
@@ -161,7 +171,7 @@ $("document").ready(function () {
                             }
                             $.ajax({
                                 type: 'get',
-                                url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                                url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                 success: function (data) {
                                     $("." + data.card + "").remove();
                                     if (typeCarte == 1 && data.rep == true) {
@@ -194,7 +204,7 @@ $("document").ready(function () {
                                         setTimeout(function () {
                                             $.ajax({
                                                 type: 'get',
-                                                url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
+                                                url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
                                                 success: function (data) {
                                                     alert("Effet du prêtre : effet terminé !");
                                                 }
@@ -219,7 +229,7 @@ $("document").ready(function () {
         var joueur = "default";
         $.ajax({
             type: 'get',
-            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/' + id,
+            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/piocher/' + id,
             beforeSend: function () {
                 console.log("Pioche du prince ..");
             },
@@ -247,6 +257,10 @@ $("document").ready(function () {
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                             carteC = prompt("Devinez la carte que le joueur possède", "");
+                            while (carteC == "garde" | carteC == "Garde"){
+                                alert("Vous ne pouvez pas dire que c'est un Garde !");
+                                carteC = prompt("Devinez la carte que le joueur possède", "");
+                            }
                         } else if (typeCarte == 6) {
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
@@ -270,7 +284,7 @@ $("document").ready(function () {
                         }
                         $.ajax({
                             type: 'get',
-                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
                                 $("." + data.card + "").remove();
                                 if (typeCarte == 1 && data.rep == true) {
@@ -294,7 +308,7 @@ $("document").ready(function () {
                                     setTimeout(function () {
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
+                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
                                             success: function (data) {
                                                 alert("Effet du prêtre : effet terminé !");
                                             }
@@ -315,6 +329,10 @@ $("document").ready(function () {
                                                 joueur = prompt("Quel joueur ciblez vous ?");
                                             }
                                             carteC = prompt("Devinez la carte que le joueur possède", "");
+                                            while (carteC == "garde" | carteC == "Garde"){
+                                                alert("Vous ne pouvez pas dire que c'est un Garde !");
+                                                carteC = prompt("Devinez la carte que le joueur possède", "");
+                                            }
                                         } else if (typeCarte == 5) {
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me) {
@@ -332,7 +350,7 @@ $("document").ready(function () {
                                         }
                                         $.ajax({
                                             type: 'get',
-                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
+                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                             success: function (data) {
                                                 $("." + data.card + "").remove();
                                                 if (typeCarte == 1 && data.rep == true) {
@@ -356,7 +374,7 @@ $("document").ready(function () {
                                                     setTimeout(function () {
                                                         $.ajax({
                                                             type: 'get',
-                                                            url: 'http://90.101.169.174/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
+                                                            url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/pretre/' + carteC + '/0',
                                                             success: function (data) {
                                                                 alert("Effet du prêtre : effet terminé !");
                                                             }
