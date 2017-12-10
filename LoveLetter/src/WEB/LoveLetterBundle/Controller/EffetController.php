@@ -129,42 +129,22 @@ class EffetController extends Controller
             $user = $utilisateur;
             $utilisateur = $manche->getOther($user);
         }
-        $pioche = $manche->getPioche();
-
         $main = $utilisateur->getMain();
         $carteSuppr = $main->getCarte(0);
-        if ($carteSuppr != null){
-            $main->removeCarte($carteSuppr);
-            $defausse->addCarte($carteSuppr);
-            $nomCarteSuppr = $carteSuppr->getNom();
-        }
-        $nomCarte = "default";
-        $id = 0;
+        $main->removeCarte($carteSuppr);
+        $defausse->addCarte($carteSuppr);
+        $nomCarteSuppr = $carteSuppr->getNom();
+        $em->persist($defausse);
         $em->persist($main);
         $em->flush();
-
        if ($nomCarteSuppr == "princesse" && $nomUtilisateur == $user->getUsername()){
             $alertPrincesse = true;
             $user->setVictoire(0);
         } else if ($nomCarteSuppr == "princesse" && $nomUtilisateur == $utilisateur->getUsername()){
            $utilisateur->setVictoire(0);
        }
-        /*$nb = rand(1, 8);
-        if ($pioche->getNbElements() != 0) {
-            while ($pioche->getCategorie($nb) == null) {
-                $nb = rand(1, 8);
-            }
-            $carte = $pioche->getCategorie($nb);
-            $nomCarte = $carte->getNom();
-            $pioche->removeCarte($carte);
-            $id = $carte->getId();
-            $main->addCarte($carte);
-        }*/
-        $em->persist($main);
-        $em->persist($pioche);
-        $em->flush();
         $rep = true;
         $response = new JsonResponse();
-        return $response->setData(array('card' => "prince", 'repPrince' => $rep, 'nouvelleCarte' => $nomCarte, 'ancienneCarte' => $nomCarteSuppr, 'user' => $utilisateur->getUsername(), 'alertPrincesse' => $alertPrincesse));
+        return $response->setData(array('card' => "prince", 'repPrince' => $rep, 'user' => $utilisateur->getUsername(), 'alertPrincesse' => $alertPrincesse));
     }
 }
