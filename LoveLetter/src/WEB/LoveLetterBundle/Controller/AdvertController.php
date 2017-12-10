@@ -113,6 +113,11 @@ class AdvertController extends Controller
         $fin = false;
         $check = 0;
         $setpose = 0;
+        $main = $utilisateur->getMain();
+        if ($main->getNbCartes() >= 2){
+            $response = new JsonResponse();
+            return $response->setData(array('nbMax' => true));
+        }
         if ($manche->getEnd() == 1){
             if ($enemy->getVictoire() == 1){
                 $nb = $enemy->getPoint() + 1;
@@ -166,7 +171,11 @@ class AdvertController extends Controller
                     $other = $manche->getOther($utilisateur)->getUsername();
                     $me = $utilisateur->getUsername();
                     $main = $utilisateur->getMain();
-                    $main->addCarte($carte);
+                    if ($main->getNbCartes() < 2){
+                        $main->addCarte($carte);
+                    }else if ($main->getNbCartes() >= 2){
+                        $nbMax == true;
+                    }
                     $id = $carte->getId();
                     $type = $carte->getType();
                     $rep = false;
