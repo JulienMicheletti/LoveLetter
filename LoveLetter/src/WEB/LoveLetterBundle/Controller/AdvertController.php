@@ -266,14 +266,11 @@ class AdvertController extends Controller
             $plateau->addCarte($card);
             $main->removeCarte($card);
         }
-        if ($immu >= 2){
-            $utilisateur->setImmunite(2);
-        }
         $em->persist($main);
         $em->persist($plateau);
         $em->persist($utilisateur);
         $em->flush();
-        if ($enemy->getImmunite() < 2){
+        if ($enemy->getImmunite() == 0){
             return $response->setData(array('card' => $card->getNom(), 'immu' => true));
         }else if ($typeCarte == 1) { //guard
             return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
