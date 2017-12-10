@@ -18,13 +18,13 @@ $("document").ready(function () {
                     alert("fin de la manche, piochez une carte pour déclencher la suivante");
                 } else if (data.check == 2) {
                     alert("Vous avez perdu pour cette manche, vous ne pouvez plus jouer, ni piocher !");
+                } else if (data.nbMax == true){
+                    alert("Vous ne pouvez pas piocher plus de 2 cartes");
                 } else {
-                    console.log(data.carte);
                     finalstring = "<a class=\"" + data.carte + "\"><img src=\"";
                     finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                     finalstring += data.carte + ".png";
                     finalstring += "\"></a>";
-                    console.log(data.rep);
                     if (data.repComtesse == true) {
                         $(".comtesse").remove();
                     }
@@ -35,7 +35,6 @@ $("document").ready(function () {
                     var me = data.me;
                     var newstring = setEffet(finalstring, typeCarte, users, me, idCarte, data.pose);
                     $(".main").append(newstring);
-                    console.log(newstring);
                 }
             }
         });
@@ -62,7 +61,6 @@ $("document").ready(function () {
                     joueur = prompt("Quel joueur ciblez vous ?");
                 }
             } else if (typeCarte == 5) {
-                console.log(me);
                 joueur = prompt("Quel joueur ciblez vous ?");
                 while (joueur != users && joueur != me) {
                     alert("Ce joueur n'existe pas !");
@@ -87,7 +85,6 @@ $("document").ready(function () {
                 type: 'get',
                 url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                 success: function (data) {
-                    console.log(data.card);
                     $("." + data.card + "").remove();
                     if (typeCarte == 1 && data.rep == true) {
                         alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
@@ -103,7 +100,6 @@ $("document").ready(function () {
                             alert("Effet baron : Vos deux cartes sont égales, personne n'est éliminé");
                         }
                     }
-                    console.log(data.ancienneCarte);
                     if (data.alertPrincesse == true) {
                         alert("Effet princesse : Vous êtes éliminé de la manche car la princesse a été défaussée");
                     }
@@ -167,7 +163,6 @@ $("document").ready(function () {
                                 type: 'get',
                                 url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                 success: function (data) {
-                                    console.log(data.card);
                                     $("." + data.card + "").remove();
                                     if (typeCarte == 1 && data.rep == true) {
                                         alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
@@ -210,7 +205,6 @@ $("document").ready(function () {
                             });
                         })
                         $(".main").html(newstring);
-                        console.log(newstring);
                         alert("Effet du Roi : Mains échangées !");
                     }
                 }
@@ -237,7 +231,6 @@ $("document").ready(function () {
                     finalstring += "/projetWeb/LoveLetter/web/bundles/webloveletter/img/cartes/"
                     finalstring += data.carte + ".png";
                     finalstring += "\"></a>";
-                    console.log(data.rep);
                     if (data.repComtesse == true) {
                         $(".comtesse").remove();
                     }
@@ -261,7 +254,6 @@ $("document").ready(function () {
                                 joueur = prompt("Quel joueur ciblez vous ?");
                             }
                         } else if (typeCarte == 5) {
-                            console.log(me);
                             joueur = prompt("Quel joueur ciblez vous ?");
                             while (joueur != users && joueur != me) {
                                 alert("Ce joueur n'existe pas !");
@@ -280,7 +272,6 @@ $("document").ready(function () {
                             type: 'get',
                             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                             success: function (data) {
-                                console.log(data.card);
                                 $("." + data.card + "").remove();
                                 if (typeCarte == 1 && data.rep == true) {
                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
@@ -325,7 +316,6 @@ $("document").ready(function () {
                                             }
                                             carteC = prompt("Devinez la carte que le joueur possède", "");
                                         } else if (typeCarte == 5) {
-                                            console.log(me);
                                             joueur = prompt("Quel joueur ciblez vous ?");
                                             while (joueur != users && joueur != me) {
                                                 alert("Ce joueur n'existe pas !");
@@ -344,7 +334,6 @@ $("document").ready(function () {
                                             type: 'get',
                                             url: 'http://localhost/projetWeb/LoveLetter/web/app_dev.php/advert/poser/' + idCarte + '/' + carteC + '/' + typeCarte,
                                             success: function (data) {
-                                                console.log(data.card);
                                                 $("." + data.card + "").remove();
                                                 if (typeCarte == 1 && data.rep == true) {
                                                     alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
@@ -378,14 +367,12 @@ $("document").ready(function () {
                                         });
                                     })
                                     $(".main").html(newstring);
-                                    console.log(newstring);
                                     alert("Effet du Roi : Mains échangées !");
                                 }
                             }
                         });
                     })
                     $(nomClass).html(newstring);
-                    console.log(newstring);
                 }
             }
         });
