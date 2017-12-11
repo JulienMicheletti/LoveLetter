@@ -259,6 +259,8 @@ class AdvertController extends Controller
             $manche->setTour($manche->getOther($utilisateur)->getUsername());
             $immu = $immu + 1;
             $utilisateur->setImmunite($immu);
+            $em->persist($utilisateur);
+            $em->flush();
         }
         if ($card != null) {
             $plateau->addCarte($card);
@@ -269,6 +271,7 @@ class AdvertController extends Controller
         }
         $em->persist($main);
         $em->persist($plateau);
+        $em->persist($utilisateur);
         $em->flush();
         if ($enemy->getImmunite() < 2){
             return $response->setData(array('card' => $card->getNom(), 'immu' => true));
@@ -284,6 +287,8 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible' => 1));
         }else if ($typeCarte == 4){
             $utilisateur->setImmunite(0);
+            $em->persist($utilisateur);
+            $em->flush();
         } else {
             return $response->setData(array('card' => $card->getNom()));
         }
