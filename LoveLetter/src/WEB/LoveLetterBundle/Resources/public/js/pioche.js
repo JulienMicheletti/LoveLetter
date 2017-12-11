@@ -56,10 +56,12 @@ $("document").ready(function () {
                     joueur = prompt("Quel joueur ciblez vous ?");
                 }
                 carteC = prompt("Devinez la carte que le joueur possède", "");
-                while (carteC == "garde" | carteC == "Garde"){
+                while (carteC == "garde" | carteC == "Garde") {
                     alert("Vous ne pouvez pas dire que c'est un Garde !");
                     carteC = prompt("Devinez la carte que le joueur possède", "");
                 }
+            }else if (typeCarte == 4){
+              alert ("Effet servante : Vous êtes immunisé jusqu'au prochain tour") ;
             } else if (typeCarte == 6) {
                 joueur = prompt("Quel joueur ciblez vous ?");
                 while (joueur != users && joueur != me) {

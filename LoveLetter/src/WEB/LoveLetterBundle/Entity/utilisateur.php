@@ -52,6 +52,23 @@ class utilisateur extends BaseUser
     private $point;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="immunite", type="integer", nullable=true)
+     */
+    private $immunite;
+
+
+    public function setImmunite($i){
+        $this->immunite = $i;
+        return $this;
+    }
+
+    public function getImmunite(){
+        return $this->immunite;
+    }
+
+    /**
      * Get nbWin
      *
      * @return int

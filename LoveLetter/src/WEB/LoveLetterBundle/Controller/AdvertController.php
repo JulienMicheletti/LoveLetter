@@ -254,17 +254,25 @@ class AdvertController extends Controller
         $main = $utilisateur->getMain();
         $plateau = $utilisateur->getPlateau();
         $card = $main->getIdCarte($idcarte);
+        $enemy = $manche->getOther($utilisateur);
         if ($manche->getTour() == $utilisateur->getUsername()){
             $manche->setTour($manche->getOther($utilisateur)->getUsername());
+            $immu = $utilisateur->getImmunite() + 1;
+            $utilisateur->setImmunite($immu);
         }
         if ($card != null) {
             $plateau->addCarte($card);
             $main->removeCarte($card);
         }
+        if ($immu >= 2){
+            $utilisateur->setImmunite(2);
+        }
         $em->persist($main);
         $em->persist($plateau);
         $em->flush();
-        if ($typeCarte == 1) { //guard
+        if ($enemy->getImmunite() < 2){
+            return $response->setData(array('card' => $card->getNom(), 'immu' => true));
+        }else if ($typeCarte == 1) { //guard
             return $this->redirectToRoute('oc_platform_guard', array('carteD' => $carte));
         } elseif ($typeCarte == 6) { //roi
             return $this->redirectToRoute('oc_platform_king', array());
@@ -272,8 +280,10 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_prince', array('nomUtilisateur' => $carte));
         } else if ($typeCarte == 3) {
             return $this->redirectToRoute('oc_platform_baron');
-        } else if ($typeCarte == 2){
-            return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible'=>1));
+        } else if ($typeCarte == 2) {
+            return $this->redirectToRoute('oc_platform_pretre', array('nomEnemy' => $carte, 'checkvisible' => 1));
+        }else if ($typeCarte == 4){
+            $utilisateur->setImmunite(0);
         } else {
             return $response->setData(array('card' => $card->getNom()));
         }
@@ -341,6 +351,7 @@ class AdvertController extends Controller
         $em->persist($main);
         $em->flush();
         $utilisateur = $em->getRepository('WEBLoveLetterBundle:utilisateur')->find($this->getUser());
+        $utilisateur->setImmunite(2);
         if ($manche->getnbUtilisateur() == 2) {
             $enemy = $manche->getOther($utilisateur);
             $enemy->setVictoire(1);
