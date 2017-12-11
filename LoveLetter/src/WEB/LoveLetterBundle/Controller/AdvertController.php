@@ -289,6 +289,7 @@ class AdvertController extends Controller
             $utilisateur->setImmunite(0);
             $em->persist($utilisateur);
             $em->flush();
+            return $response->setData(array('card' => $card->getNom(), 'immu' => true));
         } else {
             return $response->setData(array('card' => $card->getNom()));
         }

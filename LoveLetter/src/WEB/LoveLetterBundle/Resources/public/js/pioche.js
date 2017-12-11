@@ -48,6 +48,7 @@ $("document").ready(function () {
                 alert("Vous n'avez qu'une carte en main !");
                 return finalstring;
             }
+            console.log("ok"+typeCarte);
             var carteC;
             if (typeCarte == 1) {
                 joueur = prompt("Quel joueur ciblez vous ?");
@@ -61,7 +62,7 @@ $("document").ready(function () {
                     carteC = prompt("Devinez la carte que le joueur possède", "");
                 }
             }else if (typeCarte == 4){
-              alert ("Effet servante : Vous êtes immunisé jusqu'au prochain tour") ;
+                alert("Effet servante : Vous êtes immunisé jusqu'au prochain tour") ;
             } else if (typeCarte == 6) {
                 joueur = prompt("Quel joueur ciblez vous ?");
                 while (joueur != users && joueur != me) {
@@ -98,6 +99,9 @@ $("document").ready(function () {
                         alert("Effet garde : Vous avez trouvé la bonne carte, le joueur a été éliminé");
                     } else if (typeCarte == 1 && data.rep == false) {
                         alert("Effet garde : Vous vous êtes trompé");
+                    }
+                    if (data.immu == true){
+                        alert("Vous êtes immunisé !");
                     }
                     if (typeCarte == 3) {
                         if (data.repBaron == "me") {
